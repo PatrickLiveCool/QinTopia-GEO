@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>秦托邦 QINTOBANG — 秦岭青年社区</title>
+  <meta name="description" content="秦岭脚下栗峪口剪鸭村的青年社区。为数字游民、远程工作者、创作者提供办公、住宿、松弛生活与思想碰撞的社区空间。" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a3a2a'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%238aad7c' font-family='serif' font-weight='bold'%3E秦%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest:  '#1a3a2a',
+            sage:    '#5c7a5e',
+            moss:    '#8aad7c',
+            cream:   '#f7f3eb',
+            sand:    '#e8e0cf',
+            terra:   '#b05c34',
+            amber:   '#d4891a',
+            night:   '#0d1b14',
+          },
+          fontFamily: {
+            serif:  ['Noto Serif SC', 'serif'],
+            sans:   ['Noto Sans SC', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* ── Animations ────────────────────────────── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes star-twinkle {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 1; }
+    }
+    @keyframes slide-right {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes expand {
+      from { width: 0; }
+      to   { width: 60px; }
+    }
+
+    .animate-fade-up   { animation: fade-up 0.8s cubic-bezier(.16,1,.3,1) both; }
+    .animate-fade-in   { animation: fade-in 1s ease both; }
+    .animate-float     { animation: float 4s ease-in-out infinite; }
+    .animate-slide-right { animation: slide-right 0.7s cubic-bezier(.16,1,.3,1) both; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Navbar ────────────────────────────────── */
+    .navbar {
+      transition: background 0.3s, box-shadow 0.3s, backdrop-filter 0.3s;
+    }
+    .navbar.scrolled {
+      background: rgba(247,243,235,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(26,58,42,0.08);
+    }
+    .navbar.scrolled .nav-logo,
+    .navbar.scrolled .nav-link {
+      color: #1a3a2a;
+    }
+
+    /* ── Hero ──────────────────────────────────── */
+    .hero-bg {
+      background:
+        linear-gradient(to bottom, rgba(13,27,20,0.3) 0%, rgba(13,27,20,0.55) 60%, rgba(247,243,235,0.95) 100%),
+        url('images/img1.jpg') center/cover no-repeat;
+      background-attachment: fixed;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: star-twinkle 2s ease-in-out infinite;
+    }
+
+    /* ── Cards ─────────────────────────────────── */
+    .card-hover {
+      transition: transform 220ms ease, box-shadow 220ms ease;
+      cursor: pointer;
+    }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(26,58,42,0.13);
+    }
+
+    /* ── Tags ─────────────────────────────────── */
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 0.8rem; font-weight: 500;
+      background: rgba(92,122,94,0.12);
+      color: #5c7a5e;
+      border: 1px solid rgba(92,122,94,0.25);
+    }
+
+    /* ── CTA Button ───────────────────────────── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #1a3a2a; color: #f7f3eb;
+      padding: 14px 32px; border-radius: 999px;
+      font-weight: 600; font-size: 1rem;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      background: #264d38;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26,58,42,0.25);
+    }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: #1a3a2a;
+      padding: 13px 31px; border-radius: 999px;
+      border: 2px solid #1a3a2a;
+      font-weight: 600; font-size: 1rem;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      background: #1a3a2a; color: #f7f3eb;
+    }
+
+    /* ── Section divider ───────────────────────── */
+    .divider-leaf::after {
+      content: '';
+      display: block;
+      width: 60px; height: 2px;
+      background: #8aad7c;
+      margin: 20px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ── Activity card accent ─────────────────── */
+    .activity-card {
+      position: relative; overflow: hidden;
+    }
+    .activity-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: #8aad7c;
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s ease;
+    }
+    .activity-card:hover::before { transform: scaleY(1); }
+
+    /* ── Responsive image ──────────────────────── */
+    .img-cover { object-fit: cover; width: 100%; height: 100%; }
+
+    /* ── Form styles ─────────────────────────── */
+    .form-input {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid #d4c9b5;
+      border-radius: 12px;
+      background: white;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.95rem;
+      color: #1a3a2a;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: #8aad7c;
+      box-shadow: 0 0 0 3px rgba(138,173,124,0.18);
+    }
+
+    /* ── Scrollbar ─────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f7f3eb; }
+    ::-webkit-scrollbar-thumb { background: #8aad7c; border-radius: 3px; }
+
+    /* ── Reduced motion ─────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ── Mobile nav ────────────────────────────── */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+
+    /* ── Space tabs ───────────────────────────── */
+    .space-tab {
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      border: 1px solid #8aad7c;
+      background: transparent;
+      color: #4a6b4e;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .space-tab:hover { background: rgba(138, 173, 124, 0.15); }
+    .space-tab.active { background: #1a3a2a; color: #f5f0e8; border-color: #1a3a2a; }
+
+    /* ── Activity grid ─────────────────────────── */
+    #activity-grid {
+      grid-auto-rows: 200px;
+    }
+    #activity-grid .col-span-2 { grid-column: span 2; }
+    #activity-grid .row-span-2 { grid-row: span 2; }
+
+    /* ── Parallax ──────────────────────────────── */
+    .parallax-slow { will-change: transform; }
+  </style>
+</head>
+<body class="font-sans text-forest bg-cream">
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- NAVBAR                                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <nav class="navbar fixed top-4 left-4 right-4 z-50 max-w-6xl mx-auto rounded-2xl px-6 py-4 flex items-center justify-between" style="background: rgba(247,243,235,0.0);">
+    <a href="#" class="nav-logo font-serif font-bold text-2xl text-cream tracking-tight cursor-pointer select-none">
+      秦<span class="text-moss">托</span>邦
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="#about"    class="nav-link text-cream hover:text-moss transition-colors duration-200 cursor-pointer">认识我们</a>
+      <a href="#who"      class="nav-link text-cream hover:text-moss transition-colors duration-200 cursor-pointer">适合谁</a>
+      <a href="#live"     class="nav-link text-cream hover:text-moss transition-colors duration-200 cursor-pointer">生活指南</a>
+      <a href="#activity" class="nav-link text-cream hover:text-moss transition-colors duration-200 cursor-pointer">共建活动</a>
+      <a href="#rules"    class="nav-link text-cream hover:text-moss transition-colors duration-200 cursor-pointer">社区公约</a>
+      <a href="#join"     class="nav-link text-cream hover:text-moss transition-colors duration-200 cursor-pointer">加入我们</a>
+    </div>
+    <a href="#join" class="hidden md:inline-flex btn-primary text-sm !bg-cream !text-forest hover:!bg-sand">
+      申请入住
+      <i class="fa-solid fa-arrow-right text-xs"></i>
+    </a>
+    <button id="mobile-toggle" class="md:hidden text-cream text-xl cursor-pointer" aria-label="打开导航">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed inset-0 z-[60] bg-cream flex flex-col px-8 py-8">
+    <div class="flex justify-between items-center mb-12">
+      <span class="font-serif font-bold text-2xl text-forest">秦<span class="text-moss">托</span>邦</span>
+      <button id="mobile-close" class="text-forest text-2xl cursor-pointer" aria-label="关闭导航">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="flex flex-col gap-6 text-xl font-medium">
+      <a href="#about"    class="mobile-link text-forest hover:text-sage transition-colors cursor-pointer">认识我们</a>
+      <a href="#who"      class="mobile-link text-forest hover:text-sage transition-colors cursor-pointer">适合谁</a>
+      <a href="#live"     class="mobile-link text-forest hover:text-sage transition-colors cursor-pointer">生活指南</a>
+      <a href="#activity" class="mobile-link text-forest hover:text-sage transition-colors cursor-pointer">共建活动</a>
+      <a href="#rules"    class="mobile-link text-forest hover:text-sage transition-colors cursor-pointer">社区公约</a>
+      <a href="#join"     class="mobile-link text-forest hover:text-sage transition-colors cursor-pointer">加入我们</a>
+    </div>
+    <a href="#join" class="mt-10 btn-primary justify-center">
+      申请入住 <i class="fa-solid fa-arrow-right text-sm"></i>
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- HERO                                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="hero-bg min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
+    <!-- Stars -->
+    <div class="absolute inset-0 pointer-events-none" id="stars-container"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto">
+      <div class="animate-fade-up" style="animation-delay:0.1s">
+        <span class="tag !bg-white/15 !text-cream !border-white/25 text-xs tracking-widest uppercase mb-8">
+          <i class="fa-solid fa-location-dot text-xs"></i>
+          陕西省西安市鄠邑区石井街道栗峪口村
+        </span>
+      </div>
+      <h1 class="animate-fade-up font-serif font-black text-cream leading-[1.1] tracking-[-0.03em] mb-8"
+          style="font-size:clamp(3rem,10vw,7rem)">
+        秦岭脚下<br/>
+        <span class="text-moss">另一种生活</span>的可能
+      </h1>
+      <p class="animate-fade-up text-cream/85 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-12"
+         style="animation-delay:0.3s">
+        在山雾与星月下，一边柴米油盐，一边琴棋书画<br/>
+        结交一二好友，上山问道三星洞
+      </p>
+      <div class="animate-fade-up flex flex-col sm:flex-row gap-4 justify-center" style="animation-delay:0.5s">
+        <a href="#join" class="btn-primary justify-center text-lg !bg-moss !text-forest hover:!bg-sage">
+          <i class="fa-solid fa-house-user"></i>
+          申请入住
+        </a>
+        <a href="#about" class="btn-outline !border-cream/50 !text-cream hover:!bg-cream/10 text-lg">
+          <i class="fa-solid fa-compass"></i>
+          了解更多
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float">
+      <span class="text-cream/60 text-xs tracking-widest uppercase">向下探索</span>
+      <i class="fa-solid fa-chevron-down text-cream/60"></i>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- WHAT IS QINTOBANG                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="about" class="py-24 md:py-32 px-6">
+    <div class="max-w-6xl mx-auto">
+      <!-- Label -->
+      <div class="reveal text-center mb-6">
+        <span class="tag">认识秦托邦</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-6 divider-leaf">
+        我们是什么？
+      </h2>
+
+      <div class="reveal grid md:grid-cols-2 gap-12 items-center mt-16">
+        <div>
+          <p class="text-lg md:text-xl leading-relaxed text-forest/80 mb-6">
+            我们是秦岭脚下栗峪口剪鸭村里的一个<strong class="text-forest">青年社区</strong>。
+          </p>
+          <p class="leading-relaxed text-forest/70 mb-6">
+            进有秦岭山，退有长安城。在山雾与星月下，我们可以一边柴米油盐，一边琴棋书画。
+            结交一二好友，上山问道三星洞，分辨鸟兽的踪迹；下山吃油泼面、喝油茶，炫社区手搓的肉夹馍。
+          </p>
+          <p class="leading-relaxed text-forest/70 mb-6">
+            在当下日渐原子化的社会里，我们回归人本身，探索一种<strong class="text-forest">新型的群居生活方式</strong>，
+            在具体的劳动和生活中，疗愈自我，寻找新的可能。
+          </p>
+          <div class="flex flex-wrap gap-3 mt-6">
+            <span class="tag"><i class="fa-solid fa-mountain-sun text-xs"></i>秦岭山景</span>
+            <span class="tag"><i class="fa-solid fa-users text-xs"></i>青年共居</span>
+            <span class="tag"><i class="fa-solid fa-laptop text-xs"></i>远程办公</span>
+            <span class="tag"><i class="fa-solid fa-handshake text-xs"></i>技能交换</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-2xl overflow-hidden aspect-[3/4] shadow-lg card-hover">
+            <img src="images/img2.jpg" alt="观景露台" class="img-cover" />
+          </div>
+          <div class="rounded-2xl overflow-hidden aspect-[3/4] shadow-lg mt-8 card-hover">
+            <img src="images/img3.jpg" alt="秦岭星空" class="img-cover" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand slogan -->
+      <div class="reveal mt-20 bg-forest rounded-3xl p-10 md:p-14 text-center">
+        <p class="font-serif font-black text-cream text-2xl md:text-3xl leading-relaxed mb-6">
+          在秦岭，找到你的归属
+        </p>
+        <p class="text-moss text-lg max-w-xl mx-auto leading-relaxed">
+          不只是住下来，而是真正地活在这里<br/>
+          工作、创作、连接、成长——和一群同类人一起
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- WHO IS IT FOR                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="who" class="py-24 md:py-32 px-6 bg-sand/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-6">
+        <span class="tag">社区成员</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-4 divider-leaf">
+        这里适合怎样的人？
+      </h2>
+      <p class="reveal text-center text-forest/60 text-lg max-w-2xl mx-auto mb-16">
+        允许每个人做自己，以当下适合你的节奏生活在这里
+      </p>
+
+      <div class="reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card-hover bg-white rounded-2xl p-7 border border-forest/8">
+          <div class="w-14 h-14 rounded-2xl bg-moss/15 flex items-center justify-center mb-5">
+            <i class="fa-solid fa-laptop text-moss text-xl"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-forest mb-2">数字游民</h3>
+          <p class="text-forest/60 text-sm leading-relaxed">远程工作者、数字游民、自由职业者，在乡村保持生产力</p>
+        </div>
+        <div class="card-hover bg-white rounded-2xl p-7 border border-forest/8">
+          <div class="w-14 h-14 rounded-2xl bg-terra/12 flex items-center justify-center mb-5">
+            <i class="fa-solid fa-palette text-terra text-xl"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-forest mb-2">创作者</h3>
+          <p class="text-forest/60 text-sm leading-relaxed">设计师、艺术家、程序员、学者，在山野间激发创作灵感</p>
+        </div>
+        <div class="card-hover bg-white rounded-2xl p-7 border border-forest/8">
+          <div class="w-14 h-14 rounded-2xl bg-amber/12 flex items-center justify-center mb-5">
+            <i class="fa-solid fa-compass text-amber text-xl"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-forest mb-2">探索者</h3>
+          <p class="text-forest/60 text-sm leading-relaxed">正在寻找生活方向的人，想暂时离开城市节奏，探索新的可能</p>
+        </div>
+        <div class="card-hover bg-white rounded-2xl p-7 border border-forest/8">
+          <div class="w-14 h-14 rounded-2xl bg-sage/15 flex items-center justify-center mb-5">
+            <i class="fa-solid fa-heart text-sage text-xl"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-forest mb-2">共建者</h3>
+          <p class="text-forest/60 text-sm leading-relaxed">喜欢和真实的人一起生活，愿意参与社区共建与共创</p>
+        </div>
+      </div>
+
+      <!-- Who it's NOT for -->
+      <div class="reveal mt-16 bg-white/70 rounded-2xl p-8 md:p-10 border border-forest/10">
+        <h3 class="font-serif font-bold text-xl text-forest mb-4 flex items-center gap-3">
+          <i class="fa-solid fa-circle-info text-sage"></i>
+          请注意：秦托邦不适合所有人
+        </h3>
+        <p class="text-forest/65 leading-relaxed">
+          无法接受差异、边界感模糊的人，可能不太适合这里。
+          秦托邦是一个由「千奇百怪的人类」组成的空间——
+          我们可以不理解，但请尊重别人的生活方式。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- DAILY LIFE (衣食住行)                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="live" class="py-24 md:py-32 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-6">
+        <span class="tag">生活指南</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-4 divider-leaf">
+        在秦托邦的衣食住行
+      </h2>
+      <p class="reveal text-center text-forest/60 text-lg max-w-2xl mx-auto mb-16">
+        吃饭、洗衣、收快递，都是你融入社区的开始
+      </p>
+
+      <div class="reveal grid md:grid-cols-3 gap-8">
+        <!-- 吃饭 -->
+        <div class="card-hover bg-white rounded-2xl overflow-hidden border border-forest/8">
+          <div class="aspect-video overflow-hidden">
+            <img src="images/eating_communal.png" alt="社区一起吃饭" class="img-cover" />
+          </div>
+          <div class="p-7">
+            <h3 class="font-serif font-bold text-xl text-forest mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-utensils text-moss"></i> 吃饭
+            </h3>
+            <p class="text-forest/60 text-sm leading-relaxed mb-4">
+              共享厨房自食其力，或加入社区食堂。周边有土锤咖啡、有杏山集、招财涮烤局、安东餐车等地道陕西风味。
+            </p>
+            <p class="text-xs text-sage font-medium">
+              <i class="fa-solid fa-lightbulb text-xs mr-1"></i>
+              在这里，很多关系是从"要不要一起吃饭"开始的
+            </p>
+          </div>
+        </div>
+
+        <!-- 快递 -->
+        <div class="card-hover bg-white rounded-2xl overflow-hidden border border-forest/8">
+          <div class="aspect-video overflow-hidden">
+            <img src="images/drone_flying_takeaway.png" alt="无人机配送" class="img-cover" style="object-position:center 25%;" />
+          </div>
+          <div class="p-7">
+            <h3 class="font-serif font-bold text-xl text-forest mb-3 flex items-center gap-2 flex-wrap">
+              <i class="fa-solid fa-paper-plane text-moss"></i> 无人机快递&amp;飞行外卖
+            </h3>
+            <p class="text-forest/60 text-sm leading-relaxed mb-4">
+              秦岭把山风、星空和慢日子都打包送给你了，城里的油泼面、奶茶和快递也别落下——「嗡嗡」几声，无人机就替你翻山越岭把美味拎回来。山野很野，胃可以很城。
+            </p>
+            <p class="text-xs text-sage font-medium">
+              <i class="fa-solid fa-rocket text-xs mr-1"></i>
+              一边是山川，一边是外卖——两边都要宠
+            </p>
+          </div>
+        </div>
+
+        <!-- 洗衣 -->
+        <div class="card-hover bg-white rounded-2xl overflow-hidden border border-forest/8">
+          <div class="aspect-video overflow-hidden">
+            <img src="images/laundry_selfservice.png" alt="自助洗衣" class="img-cover" />
+          </div>
+          <div class="px-7 pb-7 pt-0">
+            <div class="pt-6">
+              <h3 class="font-serif font-bold text-xl text-forest mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-shirt text-moss"></i> 洗衣
+              </h3>
+              <p class="text-forest/60 text-sm leading-relaxed mb-4">
+                脏衣服别攒成「小山丘」——大门左转钻进直播间，扫码让洗衣机替你打工；洗完记得及时认领，晾晒位也匀一点给邻居，大家衣服都香香的。
+              </p>
+              <p class="text-xs text-sage font-medium">
+                <i class="fa-solid fa-droplet text-xs mr-1"></i>
+                一边是洗衣液就位，一边是阳光和风——洗完晒晒，才算真正透气
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SPACE & FACILITIES                         -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="space" class="py-24 md:py-32 px-6 bg-cream overflow-hidden">
+
+    <!-- Header -->
+    <div class="max-w-6xl mx-auto mb-16">
+      <div class="reveal text-center mb-6">
+        <span class="tag">生活空间</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-4 divider-leaf">
+        住下来，才能真正抵达
+      </h2>
+      <p class="reveal text-center text-forest/55 text-lg max-w-xl mx-auto">
+        不是酒店，不是公寓，是一个可以安静工作、认真生活、顺便交到朋友的地方
+      </p>
+    </div>
+
+    <!-- Space tabs -->
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Tab nav -->
+      <div class="reveal flex flex-wrap justify-center gap-2 mb-10">
+        <button type="button" class="space-tab active" data-tab="room">🛏 私密房间</button>
+        <button class="space-tab" data-tab="life">🍳 共享生活</button>
+        <button class="space-tab" data-tab="work">💻 办公空间</button>
+        <button class="space-tab" data-tab="scenery">🌄 三楼观景</button>
+        <button class="space-tab" data-tab="gym">🏋️ 健身房</button>
+      </div>
+
+      <!-- Tab: 私密房间 -->
+      <div class="space-panel" id="panel-room">
+        <div class="grid md:grid-cols-5 gap-5 items-start">
+          <!-- Left: info -->
+          <div class="md:col-span-2 bg-sand/60 rounded-2xl p-8 h-full flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🛏</span>
+              <h3 class="font-serif font-bold text-2xl text-forest">私密房间</h3>
+            </div>
+            <p class="text-forest/70 leading-relaxed mb-6 text-sm">
+              舒适的单人间和双人间，配备书桌、衣柜、空调、热水。住进来，就是住进了自己的山间小窝。
+            </p>
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 书桌 · 衣柜 · 空调
+              </div>
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 电热水壶 · 床品全套
+              </div>
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 公共卫浴（定期保洁）
+              </div>
+            </div>
+          </div>
+          <!-- Right: photos -->
+          <div class="md:col-span-3 grid grid-cols-2 gap-3">
+            <div class="col-span-2 rounded-2xl overflow-hidden shadow-md aspect-[16/9] card-hover">
+              <img src="images/room_platform.png" alt="私密房间 · 平台床与大窗" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-square card-hover">
+              <img src="images/room_bunk.png" alt="私密房间 · 胶囊床位" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-square card-hover">
+              <img src="images/room_minimal.png" alt="私密房间 · 单人间" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: 共享生活 -->
+      <div class="space-panel hidden" id="panel-life">
+        <div class="grid md:grid-cols-5 gap-5 items-start">
+          <!-- Left -->
+          <div class="md:col-span-2 bg-sand/60 rounded-2xl p-8 h-full">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🍳</span>
+              <h3 class="font-serif font-bold text-2xl text-forest">共享生活</h3>
+            </div>
+            <p class="text-forest/70 leading-relaxed mb-5 text-sm">
+              厨房不只是做饭的地方，也是聊天、认识邻居、建立联结的入口。器具齐全，随到随用，用完顺手清洁。
+            </p>
+            <div class="grid grid-cols-3 gap-2 mb-5">
+              <div class="bg-moss/10 rounded-lg px-2 py-3 text-center">
+                <span class="text-2xl block mb-1">🧊</span>
+                <span class="text-forest/70 text-xs">冰箱</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-2 py-3 text-center">
+                <span class="text-2xl block mb-1">☕</span>
+                <span class="text-forest/70 text-xs">咖啡机</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-2 py-3 text-center">
+                <span class="text-2xl block mb-1">🍞</span>
+                <span class="text-forest/70 text-xs">蒸烤箱</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-2 py-3 text-center">
+                <span class="text-2xl block mb-1">🫧</span>
+                <span class="text-forest/70 text-xs">洗碗机</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-2 py-3 text-center">
+                <span class="text-2xl block mb-1">🎬</span>
+                <span class="text-forest/70 text-xs">投影仪</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-2 py-3 text-center">
+                <span class="text-2xl block mb-1">📞</span>
+                <span class="text-forest/70 text-xs">静音舱</span>
+              </div>
+            </div>
+            <p class="text-forest/45 text-xs italic">
+              <i class="fa-solid fa-info-circle text-moss/60 mr-1"></i>
+              用完清洁、物品归位——这里靠自觉，也靠彼此信任
+            </p>
+          </div>
+          <!-- Right: 2×2 照片网格 -->
+          <div class="md:col-span-3 grid grid-cols-2 gap-3">
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-square card-hover">
+              <img src="images/space_kitchen.jpg" alt="共享厨房" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-square card-hover">
+              <img src="images/space_kitchen2.jpg" alt="共享吧台与休闲区" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-square card-hover">
+              <img src="images/space_life_pod.png" alt="静音电话舱" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-square card-hover">
+              <img src="images/space_life_coffee.png" alt="咖啡角与墙面布置" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: 办公空间 -->
+      <div class="space-panel hidden" id="panel-work">
+        <div class="grid md:grid-cols-5 gap-5 items-start">
+          <!-- Left -->
+          <div class="md:col-span-2 bg-sand/60 rounded-2xl p-8 h-full">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">💻</span>
+              <h3 class="font-serif font-bold text-2xl text-forest">办公空间</h3>
+            </div>
+            <!-- Rooftop / Qinling view -->
+            <div class="mb-6 pb-6 border-b border-forest/10">
+              <h4 class="font-medium text-forest text-sm mb-1 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 inline-block"></span>
+                三楼露台 · 秦岭「外挂屏」
+              </h4>
+              <p class="text-forest/55 text-xs mb-2 italic leading-relaxed">
+                "电脑屏保要会员，这儿抬头就是年费全免的秦岭高清实况。"
+              </p>
+              <p class="text-forest/70 text-xs leading-relaxed">
+                露台高脚桌一排，笔记本一摊——对面是层层叠叠的绿，底下是白墙青瓦的村子。风来的时候，键盘声都变轻了；云走的时候，整座山跟你一起加班。纯天然、无滤镜，发呆也算一种深度工作。
+              </p>
+            </div>
+            <!-- Shared desk -->
+            <div class="mb-6">
+              <h4 class="font-medium text-forest text-sm mb-1 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-moss inline-block"></span>
+                共享办公区 · WarmDesk
+              </h4>
+              <p class="text-forest/55 text-xs mb-2 italic leading-relaxed">
+                "随到随坐，轻声慢语，桌面清爽。"
+              </p>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 24小时开放，可轻声交流
+                </div>
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 离开带走物品，桌面归位
+                </div>
+              </div>
+            </div>
+            <!-- Quiet zone -->
+            <div class="mb-6">
+              <h4 class="font-medium text-forest text-sm mb-1 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber inline-block"></span>
+                静音办公区 · 24小时
+              </h4>
+              <p class="text-forest/55 text-xs mb-2 italic leading-relaxed">
+                "这里适合深度专注，也适合被安静包裹。"
+              </p>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 需领取工位卡
+                </div>
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 禁止聊天、电话、音乐
+                </div>
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 最后离开者关灯 + 空调
+                </div>
+              </div>
+            </div>
+            <!-- Meeting room -->
+            <div>
+              <h4 class="font-medium text-forest text-sm mb-1 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-terra inline-block"></span>
+                会议室
+              </h4>
+              <p class="text-forest/55 text-xs italic mb-2">"清晰表达，从预约开始。"</p>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 群里预约，注明时间
+                </div>
+                <div class="flex items-center gap-2 text-forest/70 text-xs">
+                  <i class="fa-solid fa-check text-moss text-[10px]"></i> 用后整理，关电源空调
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right -->
+          <div class="md:col-span-3 grid grid-cols-2 gap-3">
+            <div class="col-span-2 rounded-2xl overflow-hidden shadow-md aspect-[16/9] card-hover">
+              <img src="images/space_coworking.jpg" alt="共享办公区" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-[4/3] card-hover">
+              <img src="images/space_meeting.jpg" alt="会议室" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-md aspect-[4/3] card-hover">
+              <img src="images/space_office_rooftop.png" alt="三楼露台办公位 · 望秦岭" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: 三楼观景 -->
+      <div class="space-panel hidden" id="panel-scenery">
+        <div class="grid md:grid-cols-5 gap-5 items-start">
+          <div class="md:col-span-2 bg-sand/60 rounded-2xl p-8 h-full">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🌄</span>
+              <h3 class="font-serif font-bold text-2xl text-forest">三楼观景共享位</h3>
+            </div>
+            <p class="text-forest/55 text-sm italic leading-relaxed mb-5 border-l-2 border-moss/40 pl-3">
+              "风景属于大家，桌面也要留点空。"
+            </p>
+            <div class="space-y-2 mb-5">
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 随到随用，不长时间占位
+              </div>
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 桌面保持整洁
+              </div>
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 离开带走个人物品
+              </div>
+            </div>
+            <p class="text-forest/45 text-xs">
+              <i class="fa-solid fa-mountain text-moss/60 mr-1"></i>
+              推窗即见秦岭，适合工作、阅读、发呆
+            </p>
+          </div>
+          <div class="md:col-span-3">
+            <div class="rounded-2xl overflow-hidden shadow-md" style="aspect-ratio:16/9;">
+              <img src="images/space_gym.jpg" alt="三楼观景" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: 健身房 -->
+      <div class="space-panel hidden" id="panel-gym">
+        <div class="grid md:grid-cols-5 gap-5 items-start">
+          <div class="md:col-span-2 bg-sand/60 rounded-2xl p-8 h-full flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🏋️</span>
+              <h3 class="font-serif font-bold text-2xl text-forest">健身房</h3>
+            </div>
+            <p class="text-forest/70 leading-relaxed mb-6 text-sm">
+              配备专业器械的健身空间，帮助你在山野生活里保持活力与健康。
+            </p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 有氧器械 · 力量训练区
+              </div>
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 自由重量区
+              </div>
+              <div class="flex items-center gap-3 text-forest/75 text-sm">
+                <i class="fa-solid fa-check text-moss text-xs"></i> 24小时开放
+              </div>
+            </div>
+            <p class="text-forest/40 text-xs italic">
+              <i class="fa-solid fa-circle-info text-moss/50 mr-1"></i>
+              用完请清洁器械、归位器材
+            </p>
+          </div>
+          <div class="md:col-span-3">
+            <div class="rounded-2xl overflow-hidden shadow-md" style="aspect-ratio:16/9;">
+              <img src="images/space_3f.jpg" alt="健身环境" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom note -->
+    <div class="max-w-6xl mx-auto mt-12">
+      <div class="reveal bg-forest/5 rounded-2xl px-8 py-6 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <span class="text-4xl">🏡</span>
+          <div>
+            <p class="font-serif font-bold text-forest text-lg">这是大家的共享家园</p>
+            <p class="text-forest/50 text-sm">有问题或建议，随时群里@小管家</p>
+          </div>
+        </div>
+        <div class="flex-1 grid sm:grid-cols-2 gap-4 sm:border-l sm:border-forest/10 sm:pl-6">
+          <div class="text-center sm:text-left">
+            <p class="text-forest/40 text-xs mb-0.5">生活配套</p>
+            <p class="text-forest font-medium text-sm">Wi-Fi · 空调 · 热水 · 共享厨房</p>
+          </div>
+          <div class="text-center sm:text-left">
+            <p class="text-forest/40 text-xs mb-0.5">义工招募</p>
+            <p class="text-moss font-medium text-sm">长期有效</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ACTIVITIES & PARTICIPATION                  -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="activity" class="py-24 md:py-32 px-6 bg-forest text-cream overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Header -->
+      <div class="reveal text-center mb-6">
+        <span class="tag !bg-white/10 !text-moss !border-white/20">共建活动</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-cream mb-4">
+        参与，是最好的抵达
+      </h2>
+      <p class="reveal text-center text-cream/60 text-lg max-w-2xl mx-auto mb-16">
+        好的社区不是"住"出来的，而是"长"出来的
+      </p>
+
+      <!-- Main layout: left path + right grid -->
+      <div class="reveal grid lg:grid-cols-5 gap-8 items-start">
+
+        <!-- Left: 发起 & 共建 (2 columns) -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+
+          <!-- 发起 -->
+          <div class="activity-card bg-white/8 backdrop-blur-sm rounded-2xl p-8 border border-white/12">
+            <div class="flex items-start gap-5 mb-5">
+              <div class="w-14 h-14 rounded-2xl bg-moss/20 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-feather-pointed text-moss text-xl"></i>
+              </div>
+              <div>
+                <h3 class="font-serif font-bold text-xl text-cream mb-1">发起</h3>
+                <p class="text-cream/45 text-sm">把你的热爱，变成大家的日常</p>
+              </div>
+            </div>
+            <p class="text-cream/70 leading-relaxed mb-5 text-sm">
+              在这里，任何人都可以发起一场活动——不需要是专家，不需要完美。编程、瑜伽、读书、手工、山野徒步、电影夜、做饭……哪怕只是一次想找人一起散步的冲动，都值得被认真对待。
+            </p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 text-cream/75 text-sm">
+                <i class="fa-solid fa-plus text-moss text-xs flex-shrink-0"></i> 编程 / 设计 / 摄影 / 语言
+              </div>
+              <div class="flex items-center gap-3 text-cream/75 text-sm">
+                <i class="fa-solid fa-plus text-moss text-xs flex-shrink-0"></i> 冥想 / 瑜伽 / 自然观察
+              </div>
+              <div class="flex items-center gap-3 text-cream/75 text-sm">
+                <i class="fa-solid fa-plus text-moss text-xs flex-shrink-0"></i> 读书 / 书法 / 电影 / 手作
+              </div>
+            </div>
+          </div>
+
+          <!-- 共建 -->
+          <div class="activity-card bg-white/8 backdrop-blur-sm rounded-2xl p-8 border border-white/12">
+            <div class="flex items-start gap-5 mb-5">
+              <div class="w-14 h-14 rounded-2xl bg-amber/20 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-hand-holding-heart text-amber text-xl"></i>
+              </div>
+              <div>
+                <h3 class="font-serif font-bold text-xl text-cream mb-1">共建</h3>
+                <p class="text-cream/45 text-sm">用每一次在场，书写社区的样子</p>
+              </div>
+            </div>
+            <p class="text-cream/70 leading-relaxed mb-4 text-sm">
+              留下来住的人，是社区真正的建设者。煮一顿饭、分享一段见闻、在碎碎念里留下一句真心话——微小的事，持之以恒，就是了不起的事。
+            </p>
+            <!-- Mini life bits preview -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-moss/10 rounded-lg px-3 py-2 text-center">
+                <i class="fa-solid fa-utensils text-moss text-xs block mb-1"></i>
+                <span class="text-cream/60 text-xs">一起做饭</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-3 py-2 text-center">
+                <i class="fa-solid fa-camera-retro text-moss text-xs block mb-1"></i>
+                <span class="text-cream/60 text-xs">记录这一刻</span>
+              </div>
+              <div class="bg-moss/10 rounded-lg px-3 py-2 text-center">
+                <i class="fa-solid fa-users text-moss text-xs block mb-1"></i>
+                <span class="text-cream/60 text-xs">认识邻居</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: 15件生活小事 (3 columns) -->
+        <div class="lg:col-span-3">
+          <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 h-full">
+            <div class="flex items-center gap-4 mb-2">
+              <i class="fa-solid fa-seedling text-amber text-xl"></i>
+              <div>
+                <h3 class="font-serif font-bold text-xl text-cream">秦托邦生活 15 件</h3>
+                <p class="text-cream/40 text-xs">这里的人，都在慢慢做着这些小事</p>
+              </div>
+            </div>
+            <p class="text-cream/55 text-sm mb-6 leading-relaxed">
+              没有清单、没有打卡、没有完成与未完成。<br/>只是一些在这里的人，经常会做的小事。
+            </p>
+
+            <!-- Life bits grid -->
+            <div id="life-bits" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-6">
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="一次不经意的出发，不设目的地">
+                <span class="text-2xl block mb-1">🌿</span>
+                <span class="text-cream/80 text-xs leading-tight">无目的<br/>散步</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="不只是玩手机，是和彼此在一起">
+                <span class="text-2xl block mb-1">🍜</span>
+                <span class="text-cream/80 text-xs leading-tight">围坐<br/>吃饭</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="在星空下，什么都可以聊">
+                <span class="text-2xl block mb-1">🌌</span>
+                <span class="text-cream/80 text-xs leading-tight">抬头看<br/>星星</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="用笔画出心里想说的话">
+                <span class="text-2xl block mb-1">✒️</span>
+                <span class="text-cream/80 text-xs leading-tight">写字<br/>抄经</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="山里的味道，值得被记住">
+                <span class="text-2xl block mb-1">🫛</span>
+                <span class="text-cream/80 text-xs leading-tight">认识<br/>野菜</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="用一场观影，开启一次对话">
+                <span class="text-2xl block mb-1">🎬</span>
+                <span class="text-cream/80 text-xs leading-tight">电影<br/>之夜</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="和有意思的人，聊没用的天">
+                <span class="text-2xl block mb-1">☕</span>
+                <span class="text-cream/80 text-xs leading-tight">喝茶<br/>聊天</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="用技能换一段缘分">
+                <span class="text-2xl block mb-1">🤝</span>
+                <span class="text-cream/80 text-xs leading-tight">技能<br/>互换</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="早起舒展，从容地开始一天">
+                <span class="text-2xl block mb-1">🧘</span>
+                <span class="text-cream/80 text-xs leading-tight">清晨<br/>八段锦</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="分享今天最真实的感受">
+                <span class="text-2xl block mb-1">📝</span>
+                <span class="text-cream/80 text-xs leading-tight">碎碎念<br/>记录</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="用脚步丈量秦岭">
+                <span class="text-2xl block mb-1">🥾</span>
+                <span class="text-cream/80 text-xs leading-tight">上山<br/>徒步</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="听蝉鸣、萤火虫、蛙声，认识黑夜">
+                <span class="text-2xl block mb-1">🦗</span>
+                <span class="text-cream/80 text-xs leading-tight">夜听<br/>虫鸣</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="和猫咪建立一段跨物种友谊">
+                <span class="text-2xl block mb-1">🐱</span>
+                <span class="text-cream/80 text-xs leading-tight">认识<br/>邦邦</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="没有剧本，只有当下">
+                <span class="text-2xl block mb-1">🎭</span>
+                <span class="text-cream/80 text-xs leading-tight">剧本杀<br/>推理</span>
+              </div>
+
+              <div class="life-bit bg-moss/15 rounded-xl p-3 text-center cursor-default group hover:bg-moss/30 transition-all duration-300"
+                   data-tip="和村民聊天，听这片土地的故事">
+                <span class="text-2xl block mb-1">🏡</span>
+                <span class="text-cream/80 text-xs leading-tight">和村民<br/>聊天</span>
+              </div>
+
+            </div>
+
+            <!-- Hover tip display -->
+            <div id="life-tip" class="bg-white/5 rounded-xl px-5 py-3 text-center min-h-[52px] flex items-center justify-center">
+              <p class="text-cream/50 text-sm italic" id="tip-text">
+                <i class="fa-solid fa-hand-pointer text-moss/50 mr-1"></i>
+                鼠标移上去，看看这里的人在做什么
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quote -->
+      <div class="reveal mt-20 text-center">
+        <blockquote class="font-serif text-2xl md:text-3xl text-cream/90 leading-relaxed max-w-3xl mx-auto">
+          "愿你不只是过客，而是下一个故事的起点。"
+        </blockquote>
+        <p class="mt-4 text-moss">我们在秦岭脚下，等你来分享、来连接、来创造</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RULES & VALUES                             -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="rules" class="py-24 md:py-32 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-6">
+        <span class="tag">社区公约</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-4 divider-leaf">
+        在这里的基本原则
+      </h2>
+      <p class="reveal text-center text-forest/60 text-lg max-w-2xl mx-auto mb-16">
+        在不影响别人的前提下，你可以拥有自己想要的生活
+      </p>
+
+      <div class="reveal grid md:grid-cols-3 gap-6">
+        <!-- Zero tolerance -->
+        <div class="bg-red-50 rounded-2xl p-8 border border-red-100">
+          <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center mb-5">
+            <i class="fa-solid fa-ban text-red-500 text-lg"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-red-700 mb-4">零容忍</h3>
+          <ul class="space-y-2">
+            <li class="flex gap-2 text-sm text-red-700/80">
+              <i class="fa-solid fa-xmark mt-1 text-red-400 text-xs flex-shrink-0"></i>
+              任何形式的骚扰与性骚扰行为
+            </li>
+            <li class="flex gap-2 text-sm text-red-700/80">
+              <i class="fa-solid fa-xmark mt-1 text-red-400 text-xs flex-shrink-0"></i>
+              虐待动植物的行为
+            </li>
+            <li class="flex gap-2 text-sm text-red-700/80">
+              <i class="fa-solid fa-xmark mt-1 text-red-400 text-xs flex-shrink-0"></i>
+              任何违法行为
+            </li>
+          </ul>
+        </div>
+
+        <!-- Warning -->
+        <div class="bg-amber-50 rounded-2xl p-8 border border-amber-100">
+          <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center mb-5">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-amber-700 mb-4">警告</h3>
+          <ul class="space-y-2">
+            <li class="flex gap-2 text-sm text-amber-700/80">
+              <i class="fa-solid fa-exclamation mt-1 text-amber-400 text-xs flex-shrink-0"></i>
+              辱骂、攻击与不尊重言行
+            </li>
+            <li class="flex gap-2 text-sm text-amber-700/80">
+              <i class="fa-solid fa-exclamation mt-1 text-amber-400 text-xs flex-shrink-0"></i>
+              煽动性别对立、歧视性言论
+            </li>
+            <li class="flex gap-2 text-sm text-amber-700/80">
+              <i class="fa-solid fa-exclamation mt-1 text-amber-400 text-xs flex-shrink-0"></i>
+              持续传播邪教或教唆他人
+            </li>
+          </ul>
+        </div>
+
+        <!-- Discouraged -->
+        <div class="bg-sand/60 rounded-2xl p-8 border border-forest/10">
+          <div class="w-12 h-12 rounded-xl bg-sand flex items-center justify-center mb-5">
+            <i class="fa-solid fa-hand text-forest/60 text-lg"></i>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-forest/70 mb-4">不鼓励</h3>
+          <ul class="space-y-2">
+            <li class="flex gap-2 text-sm text-forest/60">
+              <i class="fa-solid fa-minus mt-1 text-sage text-xs flex-shrink-0"></i>
+              把社区当"酒店"
+            </li>
+            <li class="flex gap-2 text-sm text-forest/60">
+              <i class="fa-solid fa-minus mt-1 text-sage text-xs flex-shrink-0"></i>
+              长期占用公共空间与资源
+            </li>
+            <li class="flex gap-2 text-sm text-forest/60">
+              <i class="fa-solid fa-minus mt-1 text-sage text-xs flex-shrink-0"></i>
+              消失式共居（不回应当沟通）
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- COMMUNITY LIFE / ACTIVITY DIARY            -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="activity-stories" class="py-24 px-6 bg-sand/50 overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Header -->
+      <div class="reveal text-center mb-6">
+        <span class="tag">活动日记本</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-4 divider-leaf">
+        这里的日常，不只是风景
+      </h2>
+      <p class="reveal text-center text-forest/60 text-lg max-w-2xl mx-auto mb-12">
+        瑜伽、观鸟、飞盘、书法、剧本杀、电影夜、徒步……<br/>
+        每一场活动，都是社区心跳的证据
+      </p>
+
+      <!-- Activity Type Filter Tags -->
+      <div class="reveal flex flex-wrap justify-center gap-3 mb-10">
+        <span class="tag cursor-pointer hover:bg-moss/25 transition-colors" data-filter="all">
+          <i class="fa-solid fa-globe text-xs"></i> 全部
+        </span>
+        <span class="tag cursor-pointer hover:bg-moss/25 transition-colors" data-filter="healing">
+          <i class="fa-solid fa-spa text-xs"></i> 疗愈冥想
+        </span>
+        <span class="tag cursor-pointer hover:bg-moss/25 transition-colors" data-filter="outdoor">
+          <i class="fa-solid fa-mountain text-xs"></i> 户外运动
+        </span>
+        <span class="tag cursor-pointer hover:bg-moss/25 transition-colors" data-filter="knowledge">
+          <i class="fa-solid fa-book-open text-xs"></i> 知识分享
+        </span>
+        <span class="tag cursor-pointer hover:bg-moss/25 transition-colors" data-filter="nature">
+          <i class="fa-solid fa-leaf text-xs"></i> 自然探索
+        </span>
+        <span class="tag cursor-pointer hover:bg-moss/25 transition-colors" data-filter="film">
+          <i class="fa-solid fa-film text-xs"></i> 书音影
+        </span>
+      </div>
+
+      <!-- Activity Grid (3-col masonry) -->
+      <div id="activity-grid" class="reveal grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[200px]">
+
+        <!-- Card 1: 大图 — Family Day -->
+        <div class="col-span-2 row-span-2 rounded-2xl overflow-hidden shadow-md card-hover relative group"
+             data-category="traditional"
+             data-name="Family Day · 赶集、包饺子、迎接春天"
+             data-host="萌哥 & 醒醒"
+             data-count="13"
+             data-type="传统节日"
+             data-desc="赶集采购、下午茶话会、包饺子、炸春卷——老规矩，一家人过一个完整的春天。">
+          <img src="images/activity_familyday.png" alt="Family Day · 一起包饺子" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-5">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-moss/90 text-white text-xs font-medium mb-2">传统节日</span>
+            <h3 class="font-serif font-bold text-cream text-xl leading-tight">Family Day · 赶集、包饺子、迎接春天</h3>
+            <p class="text-cream/70 text-sm mt-1">
+              <i class="fa-solid fa-user text-xs mr-1"></i>萌哥 & 醒醒 · <i class="fa-solid fa-users text-xs mr-1"></i>13 人参加
+            </p>
+          </div>
+          <div class="absolute inset-0 bg-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div class="text-center text-cream p-4">
+              <p class="text-sm leading-relaxed mb-3">赶集采购、下午茶话会、包饺子、炸春卷——老规矩，一家人过一个完整的春天。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: 书法活动 -->
+        <div class="row-span-2 rounded-2xl overflow-hidden shadow-md card-hover relative group"
+             data-category="knowledge"
+             data-name="春之书 · 苏轼《黄州寒食帖》书法体验"
+             data-host="于是"
+             data-count="5"
+             data-type="知识分享"
+             data-desc="以天下第三行书解析字法和章法，理解后尝试小吉语创作，获赠「马上有福」印蜕书签。">
+          <img src="images/activity_calligraphy.jpg" alt="书法体验课" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-amber/90 text-white text-xs font-medium mb-1">知识分享</span>
+            <h3 class="font-serif font-bold text-cream text-base leading-tight">春之书 · 书法体验</h3>
+            <p class="text-cream/60 text-xs mt-1">于是</p>
+          </div>
+          <div class="absolute inset-0 bg-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div class="text-center text-cream p-3">
+              <p class="text-xs leading-relaxed mb-2">以苏轼《黄州寒食帖》解析字法章法，创作小吉语书签。</p>
+              <p class="text-xs text-moss">限额5人 · 29.9元含茶水</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: 观鸟 -->
+        <div class="col-span-2 rounded-2xl overflow-hidden shadow-md card-hover relative group"
+             data-category="nature"
+             data-name="妇女节观鸟活动"
+             data-host="鹡鸰"
+             data-count="5"
+             data-type="自然探索"
+             data-desc="春天到了，鸟儿的繁殖季。让我们一起去看看村里的小鸟们都在忙些什么。">
+          <img src="images/img3.jpg" alt="观鸟" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-sage/90 text-white text-xs font-medium mb-1">自然探索</span>
+            <h3 class="font-serif font-bold text-cream text-lg">妇女节观鸟活动</h3>
+            <p class="text-cream/60 text-xs mt-1">鹡鸰发起 · 限额15人 · 穿暗色衣服更适合观鸟</p>
+          </div>
+        </div>
+
+        <!-- Card 4: 急救培训 -->
+        <div class="row-span-2 rounded-2xl overflow-hidden shadow-md card-hover relative group"
+             data-category="knowledge"
+             data-name="心肺复苏急救知识小课堂"
+             data-host="小寒"
+             data-count="12"
+             data-type="知识分享"
+             data-desc="胸外按压、人工呼吸、AED使用——关键时刻能救命的技能，脆皮年轻人必修课。">
+          <img src="images/activity_cpr.jpg" alt="急救培训" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-terra/90 text-white text-xs font-medium mb-1">知识分享</span>
+            <h3 class="font-serif font-bold text-cream text-sm leading-tight">秦托邦小课堂 · 心肺复苏急救</h3>
+            <p class="text-cream/60 text-xs mt-1">小寒 · 12人参加</p>
+          </div>
+          <div class="absolute inset-0 bg-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div class="text-center text-cream p-3">
+              <p class="text-xs leading-relaxed mb-2">CPR + AED使用，关键时刻能救命！适合久坐伏案的脆皮年轻人。</p>
+              <p class="text-xs text-moss">三楼观山会议室 · 免费</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: 飞盘 -->
+        <div class="rounded-2xl overflow-hidden shadow-md card-hover relative group flex items-end"
+             data-category="outdoor"
+             data-name="飞盘运动"
+             data-host="土豆"
+             data-count="3"
+             data-type="户外运动"
+             data-desc="阳光正好，大草坪，飞盘自由活动，新手友好。">
+          <div class="absolute inset-0 bg-moss/80 flex items-center justify-center">
+            <div class="text-center text-forest">
+              <i class="fa-solid fa-disc text-4xl mb-2 block"></i>
+              <p class="font-serif font-bold text-lg">飞盘运动</p>
+              <p class="text-sm text-forest/70 mt-1">土豆发起 · 大草坪</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: 剧本杀 -->
+        <div class="rounded-2xl overflow-hidden shadow-md card-hover relative group flex items-end"
+             data-category="game"
+             data-name="剧本杀 · 阿姐鼓"
+             data-host="雪球"
+             data-count="6"
+             data-type="桌游棋牌"
+             data-desc="带上你的聪明才智，让我们一起找到凶手。">
+          <div class="absolute inset-0 bg-terra/80 flex items-center justify-center">
+            <div class="text-center text-cream">
+              <i class="fa-solid fa-masks-theater text-4xl mb-2 block"></i>
+              <p class="font-serif font-bold text-lg">剧本杀</p>
+              <p class="text-sm text-cream/80 mt-1">雪球发起 · 阿姐鼓</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7: 挖野菜 -->
+        <div class="col-span-2 rounded-2xl overflow-hidden shadow-md card-hover relative group"
+             data-category="nature"
+             data-name="春天挖野菜"
+             data-host="鹡鸰"
+             data-count="3"
+             data-type="自然探索"
+             data-desc="荠荠菜、刺儿菜、薤白、艾草——拿上祖传红塑料袋，一起出发挖野菜！">
+          <img src="images/activity_wildherb.jpg" alt="挖野菜" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-sage/90 text-white text-xs font-medium mb-1">自然探索</span>
+            <h3 class="font-serif font-bold text-cream text-lg">春天挖野菜 · 乡土课堂</h3>
+            <p class="text-cream/60 text-xs mt-1">鹡鸰老师带领 · 挖荠荠菜、刺儿菜、薤白、艾草</p>
+          </div>
+        </div>
+
+        <!-- Card 8: 瑜伽疗愈 -->
+        <div class="row-span-2 rounded-2xl overflow-hidden shadow-md card-hover relative group"
+             data-category="healing"
+             data-name="第八脉轮 · 能量圈修复瑜伽"
+             data-host="华叔"
+             data-count="9"
+             data-type="疗愈冥想"
+             data-desc="感知与激活、清洁与修复、强化与稳固——用瑜伽重建你的能量光盾。">
+          <div class="absolute inset-0 bg-sage/80 flex items-center justify-center">
+            <div class="text-center text-cream p-4">
+              <i class="fa-solid fa-spa text-4xl mb-3 block"></i>
+              <span class="inline-block px-2 py-0.5 rounded-full bg-forest/60 text-cream text-xs font-medium mb-2">疗愈冥想</span>
+              <h3 class="font-serif font-bold text-cream text-base leading-tight">第八脉轮 · 能量圈修复</h3>
+              <p class="text-cream/80 text-xs mt-2">爻光漆愈 · 焦老师带领 · 公益免费</p>
+            </div>
+          </div>
+          <div class="absolute inset-0 bg-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div class="text-center text-cream p-3">
+              <p class="text-xs leading-relaxed">感知、清洁、强化——用温和有力的脉轮瑜伽，重建内在安全感的能量光盾。</p>
+              <p class="text-xs text-moss mt-2">限额9人 · 社区公益福利</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 9: 电影夜 -->
+        <div class="rounded-2xl overflow-hidden shadow-md card-hover relative group flex items-end"
+             data-category="film"
+             data-name="电影夜 · 《长安三万里》"
+             data-host="醒醒"
+             data-count="4"
+             data-type="书音影分享"
+             data-desc="安史之乱后，大雪如轮，朝廷派来程公公持节监军……">
+          <img src="images/activity_movie.jpg" alt="电影夜" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <span class="inline-block px-2 py-0.5 rounded-full bg-night/70 text-cream text-xs font-medium mb-1">书音影</span>
+            <h3 class="font-serif font-bold text-cream text-sm">电影夜 · 长安三万里</h3>
+            <p class="text-cream/60 text-xs">醒醒 · 游戏室</p>
+          </div>
+        </div>
+
+        <!-- Card 10: 元宵节 -->
+        <div class="rounded-2xl overflow-hidden shadow-md card-hover relative group flex items-end"
+             data-category="traditional"
+             data-name="元宵节 · 煮汤圆"
+             data-host="小客服"
+             data-count="12"
+             data-type="传统节日"
+             data-desc="公共厨房，秦托邦不定期请大家吃汤圆！">
+          <div class="absolute inset-0 bg-amber/80 flex items-center justify-center">
+            <div class="text-center text-forest p-3">
+              <span class="text-4xl block mb-1">🏮</span>
+              <p class="font-serif font-bold text-sm">元宵节 · 煮汤圆</p>
+              <p class="text-xs text-forest/80 mt-0.5">小客服发起 · 12人接龙</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA: Read More Stories -->
+      <div class="reveal text-center mt-12">
+        <p class="text-forest/40 text-sm mb-4">这只是冰山一角 · 社区每天都有人在创造新的故事</p>
+        <a href="#join" class="btn-outline inline-flex items-center gap-2">
+          <i class="fa-solid fa-pen-fancy"></i>
+          成为故事的下一个主角
+          <i class="fa-solid fa-arrow-right text-sm"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Floating: Life in Numbers -->
+  <section class="py-16 px-6 bg-cream">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <p class="font-serif font-black text-4xl text-forest" id="activity-count">500+</p>
+          <p class="text-forest/50 text-sm mt-1">已举办活动</p>
+        </div>
+        <div>
+          <p class="font-serif font-black text-4xl text-forest">N+</p>
+          <p class="text-forest/50 text-sm mt-1">活动类型</p>
+        </div>
+        <div>
+          <p class="font-serif font-black text-4xl text-forest">300+</p>
+          <p class="text-forest/50 text-sm mt-1">核心发起人</p>
+        </div>
+        <div>
+          <p class="font-serif font-black text-4xl text-forest">每周</p>
+          <p class="text-forest/50 text-sm mt-1">新的故事</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- JOIN / APPLY                               -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="join" class="py-24 md:py-32 px-6 bg-cream">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-6">
+        <span class="tag">申请入住</span>
+      </div>
+      <h2 class="reveal font-serif font-bold text-4xl md:text-5xl text-center text-forest mb-4 divider-leaf">
+        加入秦托邦
+      </h2>
+      <p class="reveal text-center text-forest/60 text-lg max-w-2xl mx-auto mb-12 md:mb-14">
+        扫码填写申请表、加入社群，开启你的山居生活第一步<br/>
+        <span class="text-sm text-forest/45">个人信息请在官方渠道填写，我们会严格保密</span>
+      </p>
+
+      <div class="reveal space-y-8 md:space-y-10">
+        <!-- 申请须知：通栏 -->
+        <div class="bg-white rounded-2xl p-7 md:p-9 border border-forest/8 shadow-sm max-w-3xl mx-auto">
+          <h3 class="font-serif font-bold text-lg text-forest mb-5 flex items-center justify-center md:justify-start gap-2">
+            <i class="fa-solid fa-circle-info text-moss"></i>
+            申请须知
+          </h3>
+          <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+            <li class="flex gap-3 text-sm text-forest/65">
+              <i class="fa-solid fa-check text-moss mt-0.5 flex-shrink-0"></i>
+              每位游民都需在入住前填写申请表
+            </li>
+            <li class="flex gap-3 text-sm text-forest/65">
+              <i class="fa-solid fa-check text-moss mt-0.5 flex-shrink-0"></i>
+              住宿超 7 天以上需加入社区大群
+            </li>
+            <li class="flex gap-3 text-sm text-forest/65">
+              <i class="fa-solid fa-check text-moss mt-0.5 flex-shrink-0"></i>
+              参与永远是自愿的，没有强制要求
+            </li>
+            <li class="flex gap-3 text-sm text-forest/65">
+              <i class="fa-solid fa-check text-moss mt-0.5 flex-shrink-0"></i>
+              想安静待着完全可以，不必强迫自己社交
+            </li>
+          </ul>
+        </div>
+
+        <!-- 双二维码：并排 -->
+        <div class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+          <div class="bg-white rounded-2xl p-7 md:p-8 border border-forest/8 shadow-sm text-center flex flex-col items-center">
+            <p class="text-sm font-medium text-forest mb-1">入住申请表</p>
+            <p class="text-xs text-forest/50 mb-4">扫码填写</p>
+            <div class="w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sand rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
+              <img src="images/img4.jpg" alt="入住申请二维码" class="img-cover rounded-xl" />
+            </div>
+            <p class="text-xs text-forest/40 mt-4">长按识别 / 截图保存</p>
+          </div>
+          <div class="bg-white rounded-2xl p-7 md:p-8 border border-forest/8 shadow-sm text-center flex flex-col items-center">
+            <p class="text-sm font-medium text-forest mb-1">扫码咨询</p>
+            <p class="text-xs text-forest/50 mb-4">入住、交通等问题欢迎联系</p>
+            <!-- TODO: 替换为正式咨询二维码图片 -->
+            <div
+              class="w-44 h-44 sm:w-48 sm:h-48 mx-auto rounded-xl border-2 border-dashed border-forest/20 bg-gradient-to-br from-sand/90 to-sand/50 flex flex-col items-center justify-center gap-2 px-4 text-center shadow-inner"
+              role="img"
+              aria-label="咨询二维码占位，正式码稍后更新"
+            >
+              <i class="fa-solid fa-qrcode text-4xl text-forest/20" aria-hidden="true"></i>
+              <span class="text-xs text-forest/45 leading-snug">二维码占位<br />图来了就换上</span>
+            </div>
+            <p class="text-xs text-forest/40 mt-4">长按识别 / 截图保存</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- FOOTER                                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <footer class="bg-night text-cream/60 py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-10 mb-12">
+        <div class="md:col-span-2">
+          <div class="font-serif font-bold text-2xl text-cream mb-3">
+            秦<span class="text-moss">托</span>邦
+          </div>
+          <p class="text-sm leading-relaxed max-w-xs">
+            秦岭脚下栗峪口剪鸭村的青年社区。<br/>
+            在具体的劳动和生活中，疗愈自我，寻找新的可能。
+          </p>
+        </div>
+        <div>
+          <h4 class="text-cream font-medium text-sm mb-4">快速链接</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#about"    class="hover:text-moss transition-colors cursor-pointer">认识我们</a></li>
+            <li><a href="#who"      class="hover:text-moss transition-colors cursor-pointer">适合谁</a></li>
+            <li><a href="#activity" class="hover:text-moss transition-colors cursor-pointer">共建活动</a></li>
+            <li><a href="#join"     class="hover:text-moss transition-colors cursor-pointer">申请入住</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-cream font-medium text-sm mb-4">联系我们</h4>
+          <ul class="space-y-2 text-sm">
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-location-dot text-moss text-xs"></i>
+              陕西省西安市鄠邑区石井街道栗峪口村
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-truck-fast text-moss text-xs"></i>
+              无人机配送：鄠邑区城市运动公园人民商业中心 6F
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-xs">© 2026 秦托邦 QinToBang. 秦岭青年社区.</p>
+        <p class="text-xs">共建 · 共创 · 共居</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- JAVASCRIPT                                 -->
+  <!-- ══════════════════════════════════════════ -->
+  <script>
+    /* ── Mobile menu ─────────────────────────── */
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const mobileMenu   = document.getElementById('mobile-menu');
+    const mobileClose  = document.getElementById('mobile-close');
+    const mobileLinks  = document.querySelectorAll('.mobile-link');
+
+    mobileToggle.addEventListener('click', () => mobileMenu.classList.add('open'));
+    mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+    /* ── Navbar scroll effect ────────────────── */
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Scroll reveal ───────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const delay = entry.target.dataset.delay || 0;
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach((el, i) => {
+      el.dataset.delay = (i % 4) * 80;
+      revealObs.observe(el);
+    });
+
+    /* ── Stars ───────────────────────────────── */
+    const starsContainer = document.getElementById('stars-container');
+    for (let i = 0; i < 60; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left    = Math.random() * 100 + '%';
+      star.style.top     = Math.random() * 70 + '%';
+      star.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+      star.style.animationDelay    = Math.random() * 2 + 's';
+      starsContainer.appendChild(star);
+    }
+
+    /* ── Space tabs ───────────────────────────── */
+    const spaceTabs = document.querySelectorAll('.space-tab');
+    const spacePanels = document.querySelectorAll('.space-panel');
+    spaceTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        spaceTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        spacePanels.forEach(p => {
+          p.classList.toggle('hidden', p.id !== 'panel-' + target);
+        });
+        document.getElementById('space')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    /* ── Life bits hover ──────────────────────── */
+    const lifeBits = document.querySelectorAll('.life-bit');
+    const tipText  = document.getElementById('tip-text');
+    lifeBits.forEach(bit => {
+      bit.addEventListener('mouseenter', () => {
+        tipText.innerHTML = `<i class="fa-solid fa-comment-dots text-moss/70 mr-1"></i> ${bit.dataset.tip}`;
+        lifeBits.forEach(b => b.classList.remove('ring-1', 'ring-moss/50'));
+        bit.classList.add('ring-1', 'ring-moss/50');
+      });
+      bit.addEventListener('mouseleave', () => {
+        tipText.innerHTML = '<i class="fa-solid fa-hand-pointer text-moss/50 mr-1"></i> 鼠标移上去，看看这里的人在做什么';
+        lifeBits.forEach(b => b.classList.remove('ring-1', 'ring-moss/50'));
+      });
+    });
+
+    /* ── Activity filter ──────────────────────── */
+    const filterTags = document.querySelectorAll('[data-filter]');
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        const filter = tag.dataset.filter;
+        filterTags.forEach(t => t.classList.remove('!bg-moss/30', '!border-moss'));
+        tag.classList.add('!bg-moss/30', '!border-moss');
+        const cards = document.querySelectorAll('#activity-grid > [data-category]');
+        cards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    /* ── Smooth scroll offset for fixed nav ──── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          const top = el.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
