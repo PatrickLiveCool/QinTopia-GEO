@@ -1,0 +1,10 @@
+# 腾讯云 COS cli 日志
+coscli.log
+coscli_output/
+
+# macOS 系统文件
+.DS_Store
+
+# 编辑器
+*.swp
+*.swo
