@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>秦托邦 QinTopia — 秦岭青年社区</title>
   <meta name="description" content="秦岭脚下栗峪口剪鸭村的青年社区。为数字游民、远程工作者、创作者提供办公、住宿、松弛生活与思想碰撞的社区空间。" />
+  <script>
+    (function() {
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      var path = window.location.pathname;
+      if (isMobile && path.indexOf('mobile.html') === -1) {
+        window.location.replace('mobile.html');
+      }
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a3a2a'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%238aad7c' font-family='serif' font-weight='bold'%3E秦%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,7 +43,15 @@
     }
   </script>
   <style>
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+    body {
+      overflow-x: hidden;
+      min-width: 0;
+    }
+    img { max-width: 100%; height: auto; vertical-align: middle; }
 
     /* ── Animations ────────────────────────────── */
     @keyframes fade-up {
@@ -73,6 +90,9 @@
     /* ── Navbar ────────────────────────────────── */
     .navbar {
       transition: background 0.3s, box-shadow 0.3s, backdrop-filter 0.3s;
+      max-width: min(72rem, calc(100vw - 2rem));
+      min-width: 0;
+      width: 100%;
     }
     .navbar.scrolled {
       background: rgba(247,243,235,0.92);
@@ -173,7 +193,27 @@
     .activity-card:hover::before { transform: scaleY(1); }
 
     /* ── Responsive image ──────────────────────── */
-    .img-cover { object-fit: cover; width: 100%; height: 100%; }
+    .img-cover { object-fit: cover; width: 100%; height: 100%; max-width: none; }
+
+    /* 加入页双二维码：统一用 contain，避免横图/方图缩放不一致 */
+    .qr-slot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 0.75rem;
+    }
+    @media (min-width: 640px) {
+      .qr-slot { padding: 1rem; }
+    }
+    .qr-slot img {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
 
     /* ── Form styles ─────────────────────────── */
     .form-input {
@@ -222,9 +262,12 @@
       font-size: 0.875rem;
       cursor: pointer;
       transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .space-tab:hover { background: rgba(138, 173, 124, 0.15); }
     .space-tab.active { background: #1a3a2a; color: #f5f0e8; border-color: #1a3a2a; }
+    .tab-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 
     /* ── Activity grid ─────────────────────────── */
     #activity-grid {
@@ -254,20 +297,27 @@
       /* 生活空间面板：信息区和图片区之间 gap 压缩 */
       .space-info { padding: 1.25rem !important; }
 
-      /* 生活15件事：手机2列 */
-      .life-bits-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      /* 生活15件事：手机 4 列，缩短纵向长度 */
+      .life-bits-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+      .life-bits-grid .life-bit { padding: 0.5rem !important; }
 
       /* 活动卡片：2列，减小高度 */
       .activity-grid-inner { grid-auto-rows: 160px !important; gap: 0.625rem !important; }
 
-      /* Tab 按钮：允许水平滚动 */
+      /* Tab 按钮：允许水平滚动，缩小字号和内边距避免一行放不下 */
       .tab-nav { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .tab-nav::-webkit-scrollbar { display: none; }
       .tab-nav > * { flex-shrink: 0; }
+      .space-tab { font-size: 0.72rem !important; padding: 0.35rem 0.7rem !important; }
 
-      /* 底部报名区域双二维码：间距收紧 */
-      .qr-grid { gap: 1rem !important; }
-      .qr-card { padding: 1.25rem !important; }
+      /* 底部报名区域：单列堆叠，避免两枚二维码挤爆视口 */
+      .qr-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 1rem !important; }
+      .qr-card { padding: 1.25rem !important; max-width: 20rem; margin-left: auto; margin-right: auto; width: 100%; }
+
+      /* 认识我们：双图不要太「高塔」 */
+      .about-photos { gap: 0.75rem !important; }
+      .about-photos > div { aspect-ratio: 1 / 1 !important; max-height: 46vw; }
+      .about-photos > div:last-child { margin-top: 0 !important; }
 
       /* 通用：减小 gap */
       .gap-6 { gap: 0.75rem !important; }
@@ -276,6 +326,9 @@
       /* 通用：减小 p 区的 padding */
       .p-7, .p-8 { padding: 1.25rem !important; }
       .p-10 { padding: 1.25rem !important; }
+
+      /* 空间 Tab：缩小字号和内边距，一行塞下 4 个 */
+      .space-tab { font-size: 0.7rem !important; padding: 0.35rem 0.75rem !important; }
 
       /* 通用：减小标题字号 */
       .text-4xl, .text-5xl { font-size: 1.875rem !important; }
@@ -302,17 +355,28 @@
     }
 
     /* 给 HTML 引用用的辅助类 */
-    .who-grid        { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    /* 默认 2 列，避免与 Tailwind 冲突导致小屏误用 4 列 */
+    .who-grid        { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
     .who-card        { padding: 1.75rem; }
     .space-info      { padding: 2rem; }
     .life-bits-grid  { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
     .activity-grid-inner { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 200px; gap: 1rem; }
+    /* Tab导航默认换行（桌面），小屏由下方的 @media 覆盖为不换行+滚动 */
     .tab-nav         { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-    .qr-grid         { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 56rem; margin: 0 auto; }
+    .qr-grid         { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; max-width: 56rem; margin: 0 auto; }
     .qr-card         { padding: 1.75rem; }
     .who-bg          { padding-top: 6rem; padding-bottom: 6rem; }
     .rules-grid      { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
     .filter-tags     { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+
+    @media (min-width: 768px) {
+      .qr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .about-photos > div { aspect-ratio: 3 / 4 !important; max-height: none !important; }
+      .about-photos > div:last-child { margin-top: 2rem !important; }
+    }
+    @media (min-width: 1024px) {
+      .who-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 <body class="font-sans text-forest bg-cream">
@@ -371,8 +435,8 @@
 
     <div class="relative z-10 max-w-4xl mx-auto">
       <div class="animate-fade-up" style="animation-delay:0.1s">
-        <span class="tag !bg-white/15 !text-cream !border-white/25 text-xs tracking-widest uppercase mb-8">
-          <i class="fa-solid fa-location-dot text-xs"></i>
+        <span class="tag !bg-white/15 !text-cream !border-white/25 text-xs tracking-widest uppercase mb-8 max-w-full break-words text-left justify-center">
+          <i class="fa-solid fa-location-dot text-xs shrink-0"></i>
           陕西省西安市鄠邑区石井街道栗峪口村
         </span>
       </div>
@@ -431,18 +495,19 @@
             在当下日渐原子化的社会里，我们回归人本身，探索一种<strong class="text-forest">新型的群居生活方式</strong>，
             在具体的劳动和生活中，疗愈自我，寻找新的可能。
           </p>
-          <div class="flex flex-wrap gap-3 mt-6">
-            <span class="tag"><i class="fa-solid fa-mountain-sun text-xs"></i>秦岭山景</span>
-            <span class="tag"><i class="fa-solid fa-users text-xs"></i>青年共居</span>
-            <span class="tag"><i class="fa-solid fa-laptop text-xs"></i>远程办公</span>
-            <span class="tag"><i class="fa-solid fa-handshake text-xs"></i>技能交换</span>
+          <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mt-6">
+            <span class="tag shrink-0 whitespace-nowrap"><i class="fa-solid fa-mountain-sun text-xs"></i>秦岭山景</span>
+            <span class="tag shrink-0 whitespace-nowrap"><i class="fa-solid fa-users text-xs"></i>青年共居</span>
+            <span class="tag shrink-0 whitespace-nowrap"><i class="fa-solid fa-laptop text-xs"></i>远程办公</span>
+            <span class="tag shrink-0 whitespace-nowrap"><i class="fa-solid fa-handshake text-xs"></i>技能交换</span>
+            <span class="tag shrink-0 whitespace-nowrap"><i class="fa-solid fa-rocket text-xs"></i>超级个体—OPC</span>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
+        <div class="about-photos grid grid-cols-2 gap-4">
           <div class="rounded-2xl overflow-hidden aspect-[3/4] shadow-lg card-hover">
             <img src="images/img2.jpg" alt="观景露台" class="img-cover" />
           </div>
-          <div class="rounded-2xl overflow-hidden aspect-[3/4] shadow-lg mt-8 card-hover">
+          <div class="rounded-2xl overflow-hidden aspect-[3/4] shadow-lg mt-0 md:mt-8 card-hover">
             <img src="images/img3.jpg" alt="秦岭星空" class="img-cover" />
           </div>
         </div>
@@ -476,7 +541,7 @@
         允许每个人做自己，以当下适合你的节奏生活在这里
       </p>
 
-      <div class="who-grid reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="who-grid reveal gap-6">
         <div class="who-card card-hover bg-white rounded-2xl p-7 border border-forest/8">
           <div class="w-14 h-14 rounded-2xl bg-moss/15 flex items-center justify-center mb-5">
             <i class="fa-solid fa-laptop text-moss text-xl"></i>
@@ -905,7 +970,7 @@
             <p class="text-forest/50 text-sm">有问题或建议，随时群里@小管家</p>
           </div>
         </div>
-        <div class="flex-1 grid sm:grid-cols-2 gap-4 sm:border-l sm:border-forest/10 sm:pl-6">
+        <div class="flex-1 grid grid-cols-2 gap-3 sm:gap-4 sm:border-l sm:border-forest/10 sm:pl-6 min-w-0">
           <div class="text-center sm:text-left">
             <p class="text-forest/40 text-xs mb-0.5">生活配套</p>
             <p class="text-forest font-medium text-sm">Wi-Fi · 空调 · 热水 · 共享厨房</p>
@@ -1521,7 +1586,7 @@
             <i class="fa-solid fa-circle-info text-moss"></i>
             申请须知
           </h3>
-          <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+          <ul class="grid grid-cols-2 gap-x-3 sm:gap-x-6 gap-y-3 text-left min-w-0 [&_li]:min-w-0 [&_li]:break-words">
             <li class="flex gap-3 text-sm text-forest/65">
               <i class="fa-solid fa-check text-moss mt-0.5 flex-shrink-0"></i>
               每位游民都需在入住前填写申请表
@@ -1542,20 +1607,20 @@
         </div>
 
         <!-- 双二维码：并排 -->
-        <div class="qr-grid reveal grid md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+        <div class="qr-grid reveal gap-6 md:gap-8 max-w-4xl mx-auto">
           <div class="qr-card bg-white rounded-2xl p-7 md:p-8 border border-forest/8 shadow-sm text-center flex flex-col items-center">
             <p class="text-sm font-medium text-forest mb-1">入住申请表</p>
             <p class="text-xs text-forest/50 mb-4">扫码填写</p>
-            <div class="w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sand rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
-              <img src="images/img4.jpg" alt="入住申请二维码" class="img-cover rounded-xl" />
+            <div class="qr-slot w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sand rounded-xl overflow-hidden shadow-inner">
+              <img src="images/img4.jpg" alt="入住申请二维码" />
             </div>
             <p class="text-xs text-forest/40 mt-4">长按识别 / 截图保存</p>
           </div>
           <div class="qr-card bg-white rounded-2xl p-7 md:p-8 border border-forest/8 shadow-sm text-center flex flex-col items-center">
             <p class="text-sm font-medium text-forest mb-1">扫码咨询</p>
             <p class="text-xs text-forest/50 mb-4">入住、交通等问题欢迎联系</p>
-            <div class="w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sand rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
-              <img src="images/consult_qrcode.png" alt="扫码咨询二维码" class="img-cover rounded-xl" loading="lazy" />
+            <div class="qr-slot w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sand rounded-xl overflow-hidden shadow-inner">
+              <img src="images/consult_qrcode.png" alt="扫码咨询二维码" loading="lazy" />
             </div>
             <p class="text-xs text-forest/40 mt-4">长按识别 / 截图保存</p>
           </div>
@@ -1569,7 +1634,7 @@
   <!-- ══════════════════════════════════════════ -->
   <footer class="bg-night text-cream/60 py-16 px-6">
     <div class="max-w-6xl mx-auto">
-      <div class="grid md:grid-cols-4 gap-10 mb-12">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mb-12">
         <div class="md:col-span-2">
           <div class="font-serif font-bold text-2xl text-cream mb-3">
             秦<span class="text-moss">托</span>邦
@@ -1588,7 +1653,7 @@
             <li><a href="#join"     class="hover:text-moss transition-colors cursor-pointer">申请入住</a></li>
           </ul>
         </div>
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <h4 class="text-cream font-medium text-sm mb-4">联系我们</h4>
           <ul class="space-y-2 text-sm">
             <li class="flex items-center gap-2">

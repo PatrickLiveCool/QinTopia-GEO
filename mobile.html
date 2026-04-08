@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>秦托邦 QinTopia — 秦岭青年社区</title>
+  <meta name="description" content="秦岭脚下栗峪口剪鸭村的青年社区。为数字游民、远程工作者、创作者提供办公、住宿、松弛生活与思想碰撞的社区空间。" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a3a2a'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%238aad7c' font-family='serif' font-weight='bold'%3E%E7%A7%A6%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest: #1a3a2a;
+      --sage:   #5c7a5e;
+      --moss:   #8aad7c;
+      --cream:  #f7f3eb;
+      --sand:   #e8e0cf;
+      --terra:  #b05c34;
+      --amber:  #d4891a;
+      --night:  #0d1b14;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      color: var(--forest);
+      background: var(--cream);
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* ── Animations ────────────────────────────── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes star-twinkle {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: star-twinkle 2s ease-in-out infinite;
+    }
+
+    /* ── Navbar ──────────────────────────────── */
+    .nav-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0.875rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .nav-bar.scrolled {
+      background: rgba(247,243,235,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 16px rgba(26,58,42,0.1);
+    }
+    .nav-logo {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 1.375rem;
+      color: var(--cream);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-logo span { color: var(--moss); }
+    .nav-bar.scrolled .nav-logo { color: var(--forest); }
+    .nav-bar.scrolled .nav-logo span { color: var(--moss); }
+    .nav-toggle {
+      background: none; border: none;
+      color: var(--cream);
+      font-size: 1.375rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.3s;
+    }
+    .nav-bar.scrolled .nav-toggle { color: var(--forest); }
+
+    /* ── Drawer Menu ─────────────────────────── */
+    .drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem 1.5rem 2rem;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+    .drawer-logo {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--forest);
+      text-decoration: none;
+    }
+    .drawer-logo span { color: var(--moss); }
+    .drawer-close {
+      background: none; border: none;
+      color: var(--forest);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .drawer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+    }
+    .drawer-link {
+      display: block;
+      padding: 0.875rem 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--forest);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(26,58,42,0.08);
+      transition: color 0.2s;
+    }
+    .drawer-link:hover { color: var(--sage); }
+    .drawer-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--forest);
+      color: var(--cream);
+      padding: 0.875rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      margin-top: 1.25rem;
+      transition: background 0.2s;
+    }
+    .drawer-cta:hover { background: #264d38; }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 1.25rem 3rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(13,27,20,0.35) 0%, rgba(13,27,20,0.6) 55%, rgba(247,243,235,0.97) 100%),
+        url('images/img1.jpg') center/cover no-repeat;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 24rem;
+      animation: fade-up 0.8s cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: rgba(255,255,255,0.15);
+      color: var(--cream);
+      border: 1px solid rgba(255,255,255,0.25);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      font-size: clamp(2.25rem, 10vw, 3rem);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title .green { color: var(--moss); }
+    .hero-sub {
+      color: rgba(247,243,235,0.85);
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+    .hero-btns { display: flex; flex-direction: column; gap: 0.75rem; }
+    .btn-pri {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--moss);
+      color: var(--forest);
+      padding: 0.875rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-pri:active { transform: scale(0.97); }
+    .btn-sec {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--cream);
+      padding: 0.8rem 1.5rem;
+      border-radius: 999px;
+      border: 2px solid rgba(247,243,235,0.5);
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-sec:active { background: rgba(247,243,235,0.1); }
+    .hero-scroll {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+      animation: float 3.5s ease-in-out infinite;
+    }
+    .hero-scroll span {
+      color: rgba(247,243,235,0.55);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .hero-scroll i { color: rgba(247,243,235,0.55); font-size: 0.75rem; }
+
+    /* ── Section base ─────────────────────────── */
+    .section { padding: 3.5rem 1.25rem; }
+    .section-dark { background: var(--forest); color: var(--cream); }
+    .section-sand { background: var(--sand); }
+    .container { max-width: 40rem; margin: 0 auto; }
+
+    .sec-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: rgba(92,122,94,0.12);
+      color: var(--sage);
+      border: 1px solid rgba(92,122,94,0.25);
+      margin-bottom: 0.875rem;
+    }
+    .sec-label-dark {
+      background: rgba(138,173,124,0.12);
+      color: var(--moss);
+      border-color: rgba(138,173,124,0.25);
+    }
+    .sec-title {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 1.875rem;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .sec-title::after {
+      content: '';
+      display: block;
+      width: 3rem;
+      height: 2px;
+      background: var(--moss);
+      border-radius: 2px;
+      margin: 0.875rem auto 0;
+    }
+    .sec-sub {
+      text-align: center;
+      color: var(--forest);
+      opacity: 0.6;
+      font-size: 0.95rem;
+      max-width: 20rem;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .sec-sub-light { color: rgba(247,243,235,0.6); }
+
+    /* ── About ───────────────────────────────── */
+    .about-pics {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .about-pics img {
+      border-radius: 1rem;
+      width: 100%;
+      height: 12rem;
+      object-fit: cover;
+      box-shadow: 0 8px 24px rgba(26,58,42,0.1);
+    }
+    .about-text p {
+      color: var(--forest);
+      opacity: 0.8;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 0.875rem;
+    }
+    .about-text p strong { color: var(--forest); opacity: 1; }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.375rem;
+      margin-top: 1rem;
+    }
+    .tag-row::-webkit-scrollbar { display: none; }
+    .tag-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      background: rgba(92,122,94,0.1);
+      color: var(--sage);
+      border: 1px solid rgba(92,122,94,0.2);
+    }
+    .brand-card {
+      background: var(--forest);
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .brand-card .big {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 800;
+      color: var(--cream);
+      font-size: 1.25rem;
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+    .brand-card .small {
+      color: var(--moss);
+      font-size: 0.875rem;
+      line-height: 1.7;
+    }
+
+    /* ── Who ─────────────────────────────────── */
+    /* ── Who 2×2 grid ──────────────────────── */
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.625rem;
+      margin-bottom: 0.75rem;
+    }
+    .who-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 0.875rem 0.75rem;
+      border: 1px solid rgba(26,58,42,0.08);
+    }
+    .who-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.625rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+    .who-icon-moss { background: rgba(138,173,124,0.15); color: var(--moss); }
+    .who-icon-terra { background: rgba(176,92,52,0.12); color: var(--terra); }
+    .who-icon-amber { background: rgba(212,137,26,0.12); color: var(--amber); }
+    .who-icon-sage  { background: rgba(92,122,94,0.15); color: var(--sage); }
+    .who-card h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--forest);
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+    }
+    .who-card p {
+      color: var(--forest);
+      opacity: 0.6;
+      font-size: 0.75rem;
+      line-height: 1.55;
+    }
+    .who-note {
+      background: rgba(255,255,255,0.7);
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(26,58,42,0.1);
+    }
+    .who-note-title {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--forest);
+      margin-bottom: 0.375rem;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .who-note-title i { color: var(--sage); }
+    .who-note p {
+      color: var(--forest);
+      opacity: 0.65;
+      font-size: 0.8rem;
+      line-height: 1.65;
+    }
+
+    /* ── Life ────────────────────────────────── */
+    .life-card {
+      background: white;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(26,58,42,0.08);
+    }
+    .life-card img {
+      width: 100%;
+      height: 10rem;
+      object-fit: cover;
+    }
+    .life-card-body { padding: 1.25rem; }
+    .life-card h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--forest);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .life-card h3 i { color: var(--moss); }
+    .life-card p {
+      color: var(--forest);
+      opacity: 0.65;
+      font-size: 0.875rem;
+      line-height: 1.7;
+      margin-bottom: 0.625rem;
+    }
+    .life-tip {
+      font-size: 0.75rem;
+      color: var(--sage);
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+      background: rgba(92,122,94,0.08);
+      border-radius: 0.5rem;
+      line-height: 1.5;
+    }
+    .life-tip i { margin-right: 0.25rem; }
+
+    /* ── Space accordion ─────────────────────── */
+    .accordion-item {
+      background: var(--sand);
+      border-radius: 1rem;
+      margin-bottom: 0.625rem;
+      overflow: hidden;
+    }
+    .accordion-head {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 1rem 1.125rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--forest);
+      text-align: left;
+    }
+    .accordion-head span { display: flex; align-items: center; gap: 0.5rem; }
+    .accordion-head i { transition: transform 0.3s; color: var(--sage); }
+    .accordion-item.open .accordion-head i { transform: rotate(180deg); }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(.16,1,.3,1);
+    }
+    .accordion-item.open .accordion-body { max-height: 60rem; }
+    .accordion-inner { padding: 0 1.125rem 1.125rem; }
+    .accordion-inner p {
+      color: var(--forest);
+      opacity: 0.7;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+    .space-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.375rem;
+      font-size: 0.8rem;
+      color: var(--forest);
+      opacity: 0.75;
+    }
+    .space-check i { color: var(--moss); margin-top: 0.1rem; flex-shrink: 0; }
+    .space-facilities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.375rem;
+      margin: 0.75rem 0;
+    }
+    .facility {
+      background: rgba(138,173,124,0.1);
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.25rem;
+      text-align: center;
+    }
+    .facility .emo { font-size: 1.25rem; display: block; margin-bottom: 0.125rem; }
+    .facility .name { font-size: 0.65rem; color: var(--forest); opacity: 0.7; }
+    .space-img-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.375rem;
+      margin-top: 0.75rem;
+    }
+    .space-img-grid img {
+      border-radius: 0.75rem;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+    .space-img-wide {
+      grid-column: span 2;
+      aspect-ratio: 16/7 !important;
+    }
+    .space-note {
+      background: rgba(26,58,42,0.05);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+    .space-note .icon { font-size: 1.5rem; }
+    .space-note .txt p { margin: 0; font-weight: 600; font-size: 0.9rem; color: var(--forest); }
+    .space-note .txt span { font-size: 0.75rem; color: var(--forest); opacity: 0.5; }
+    .space-note-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .space-note-2 > div {
+      background: rgba(26,58,42,0.05);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+    }
+    .space-note-2 p { font-size: 0.7rem; color: var(--forest); opacity: 0.4; margin-bottom: 0.125rem; }
+    .space-note-2 span { font-size: 0.8rem; font-weight: 500; color: var(--forest); }
+
+    /* ── Activity ─────────────────────────────── */
+    /* ── Activity compact ─────────────────────── */
+    .act-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .act-mini {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 0.875rem;
+      padding: 0.75rem;
+    }
+    .act-mini-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+    .act-mini-icon-moss { background: rgba(138,173,124,0.2); color: var(--moss); }
+    .act-mini-icon-amber { background: rgba(212,137,26,0.2); color: var(--amber); }
+    .act-mini h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--cream);
+      margin-bottom: 0.125rem;
+    }
+    .act-mini .sub { font-size: 0.7rem; color: rgba(247,243,235,0.45); margin-bottom: 0.375rem; }
+    .act-mini p {
+      font-size: 0.72rem;
+      color: rgba(247,243,235,0.65);
+      line-height: 1.55;
+    }
+    .act-mini-tags { display: flex; flex-direction: column; gap: 0.15rem; }
+    .act-mini-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      color: rgba(247,243,235,0.7);
+    }
+    .act-mini-tag i { color: var(--moss); }
+    .act-mini-acts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.25rem;
+    }
+    .act-mini-act {
+      background: rgba(138,173,124,0.1);
+      border-radius: 0.375rem;
+      padding: 0.375rem 0.25rem;
+      text-align: center;
+    }
+    .act-mini-act i { color: var(--moss); font-size: 0.75rem; display: block; margin-bottom: 0.1rem; }
+    .act-mini-act span { font-size: 0.6rem; color: rgba(247,243,235,0.6); }
+
+    /* 15件事 — 紧凑版 */
+    .life-bits-compact {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0.875rem;
+      padding: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .life-bits-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.625rem;
+    }
+    .life-bits-head i { color: var(--amber); font-size: 1rem; }
+    .life-bits-head h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--cream);
+    }
+    .life-bits-head p { font-size: 0.65rem; color: rgba(247,243,235,0.4); margin: 0; }
+    .life-bits-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.3rem;
+      margin-bottom: 0.625rem;
+    }
+    .life-bit {
+      background: rgba(138,173,124,0.15);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.2rem;
+      text-align: center;
+    }
+    .life-bit .emo { font-size: 1.125rem; display: block; margin-bottom: 0.1rem; }
+    .life-bit .txt { font-size: 0.6rem; color: rgba(247,243,235,0.8); line-height: 1.2; }
+    .life-tip-box {
+      background: rgba(255,255,255,0.05);
+      border-radius: 0.625rem;
+      padding: 0.5rem;
+      text-align: center;
+      min-height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .life-tip-box p {
+      color: rgba(247,243,235,0.5);
+      font-size: 0.75rem;
+      font-style: italic;
+      margin: 0;
+    }
+    .activity-quote {
+      text-align: center;
+      margin-top: 0.5rem;
+      padding: 0 0.5rem;
+    }
+    .activity-quote blockquote {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    .activity-quote p { color: var(--moss); font-size: 0.8rem; }
+
+    /* ── Rules 3-column grid ─────────────────── */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .rule-card {
+      border-radius: 0.875rem;
+      padding: 0.75rem 0.625rem;
+    }
+    .rule-card-red { background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.12); }
+    .rule-card-amber { background: rgba(217,119,6,0.06); border: 1px solid rgba(217,119,6,0.12); }
+    .rule-card-gray { background: rgba(26,58,42,0.05); border: 1px solid rgba(26,58,42,0.1); }
+    .rule-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .rule-icon-red { background: rgba(220,38,38,0.1); color: #dc2626; }
+    .rule-icon-amber { background: rgba(217,119,6,0.1); color: #d97706; }
+    .rule-icon-gray { background: rgba(26,58,42,0.1); color: var(--forest); opacity: 0.6; }
+    .rule-card h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+    .rule-card-red h3 { color: #b91c1c; }
+    .rule-card-amber h3 { color: #b45309; }
+    .rule-card-gray h3 { color: var(--forest); opacity: 0.7; }
+    .rule-list { list-style: none; }
+    .rule-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      line-height: 1.45;
+      margin-bottom: 0.25rem;
+    }
+    .rule-card-red li { color: #b91c1c; opacity: 0.8; }
+    .rule-card-red li i { color: #f87171; margin-top: 0.1rem; }
+    .rule-card-amber li { color: #92400e; opacity: 0.8; }
+    .rule-card-amber li i { color: #fbbf24; margin-top: 0.1rem; }
+    .rule-card-gray li { color: var(--forest); opacity: 0.6; }
+    .rule-card-gray li i { color: var(--sage); margin-top: 0.1rem; }
+
+    /* ── Activity Stories ─────────────────────── */
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1.25rem;
+      justify-content: flex-start;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      white-space: nowrap;
+      background: rgba(92,122,94,0.1);
+      color: var(--sage);
+      border: 1px solid rgba(92,122,94,0.2);
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .filter-tag.active, .filter-tag:active {
+      background: rgba(138,173,124,0.25);
+      border-color: var(--moss);
+    }
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .story-card {
+      border-radius: 1rem;
+      overflow: hidden;
+      position: relative;
+      background: var(--forest);
+      cursor: pointer;
+    }
+    .story-card img {
+      width: 100%;
+      height: 10rem;
+      object-fit: cover;
+    }
+    .story-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem 0.875rem;
+      background: linear-gradient(to top, rgba(13,27,20,0.85) 0%, transparent 100%);
+    }
+    .story-badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: white;
+    }
+    .story-card h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      color: var(--cream);
+      font-size: 0.95rem;
+      line-height: 1.3;
+    }
+    .story-card .meta {
+      color: rgba(247,243,235,0.6);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+    .story-placeholder {
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .story-placeholder.moss-bg { background: rgba(138,173,124,0.8); }
+    .story-placeholder.terra-bg { background: rgba(176,92,52,0.8); }
+    .story-placeholder.amber-bg { background: rgba(212,137,26,0.8); }
+    .story-placeholder.sage-bg { background: rgba(92,122,94,0.8); }
+    .story-placeholder i { font-size: 2rem; color: var(--cream); margin-bottom: 0.5rem; }
+    .story-placeholder h3 { font-family: 'Noto Serif SC', serif; font-weight: 700; color: var(--cream); font-size: 1rem; margin-bottom: 0.25rem; }
+    .story-placeholder p { color: rgba(247,243,235,0.8); font-size: 0.8rem; }
+    .story-btn-row {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--forest);
+      padding: 0.8rem 1.5rem;
+      border-radius: 999px;
+      border: 2px solid var(--forest);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-outline:active { background: var(--forest); color: var(--cream); }
+    .btn-outline-light { color: var(--cream); border-color: rgba(247,243,235,0.5); }
+    .btn-outline-light:active { background: rgba(247,243,235,0.15); }
+
+    /* ── Stats ───────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--forest);
+    }
+    .stat-label { font-size: 0.8rem; color: var(--forest); opacity: 0.5; margin-top: 0.125rem; }
+
+    /* ── Join ───────────────────────────────── */
+    .notice-box {
+      background: white;
+      border-radius: 1rem;
+      padding: 0.875rem;
+      border: 1px solid rgba(26,58,42,0.08);
+      margin-bottom: 0.75rem;
+    }
+    .notice-box h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--forest);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      justify-content: flex-start;
+    }
+    .notice-box h3 i { color: var(--moss); }
+    .notice-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem 0.5rem; }
+    .notice-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      color: var(--forest);
+      opacity: 0.65;
+      line-height: 1.4;
+    }
+    .notice-list li i { color: var(--moss); margin-top: 0.1rem; flex-shrink: 0; }
+    .qr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem;
+    }
+    .qr-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 0.75rem 0.625rem;
+      border: 1px solid rgba(26,58,42,0.08);
+      text-align: center;
+    }
+    .qr-title { font-size: 0.8rem; font-weight: 600; color: var(--forest); margin-bottom: 0.15rem; }
+    .qr-sub { font-size: 0.68rem; color: var(--forest); opacity: 0.5; margin-bottom: 0.5rem; }
+    .qr-img {
+      width: 5.5rem;
+      height: 5.5rem;
+      margin: 0 auto;
+      background: var(--sand);
+      border-radius: 0.625rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qr-img img { width: 100%; height: 100%; object-fit: cover; }
+    .qr-tip { font-size: 0.65rem; color: var(--forest); opacity: 0.4; margin-top: 0.4rem; }
+
+    /* ── Footer ──────────────────────────────── */
+    footer {
+      background: var(--night);
+      color: rgba(247,243,235,0.6);
+      padding: 2.5rem 1.25rem 2rem;
+    }
+    footer .ft-logo {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 1.375rem;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+    footer .ft-logo span { color: var(--moss); }
+    footer .ft-desc {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      max-width: 18rem;
+      margin-bottom: 1.5rem;
+    }
+    footer h4 {
+      color: var(--cream);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 0.625rem;
+    }
+    footer ul { list-style: none; }
+    footer ul li { margin-bottom: 0.375rem; }
+    footer ul li a, footer ul li span {
+      font-size: 0.8rem;
+      color: rgba(247,243,235,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer ul li a:hover { color: var(--moss); }
+    .ft-section { margin-bottom: 1.25rem; }
+    .ft-divider {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.25rem;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+    }
+    .ft-divider p { font-size: 0.7rem; text-align: center; }
+
+    /* ── Modal ───────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(13,27,20,0.75);
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet {
+      background: var(--cream);
+      border-radius: 1.25rem 1.25rem 0 0;
+      width: 100%;
+      max-width: 40rem;
+      max-height: 85svh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      animation: slideUp 0.35s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-handle {
+      width: 2.5rem;
+      height: 3px;
+      background: rgba(26,58,42,0.2);
+      border-radius: 999px;
+      margin: 0 auto 1.25rem;
+    }
+    .modal-badge {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+    .modal-badge-green { background: var(--moss); }
+    .modal-badge-amber { background: var(--amber); }
+    .modal-badge-terra { background: var(--terra); }
+    .modal-badge-sage { background: var(--sage); }
+    .modal-badge-dark { background: var(--night); }
+    .modal-title {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--forest);
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+    .modal-meta {
+      font-size: 0.8rem;
+      color: var(--forest);
+      opacity: 0.5;
+      margin-bottom: 1rem;
+    }
+    .modal-desc {
+      font-size: 0.9rem;
+      color: var(--forest);
+      opacity: 0.75;
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+    .modal-close {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--forest);
+      color: var(--cream);
+      border: none;
+      border-radius: 999px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ── Reveal animation ───────────────────── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- NAV BAR                                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <nav class="nav-bar" id="navBar">
+    <a href="#" class="nav-logo">秦<span>托</span>邦</a>
+    <button class="nav-toggle" id="navToggle" aria-label="打开菜单">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- Drawer Menu -->
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <a href="#" class="drawer-logo">秦<span>托</span>邦</a>
+      <button class="drawer-close" id="drawerClose" aria-label="关闭菜单">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="drawer-links">
+      <a href="#about"    class="drawer-link">认识我们</a>
+      <a href="#who"      class="drawer-link">适合谁</a>
+      <a href="#live"     class="drawer-link">生活指南</a>
+      <a href="#space"    class="drawer-link">生活空间</a>
+      <a href="#activity" class="drawer-link">共建活动</a>
+      <a href="#rules"    class="drawer-link">社区公约</a>
+      <a href="#stories"  class="drawer-link">活动日记</a>
+      <a href="#join"     class="drawer-link">加入我们</a>
+    </div>
+    <a href="#join" class="drawer-cta">
+      <i class="fa-solid fa-house-user"></i>
+      申请入住
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- HERO                                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <!-- Stars -->
+    <div id="stars-container" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">
+        <i class="fa-solid fa-location-dot" style="font-size:0.6rem;"></i>
+        陕西省西安市鄠邑区石井街道栗峪口村
+      </div>
+      <h1 class="hero-title">
+        秦岭脚下<br/>
+        <span class="green">另一种生活</span>的可能
+      </h1>
+      <p class="hero-sub">
+        在山雾与星月下，一边柴米油盐，一边琴棋书画<br/>
+        结交一二好友，上山问道三星洞
+      </p>
+      <div class="hero-btns">
+        <a href="#join" class="btn-pri">
+          <i class="fa-solid fa-house-user"></i>
+          申请入住
+        </a>
+        <a href="#about" class="btn-sec">
+          <i class="fa-solid fa-compass"></i>
+          了解更多
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>向下探索</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ABOUT                                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">认识秦托邦</div>
+      <h2 class="sec-title">我们是什么？</h2>
+
+      <div class="about-pics">
+        <img src="images/img2.jpg" alt="观景露台" loading="lazy" />
+        <img src="images/img3.jpg" alt="秦岭星空" loading="lazy" />
+      </div>
+
+      <div class="about-text">
+        <p>我们是秦岭脚下栗峪口剪鸭村里的一个<strong>青年社区</strong>。</p>
+        <p>进有秦岭山，退有长安城。在山雾与星月下，我们可以一边柴米油盐，一边琴棋书画。结交一二好友，上山问道三星洞，分辨鸟兽的踪迹；下山吃油泼面、喝油茶，炫社区手搓的肉夹馍。</p>
+        <p>在当下日渐原子化的社会里，我们回归人本身，探索一种<strong>新型的群居生活方式</strong>，在具体的劳动和生活中，疗愈自我，寻找新的可能。</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag-small"><i class="fa-solid fa-mountain-sun" style="font-size:0.6rem;"></i>秦岭山景</span>
+        <span class="tag-small"><i class="fa-solid fa-users" style="font-size:0.6rem;"></i>青年共居</span>
+        <span class="tag-small"><i class="fa-solid fa-laptop" style="font-size:0.6rem;"></i>远程办公</span>
+        <span class="tag-small"><i class="fa-solid fa-handshake" style="font-size:0.6rem;"></i>技能交换</span>
+        <span class="tag-small"><i class="fa-solid fa-rocket" style="font-size:0.6rem;"></i>超级个体—OPC</span>
+      </div>
+
+      <div class="brand-card">
+        <p class="big">在秦岭，找到你的归属</p>
+        <p class="small">不只是住下来，而是真正地活在这里<br/>工作、创作、连接、成长——和一群同类人一起</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- WHO                                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="who" class="section section-sand">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">社区成员</div>
+      <h2 class="sec-title">这里适合怎样的人？</h2>
+      <p class="sec-sub" style="margin-left:auto;margin-right:auto;">允许每个人做自己，以当下适合你的节奏生活在这里</p>
+
+      <div class="who-grid">
+        <div class="who-card">
+          <div class="who-icon who-icon-moss"><i class="fa-solid fa-laptop"></i></div>
+          <h3>数字游民</h3>
+          <p>远程工作者、自由职业者，在乡村保持生产力</p>
+        </div>
+        <div class="who-card">
+          <div class="who-icon who-icon-terra"><i class="fa-solid fa-palette"></i></div>
+          <h3>创作者</h3>
+          <p>设计师、艺术家、程序员，在山野间激发灵感</p>
+        </div>
+        <div class="who-card">
+          <div class="who-icon who-icon-amber"><i class="fa-solid fa-compass"></i></div>
+          <h3>探索者</h3>
+          <p>寻找生活方向，暂时离开城市探索新可能</p>
+        </div>
+        <div class="who-card">
+          <div class="who-icon who-icon-sage"><i class="fa-solid fa-heart"></i></div>
+          <h3>共建者</h3>
+          <p>喜欢真实地生活，愿意参与社区共创</p>
+        </div>
+      </div>
+
+      <div class="who-note">
+        <div class="who-note-title">
+          <i class="fa-solid fa-circle-info"></i>
+          请注意：秦托邦不适合所有人
+        </div>
+        <p>无法接受差异、边界感模糊的人，可能不太适合这里。秦托邦是一个由「千奇百怪的人类」组成的空间——我们可以不理解，但请尊重别人的生活方式。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- LIFE                                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="live" class="section">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">生活指南</div>
+      <h2 class="sec-title">在秦托邦的衣食住行</h2>
+      <p class="sec-sub">吃饭、洗衣、收快递，都是你融入社区的开始</p>
+
+      <div class="life-card">
+        <img src="images/eating_communal.png" alt="社区一起吃饭" loading="lazy" />
+        <div class="life-card-body">
+          <h3><i class="fa-solid fa-utensils"></i> 吃饭</h3>
+          <p>共享厨房自食其力，或加入社区食堂。周边有土锤咖啡、有杏山集、招财涮烤局、安东餐车等地道陕西风味。</p>
+          <div class="life-tip">
+            <i class="fa-solid fa-lightbulb"></i>
+            在这里，很多关系是从"要不要一起吃饭"开始的
+          </div>
+        </div>
+      </div>
+
+      <div class="life-card">
+        <img src="images/drone_flying_takeaway.png" alt="无人机配送" loading="lazy" style="object-position:center 25%;" />
+        <div class="life-card-body">
+          <h3><i class="fa-solid fa-paper-plane"></i> 无人机快递&amp;飞行外卖</h3>
+          <p>秦岭把山风、星空和慢日子都打包送给你了，城里的油泼面、奶茶和快递也别落下——「嗡嗡」几声，无人机就替你翻山越岭把美味拎回来。</p>
+          <div class="life-tip">
+            <i class="fa-solid fa-rocket"></i>
+            一边是山川，一边是外卖——两边都要宠
+          </div>
+        </div>
+      </div>
+
+      <div class="life-card">
+        <img src="images/laundry_selfservice.png" alt="自助洗衣" loading="lazy" />
+        <div class="life-card-body">
+          <h3><i class="fa-solid fa-shirt"></i> 洗衣</h3>
+          <p>脏衣服别攒成「小山丘」——大门左转钻进直播间，扫码让洗衣机替你打工；洗完记得及时认领，晾晒位也匀一点给邻居，大家衣服都香香的。</p>
+          <div class="life-tip">
+            <i class="fa-solid fa-droplet"></i>
+            一边是洗衣液就位，一边是阳光和风——洗完晒晒，才算真正透气
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SPACE (accordion)                         -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="space" class="section section-sand">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">生活空间</div>
+      <h2 class="sec-title">住下来，才能真正抵达</h2>
+      <p class="sec-sub">不是酒店，不是公寓，是一个可以安静工作、认真生活、顺便交到朋友的地方</p>
+
+      <!-- Accordion 1: 私密房间 -->
+      <div class="accordion-item" data-space="room">
+        <button class="accordion-head" type="button">
+          <span><span style="font-size:1.125rem;">🛏</span> 私密房间</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <p>舒适的单人间和双人间，配备书桌、衣柜、空调、热水。住进来，就是住进了自己的山间小窝。</p>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 书桌 · 衣柜 · 空调</div>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 电热水壶 · 床品全套</div>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 公共卫浴（定期保洁）</div>
+            <div class="space-img-grid">
+              <img src="images/room_platform.png" alt="平台床与大窗" class="space-img-wide" loading="lazy" />
+              <img src="images/room_bunk.png" alt="胶囊床位" loading="lazy" />
+              <img src="images/room_minimal.png" alt="单人间" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion 2: 共享生活 -->
+      <div class="accordion-item" data-space="life">
+        <button class="accordion-head" type="button">
+          <span><span style="font-size:1.125rem;">🍳</span> 共享生活</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <p>厨房不只是做饭的地方，也是聊天、认识邻居、建立联结的入口。器具齐全，随到随用，用完顺手清洁。</p>
+            <div class="space-facilities">
+              <div class="facility"><span class="emo">🧊</span><span class="name">冰箱</span></div>
+              <div class="facility"><span class="emo">☕</span><span class="name">咖啡机</span></div>
+              <div class="facility"><span class="emo">🍞</span><span class="name">蒸烤箱</span></div>
+              <div class="facility"><span class="emo">🫧</span><span class="name">洗碗机</span></div>
+              <div class="facility"><span class="emo">🎬</span><span class="name">投影仪</span></div>
+              <div class="facility"><span class="emo">📞</span><span class="name">静音舱</span></div>
+            </div>
+            <p style="font-size:0.75rem;font-style:italic;opacity:0.5;margin:0;">用完清洁、物品归位——这里靠自觉，也靠彼此信任</p>
+            <div class="space-img-grid">
+              <img src="images/space_kitchen.jpg" alt="共享厨房" loading="lazy" />
+              <img src="images/space_kitchen2.jpg" alt="共享吧台与休闲区" loading="lazy" />
+              <img src="images/space_life_pod.png" alt="静音电话舱" loading="lazy" />
+              <img src="images/space_life_coffee.png" alt="咖啡角与墙面布置" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion 3: 办公空间 -->
+      <div class="accordion-item" data-space="work">
+        <button class="accordion-head" type="button">
+          <span><span style="font-size:1.125rem;">💻</span> 办公空间</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div style="margin-bottom:0.875rem;">
+              <div style="display:flex;align-items:center;gap:0.375rem;margin-bottom:0.25rem;">
+                <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:#38bdf8;flex-shrink:0;"></span>
+                <span style="font-size:0.85rem;font-weight:600;color:var(--forest);">三楼露台 · 秦岭「外挂屏」</span>
+              </div>
+              <p style="font-size:0.75rem;font-style:italic;opacity:0.55;margin-bottom:0.375rem;">"电脑屏保要会员，这儿抬头就是年费全免的秦岭高清实况。"</p>
+              <p style="margin-bottom:0;">露台高脚桌一排，笔记本一摊——对面是层层叠叠的绿，底下是白墙青瓦的村子。</p>
+            </div>
+            <div style="margin-bottom:0.875rem;">
+              <div style="display:flex;align-items:center;gap:0.375rem;margin-bottom:0.25rem;">
+                <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--moss);flex-shrink:0;"></span>
+                <span style="font-size:0.85rem;font-weight:600;color:var(--forest);">共享办公区 · WarmDesk</span>
+              </div>
+              <p style="font-size:0.75rem;font-style:italic;opacity:0.55;margin-bottom:0.375rem;">"随到随坐，轻声慢语，桌面清爽。"</p>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 24小时开放，可轻声交流</div>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 离开带走物品，桌面归位</div>
+            </div>
+            <div style="margin-bottom:0.875rem;">
+              <div style="display:flex;align-items:center;gap:0.375rem;margin-bottom:0.25rem;">
+                <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--amber);flex-shrink:0;"></span>
+                <span style="font-size:0.85rem;font-weight:600;color:var(--forest);">静音办公区 · 24小时</span>
+              </div>
+              <p style="font-size:0.75rem;font-style:italic;opacity:0.55;margin-bottom:0.375rem;">"这里适合深度专注，也适合被安静包裹。"</p>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 需领取工位卡</div>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 禁止聊天、电话、音乐</div>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 最后离开者关灯 + 空调</div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.375rem;margin-bottom:0.25rem;">
+                <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--terra);flex-shrink:0;"></span>
+                <span style="font-size:0.85rem;font-weight:600;color:var(--forest);">会议室</span>
+              </div>
+              <p style="font-size:0.75rem;font-style:italic;opacity:0.55;margin-bottom:0.375rem;">"清晰表达，从预约开始。"</p>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 群里预约，注明时间</div>
+              <div class="space-check"><i class="fa-solid fa-check"></i> 用后整理，关电源空调</div>
+            </div>
+            <div class="space-img-grid" style="margin-top:0.875rem;">
+              <img src="images/space_coworking.jpg" alt="共享办公区" class="space-img-wide" loading="lazy" />
+              <img src="images/space_meeting.jpg" alt="会议室" loading="lazy" />
+              <img src="images/space_office_rooftop.png" alt="三楼露台办公位" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion 4: 三楼观景 -->
+      <div class="accordion-item" data-space="scenery">
+        <button class="accordion-head" type="button">
+          <span><span style="font-size:1.125rem;">🌄</span> 三楼观景共享位</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <p style="font-style:italic;opacity:0.55;border-left:2px solid rgba(138,173,124,0.4);padding-left:0.625rem;margin-bottom:0.75rem;">"风景属于大家，桌面也要留点空。"</p>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 随到随用，不长时间占位</div>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 桌面保持整洁</div>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 离开带走个人物品</div>
+            <img src="images/space_gym.jpg" alt="三楼观景" style="width:100%;border-radius:0.75rem;margin-top:0.875rem;aspect-ratio:16/9;object-fit:cover;" loading="lazy" />
+            <p style="font-size:0.75rem;opacity:0.5;margin-top:0.5rem;margin-bottom:0;">推窗即见秦岭，适合工作、阅读、发呆</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion 5: 健身房 -->
+      <div class="accordion-item" data-space="gym">
+        <button class="accordion-head" type="button">
+          <span><span style="font-size:1.125rem;">🏋️</span> 健身房</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <p>配备专业器械的健身空间，帮助你在山野生活里保持活力与健康。</p>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 有氧器械 · 力量训练区</div>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 自由重量区</div>
+            <div class="space-check"><i class="fa-solid fa-check"></i> 24小时开放</div>
+            <p style="font-size:0.75rem;font-style:italic;opacity:0.45;margin-top:0.5rem;margin-bottom:0;">用完请清洁器械、归位器材</p>
+            <img src="images/space_3f.jpg" alt="健身环境" style="width:100%;border-radius:0.75rem;margin-top:0.875rem;aspect-ratio:16/9;object-fit:cover;" loading="lazy" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom note -->
+      <div class="space-note" style="margin-top:1.25rem;">
+        <div class="icon">🏡</div>
+        <div class="txt">
+          <p>这是大家的共享家园</p>
+          <span>有问题或建议，随时群里@小管家</span>
+        </div>
+      </div>
+      <div class="space-note-2">
+        <div>
+          <p>生活配套</p>
+          <span>Wi-Fi · 空调 · 热水 · 共享厨房</span>
+        </div>
+        <div>
+          <p>义工招募</p>
+          <span style="color:var(--moss);">长期有效</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ACTIVITY                                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="activity" class="section section-dark">
+    <div class="container">
+      <div class="sec-label sec-label-dark" style="display:flex;justify-content:center;">共建活动</div>
+      <h2 class="sec-title" style="color:var(--cream);">参与，是最好的抵达</h2>
+      <p class="sec-sub sec-sub-light">好的社区不是"住"出来的，而是"长"出来的</p>
+
+      <!-- 发起+共建 并排 -->
+      <div class="act-hero">
+        <div class="act-mini">
+          <div class="act-mini-icon act-mini-icon-moss"><i class="fa-solid fa-feather-pointed"></i></div>
+          <h3>发起</h3>
+          <p class="sub">把你的热爱变成日常</p>
+          <div class="act-mini-tags">
+            <div class="act-mini-tag"><i class="fa-solid fa-plus"></i> 编程 / 设计 / 摄影</div>
+            <div class="act-mini-tag"><i class="fa-solid fa-plus"></i> 瑜伽 / 读书 / 手作</div>
+          </div>
+        </div>
+        <div class="act-mini">
+          <div class="act-mini-icon act-mini-icon-amber"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <h3>共建</h3>
+          <p class="sub">用在场书写社区</p>
+          <div class="act-mini-acts">
+            <div class="act-mini-act"><i class="fa-solid fa-utensils"></i><span>一起做饭</span></div>
+            <div class="act-mini-act"><i class="fa-solid fa-camera-retro"></i><span>记录此刻</span></div>
+            <div class="act-mini-act"><i class="fa-solid fa-users"></i><span>认识邻居</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15件事 — 紧凑版 -->
+      <div class="life-bits-compact">
+        <div class="life-bits-head">
+          <i class="fa-solid fa-seedling"></i>
+          <div>
+            <h3>秦托邦生活 15 件</h3>
+            <p>这里的人，都在慢慢做着这些小事</p>
+          </div>
+        </div>
+        <div class="life-bits-grid">
+          <div class="life-bit" data-tip="一次不经意的出发，不设目的地"><span class="emo">🌿</span><span class="txt">无目的散步</span></div>
+          <div class="life-bit" data-tip="不只是玩手机，是和彼此在一起"><span class="emo">🍜</span><span class="txt">围坐吃饭</span></div>
+          <div class="life-bit" data-tip="在星空下，什么都可以聊"><span class="emo">🌌</span><span class="txt">抬头看星星</span></div>
+          <div class="life-bit" data-tip="用笔画出心里想说的话"><span class="emo">✒️</span><span class="txt">写字抄经</span></div>
+          <div class="life-bit" data-tip="山里的味道，值得被记住"><span class="emo">🫛</span><span class="txt">认识野菜</span></div>
+          <div class="life-bit" data-tip="用一场观影，开启一次对话"><span class="emo">🎬</span><span class="txt">电影之夜</span></div>
+          <div class="life-bit" data-tip="和有意思的人，聊没用的天"><span class="emo">☕</span><span class="txt">喝茶聊天</span></div>
+          <div class="life-bit" data-tip="用技能换一段缘分"><span class="emo">🤝</span><span class="txt">技能互换</span></div>
+          <div class="life-bit" data-tip="早起舒展，从容地开始一天"><span class="emo">🧘</span><span class="txt">清晨八段锦</span></div>
+          <div class="life-bit" data-tip="分享今天最真实的感受"><span class="emo">📝</span><span class="txt">碎碎念记录</span></div>
+          <div class="life-bit" data-tip="用脚步丈量秦岭"><span class="emo">🥾</span><span class="txt">上山徒步</span></div>
+          <div class="life-bit" data-tip="听蝉鸣、萤火虫、蛙声，认识黑夜"><span class="emo">🦗</span><span class="txt">夜听虫鸣</span></div>
+          <div class="life-bit" data-tip="和猫咪建立一段跨物种友谊"><span class="emo">🐱</span><span class="txt">认识邦邦</span></div>
+          <div class="life-bit" data-tip="没有剧本，只有当下"><span class="emo">🎭</span><span class="txt">剧本杀推理</span></div>
+          <div class="life-bit" data-tip="和村民聊天，听这片土地的故事"><span class="emo">🏡</span><span class="txt">和村民聊天</span></div>
+        </div>
+        <div class="life-tip-box">
+          <p id="mobile-tip-text">
+            <i class="fa-solid fa-hand-pointer" style="color:rgba(138,173,124,0.5);margin-right:0.2rem;"></i>
+            点击任意一项，看看这里的人在做什么
+          </p>
+        </div>
+      </div>
+
+      <div class="activity-quote">
+        <blockquote>"愿你不只是过客，而是下一个故事的起点。"</blockquote>
+        <p>我们在秦岭脚下，等你来分享、来连接、来创造</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RULES                                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="rules" class="section">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">社区公约</div>
+      <h2 class="sec-title">在这里的基本原则</h2>
+      <p class="sec-sub">在不影响别人的前提下，你可以拥有自己想要的生活</p>
+
+      <div class="rules-grid">
+        <div class="rule-card rule-card-red">
+          <div class="rule-icon rule-icon-red"><i class="fa-solid fa-ban"></i></div>
+          <h3>零容忍</h3>
+          <ul class="rule-list">
+            <li><i class="fa-solid fa-xmark"></i> 骚扰与性骚扰</li>
+            <li><i class="fa-solid fa-xmark"></i> 虐待动植物</li>
+            <li><i class="fa-solid fa-xmark"></i> 任何违法行为</li>
+          </ul>
+        </div>
+
+        <div class="rule-card rule-card-amber">
+          <div class="rule-icon rule-icon-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <h3>警告</h3>
+          <ul class="rule-list">
+            <li><i class="fa-solid fa-exclamation"></i> 辱骂与攻击</li>
+            <li><i class="fa-solid fa-exclamation"></i> 歧视性言论</li>
+            <li><i class="fa-solid fa-exclamation"></i> 传播邪教</li>
+          </ul>
+        </div>
+
+        <div class="rule-card rule-card-gray">
+          <div class="rule-icon rule-icon-gray"><i class="fa-solid fa-hand"></i></div>
+          <h3>不鼓励</h3>
+          <ul class="rule-list">
+            <li><i class="fa-solid fa-minus"></i> 把社区当酒店</li>
+            <li><i class="fa-solid fa-minus"></i> 长期占公共资源</li>
+            <li><i class="fa-solid fa-minus"></i> 消失式共居</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- STORIES                                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="stories" class="section section-sand">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">活动日记本</div>
+      <h2 class="sec-title">这里的日常，不只是风景</h2>
+      <p class="sec-sub">瑜伽、观鸟、飞盘、书法、剧本杀、电影夜、徒步……<br/>每一场活动，都是社区心跳的证据</p>
+
+      <!-- Filters -->
+      <div class="filter-row">
+        <span class="filter-tag active" data-filter="all"><i class="fa-solid fa-globe" style="font-size:0.6rem;"></i> 全部</span>
+        <span class="filter-tag" data-filter="healing"><i class="fa-solid fa-spa" style="font-size:0.6rem;"></i> 疗愈冥想</span>
+        <span class="filter-tag" data-filter="outdoor"><i class="fa-solid fa-mountain" style="font-size:0.6rem;"></i> 户外运动</span>
+        <span class="filter-tag" data-filter="knowledge"><i class="fa-solid fa-book-open" style="font-size:0.6rem;"></i> 知识分享</span>
+        <span class="filter-tag" data-filter="nature"><i class="fa-solid fa-leaf" style="font-size:0.6rem;"></i> 自然探索</span>
+        <span class="filter-tag" data-filter="film"><i class="fa-solid fa-film" style="font-size:0.6rem;"></i> 书音影</span>
+      </div>
+
+      <!-- Stories -->
+      <div class="story-grid" id="storyGrid">
+
+        <div class="story-card" data-category="traditional" data-title="Family Day · 赶集、包饺子、迎接春天" data-host="萌哥 & 醒醒" data-count="13" data-badge="传统节日" data-badge-class="modal-badge-green" data-desc="赶集采购、下午茶话会、包饺子、炸春卷——老规矩，一家人过一个完整的春天。" onclick="openModal(this)">
+          <img src="images/activity_familyday.png" alt="Family Day" loading="lazy" />
+          <div class="story-overlay">
+            <span class="story-badge" style="background:rgba(138,173,124,0.9);">传统节日</span>
+            <h3>Family Day · 赶集、包饺子、迎接春天</h3>
+            <p class="meta"><i class="fa-solid fa-user" style="font-size:0.6rem;margin-right:0.125rem;"></i>萌哥 & 醒醒 · 13人参加</p>
+          </div>
+        </div>
+
+        <div class="story-card" data-category="knowledge" data-title="春之书 · 苏轼《黄州寒食帖》书法体验" data-host="于是" data-count="5" data-badge="知识分享" data-badge-class="modal-badge-amber" data-desc="以天下第三行书解析字法和章法，理解后尝试小吉语创作，获赠「马上有福」印蜕书签。" onclick="openModal(this)">
+          <img src="images/activity_calligraphy.jpg" alt="书法体验" loading="lazy" />
+          <div class="story-overlay">
+            <span class="story-badge" style="background:rgba(212,137,26,0.9);">知识分享</span>
+            <h3>春之书 · 书法体验</h3>
+            <p class="meta">于是 · 限额5人</p>
+          </div>
+        </div>
+
+        <div class="story-card" data-category="nature" data-title="妇女节观鸟活动" data-host="鹡鸰" data-count="5" data-badge="自然探索" data-badge-class="modal-badge-sage" data-desc="春天到了，鸟儿的繁殖季。让我们一起去看看村里的小鸟们都在忙些什么。" onclick="openModal(this)">
+          <img src="images/img3.jpg" alt="观鸟" loading="lazy" />
+          <div class="story-overlay">
+            <span class="story-badge" style="background:rgba(92,122,94,0.9);">自然探索</span>
+            <h3>妇女节观鸟活动</h3>
+            <p class="meta">鹡鸰发起 · 限额15人</p>
+          </div>
+        </div>
+
+        <div class="story-card" data-category="knowledge" data-title="心肺复苏急救知识小课堂" data-host="小寒" data-count="12" data-badge="知识分享" data-badge-class="modal-badge-terra" data-desc="胸外按压、人工呼吸、AED使用——关键时刻能救命的技能，脆皮年轻人必修课。" onclick="openModal(this)">
+          <img src="images/activity_cpr.jpg" alt="急救培训" loading="lazy" />
+          <div class="story-overlay">
+            <span class="story-badge" style="background:rgba(176,92,52,0.9);">知识分享</span>
+            <h3>秦托邦小课堂 · 心肺复苏急救</h3>
+            <p class="meta">小寒 · 12人参加</p>
+          </div>
+        </div>
+
+        <!-- 飞盘 (placeholder) -->
+        <div class="story-placeholder moss-bg" data-category="outdoor" onclick="openPlaceholder(this)">
+          <i class="fa-solid fa-disc"></i>
+          <h3>飞盘运动</h3>
+          <p>土豆发起 · 大草坪</p>
+        </div>
+
+        <!-- 剧本杀 (placeholder) -->
+        <div class="story-placeholder terra-bg" data-category="game" onclick="openPlaceholder(this)">
+          <i class="fa-solid fa-masks-theater"></i>
+          <h3>剧本杀 · 阿姐鼓</h3>
+          <p>雪球发起 · 6人</p>
+        </div>
+
+        <div class="story-card" data-category="nature" data-title="春天挖野菜" data-host="鹡鸰" data-count="3" data-badge="自然探索" data-badge-class="modal-badge-sage" data-desc="荠荠菜、刺儿菜、薤白、艾草——拿上祖传红塑料袋，一起出发挖野菜！" onclick="openModal(this)">
+          <img src="images/activity_wildherb.jpg" alt="挖野菜" loading="lazy" />
+          <div class="story-overlay">
+            <span class="story-badge" style="background:rgba(92,122,94,0.9);">自然探索</span>
+            <h3>春天挖野菜 · 乡土课堂</h3>
+            <p class="meta">鹡鸰老师带领</p>
+          </div>
+        </div>
+
+        <!-- 瑜伽疗愈 (placeholder) -->
+        <div class="story-placeholder sage-bg" data-category="healing" onclick="openPlaceholder(this)">
+          <i class="fa-solid fa-spa"></i>
+          <h3>第八脉轮 · 能量圈修复</h3>
+          <p>爻光漆愈 · 公益免费</p>
+        </div>
+
+        <div class="story-card" data-category="film" data-title="电影夜 · 《长安三万里》" data-host="醒醒" data-count="4" data-badge="书音影" data-badge-class="modal-badge-dark" data-desc="安史之乱后，大雪如轮，朝廷派来程公公持节监军……" onclick="openModal(this)">
+          <img src="images/activity_movie.jpg" alt="电影夜" loading="lazy" />
+          <div class="story-overlay">
+            <span class="story-badge" style="background:rgba(13,27,20,0.75);">书音影</span>
+            <h3>电影夜 · 长安三万里</h3>
+            <p class="meta">醒醒 · 游戏室</p>
+          </div>
+        </div>
+
+        <!-- 元宵节 (placeholder) -->
+        <div class="story-placeholder amber-bg" data-category="traditional" onclick="openPlaceholder(this)">
+          <span style="font-size:1.5rem;">🏮</span>
+          <h3>元宵节 · 煮汤圆</h3>
+          <p>小客服发起 · 12人接龙</p>
+        </div>
+
+      </div>
+
+      <div class="story-btn-row">
+        <a href="#join" class="btn-outline">
+          <i class="fa-solid fa-pen-fancy"></i>
+          成为故事的下一个主角
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- STATS                                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+    <div class="container">
+      <div class="stats-grid">
+        <div>
+          <p class="stat-num">500+</p>
+          <p class="stat-label">已举办活动</p>
+        </div>
+        <div>
+          <p class="stat-num">N+</p>
+          <p class="stat-label">活动类型</p>
+        </div>
+        <div>
+          <p class="stat-num">300+</p>
+          <p class="stat-label">核心发起人</p>
+        </div>
+        <div>
+          <p class="stat-num">每周</p>
+          <p class="stat-label">新的故事</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- JOIN                                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <section id="join" class="section">
+    <div class="container">
+      <div class="sec-label" style="display:flex;justify-content:center;">申请入住</div>
+      <h2 class="sec-title">加入秦托邦</h2>
+      <p class="sec-sub">扫码填写申请表、加入社群，开启你的山居生活第一步<br/><span style="font-size:0.8rem;opacity:0.45;">个人信息请在官方渠道填写，我们会严格保密</span></p>
+
+      <div class="notice-box">
+        <h3><i class="fa-solid fa-circle-info"></i> 申请须知</h3>
+        <ul class="notice-list">
+          <li><i class="fa-solid fa-check"></i> 每位游民都需在入住前填写申请表</li>
+          <li><i class="fa-solid fa-check"></i> 住宿超 7 天以上需加入社区大群</li>
+          <li><i class="fa-solid fa-check"></i> 参与永远是自愿的，没有强制要求</li>
+          <li><i class="fa-solid fa-check"></i> 想安静待着完全可以，不必强迫自己社交</li>
+        </ul>
+      </div>
+
+      <div class="qr-grid">
+        <div class="qr-card">
+          <p class="qr-title">入住申请表</p>
+          <p class="qr-sub">扫码填写</p>
+          <div class="qr-img">
+            <img src="images/img4.jpg" alt="入住申请二维码" />
+          </div>
+          <p class="qr-tip">长按识别 / 截图保存</p>
+        </div>
+
+        <div class="qr-card">
+          <p class="qr-title">扫码咨询</p>
+          <p class="qr-sub">入住、交通等问题</p>
+          <div class="qr-img">
+            <img src="images/consult_qrcode.png" alt="扫码咨询二维码" loading="lazy" />
+          </div>
+          <p class="qr-tip">长按识别 / 截图保存</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- FOOTER                                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="ft-logo">秦<span>托</span>邦</div>
+      <p class="ft-desc">秦岭脚下栗峪口剪鸭村的青年社区。<br/>在具体的劳动和生活中，疗愈自我，寻找新的可能。</p>
+
+      <div class="ft-section">
+        <h4>快速链接</h4>
+        <ul>
+          <li><a href="#about">认识我们</a></li>
+          <li><a href="#who">适合谁</a></li>
+          <li><a href="#activity">共建活动</a></li>
+          <li><a href="#join">申请入住</a></li>
+        </ul>
+      </div>
+
+      <div class="ft-section">
+        <h4>联系我们</h4>
+        <ul>
+          <li><span><i class="fa-solid fa-location-dot" style="color:var(--moss);font-size:0.7rem;margin-right:0.25rem;"></i> 陕西省西安市鄠邑区石井街道栗峪口村</span></li>
+          <li><span><i class="fa-solid fa-truck-fast" style="color:var(--moss);font-size:0.7rem;margin-right:0.25rem;"></i> 无人机配送：鄠邑区城市运动公园人民商业中心 6F</span></li>
+        </ul>
+      </div>
+
+      <div class="ft-divider">
+        <p>© 2026 秦托邦 QinTopia. 秦托邦青年社区.</p>
+        <p>共建 · 共创 · 共居</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- MODAL                                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <span class="modal-badge" id="modalBadge">传统节日</span>
+      <h2 class="modal-title" id="modalTitle">Family Day</h2>
+      <p class="modal-meta" id="modalMeta"><i class="fa-solid fa-user" style="font-size:0.7rem;margin-right:0.125rem;"></i>萌哥 & 醒醒 · 13人参加</p>
+      <p class="modal-desc" id="modalDesc">赶集采购、下午茶话会、包饺子、炸春卷——老规矩，一家人过一个完整的春天。</p>
+      <button class="modal-close" type="button" onclick="closeModal()">知道了</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- JAVASCRIPT                                  -->
+  <!-- ══════════════════════════════════════════ -->
+  <script>
+    /* ── Nav & Drawer ─────────────────────────── */
+    const navToggle  = document.getElementById('navToggle');
+    const drawer     = document.getElementById('drawer');
+    const drawerClose = document.getElementById('drawerClose');
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+
+    navToggle.addEventListener('click', () => drawer.classList.add('open'));
+    drawerClose.addEventListener('click', () => drawer.classList.remove('open'));
+    drawerLinks.forEach(link => link.addEventListener('click', () => drawer.classList.remove('open')));
+
+    /* ── Navbar scroll ───────────────────────── */
+    const navBar = document.getElementById('navBar');
+    window.addEventListener('scroll', () => {
+      navBar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Stars ───────────────────────────────── */
+    const starsContainer = document.getElementById('stars-container');
+    for (let i = 0; i < 40; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top  = Math.random() * 70 + '%';
+      star.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+      star.style.animationDelay    = Math.random() * 2 + 's';
+      starsContainer.appendChild(star);
+    }
+
+    /* ── Scroll reveal ───────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => revealObs.observe(el));
+
+    /* ── Accordion ───────────────────────────── */
+    document.querySelectorAll('.accordion-head').forEach(head => {
+      head.addEventListener('click', () => {
+        const item = head.parentElement;
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        // Toggle current
+        if (!isOpen) item.classList.add('open');
+        // Scroll into view
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+
+    /* ── Activity filter ─────────────────────── */
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        filterTags.forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        const filter = tag.dataset.filter;
+        document.querySelectorAll('#storyGrid > [data-category]').forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+        });
+      });
+    });
+
+    /* ── Life bits tip ───────────────────────── */
+    document.querySelectorAll('.life-bit').forEach(bit => {
+      bit.style.cursor = 'pointer';
+      bit.addEventListener('click', () => {
+        const tip = bit.dataset.tip || '';
+        document.getElementById('mobile-tip-text').innerHTML =
+          '<i class="fa-solid fa-comment-dots" style="color:rgba(138,173,124,0.7);margin-right:0.25rem;"></i> ' + tip;
+        document.querySelectorAll('.life-bit').forEach(b => b.style.outline = '');
+        bit.style.outline = '2px solid rgba(138,173,124,0.5)';
+      });
+    });
+
+    /* ── Modal ──────────────────────────────── */
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalBadge   = document.getElementById('modalBadge');
+    const modalTitle   = document.getElementById('modalTitle');
+    const modalMeta    = document.getElementById('modalMeta');
+    const modalDesc    = document.getElementById('modalDesc');
+
+    function openModal(el) {
+      const b = el.dataset.badgeClass || 'modal-badge-green';
+      modalBadge.className = 'modal-badge ' + b;
+      modalBadge.textContent = el.dataset.badge || '';
+      modalTitle.textContent = el.dataset.title || '';
+      modalMeta.innerHTML = '<i class="fa-solid fa-user" style="font-size:0.7rem;margin-right:0.125rem;"></i>' +
+        (el.dataset.host || '') + (el.dataset.count ? ' · ' + el.dataset.count + '人参加' : '');
+      modalDesc.textContent = el.dataset.desc || '';
+      modalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openPlaceholder(el) {
+      const title = el.querySelector('h3').textContent;
+      const host  = el.querySelector('p').textContent;
+      modalBadge.className = 'modal-badge modal-badge-green';
+      modalBadge.textContent = '';
+      modalTitle.textContent = title;
+      modalMeta.innerHTML = '<i class="fa-solid fa-user" style="font-size:0.7rem;margin-right:0.125rem;"></i>' + host;
+      modalDesc.textContent = '';
+      modalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    modalOverlay.addEventListener('click', e => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    /* ── Smooth scroll offset ───────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          const top = el.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
