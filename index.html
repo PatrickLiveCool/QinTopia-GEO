@@ -279,6 +279,13 @@
     /* ── Parallax ──────────────────────────────── */
     .parallax-slow { will-change: transform; }
 
+    /* ── Tablet (iPad) overrides ───────────────── */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .hero-bg {
+        background-attachment: scroll;
+      }
+    }
+
     /* ── Mobile overrides ─────────────────────── */
     @media (max-width: 767px) {
       .hero-bg {

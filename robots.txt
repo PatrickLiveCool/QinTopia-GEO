@@ -1,0 +1,5 @@
+# 秦托邦 QinTopia 搜索引擎爬虫指令
+User-agent: *
+Allow: /
+
+Sitemap: https://qintopia.livecool.com.cn/sitemap.xml
