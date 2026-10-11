@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>秦岭AI白客松｜不聊大词，带上电脑，一起手搓</title>
+  <meta name="description" content="秦岭AI白客松将于 2026 年 4 月 18 日至 19 日在秦托邦举行。不是来听概念，而是带着真实问题来拆，带着电脑来现场开搓。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231c3a1e'/%3E%3Cpolygon points='2,28 11,14 17,20 24,8 30,28' fill='none' stroke='%23f4722a' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <style>
+    /* ─── 变量 ─── */
+    :root {
+      --ink: #111111;
+      --paper: #f2ede6;
+      --paper-dark: #e5ddd3;
+      --rock: #7c6a5a;
+      --forest: #1c3a1e;
+      --forest-mid: #2e5a30;
+      --orange: #e85a18;
+      --orange-light: #f4722a;
+      --white: #ffffff;
+      --black: #000000;
+      --font-display: 'Bebas Neue', 'Arial Black', sans-serif;
+      --font-body: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-lift: 4px 4px 0 var(--ink);
+      --shadow-lift-sm: 3px 3px 0 var(--ink);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* ─── 重置 ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body);
+      background-color: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: calc(72px + var(--safe-bottom));
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+    ::-webkit-scrollbar { width: 0; height: 0; }
+    ::selection { background: var(--orange); color: var(--white); }
+
+    /* ─── 顶部告警条 ─── */
+    .alert-strip {
+      background: var(--ink);
+      color: var(--paper);
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .alert-strip__icon {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 900;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Header ─── */
+    .m-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 56px;
+      background: rgba(10, 20, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 40px;
+      z-index: 99;
+    }
+    .m-hdr__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--paper);
+    }
+    .m-hdr__logo {
+      width: 28px;
+      height: 28px;
+      color: var(--orange);
+    }
+    .m-hdr__name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      color: var(--paper);
+      line-height: 1;
+    }
+    .m-hdr__cta {
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+      border: none;
+      box-shadow: var(--shadow-lift-sm);
+      transition: transform 0.15s;
+    }
+    .m-hdr__cta:active { transform: scale(0.96); }
+
+    /* ─── Hero ─── */
+    .m-hero {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .m-hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(to bottom, #0a140a 0%, #1c3a1e 60%, #0a140a 100%);
+    }
+    .m-hero__bg img { display: none; }
+    .m-hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,20,10,0.3) 0%, rgba(10,20,10,0.7) 60%, rgba(10,20,10,0.9) 100%);
+      z-index: 1;
+    }
+    .m-hero__mountain {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+    }
+    .m-hero__content {
+      position: relative;
+      z-index: 3;
+      padding: 20px 20px 28px;
+    }
+    .m-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .m-hero__badge-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--orange);
+    }
+    .m-hero__badge-text {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(242,237,230,0.8);
+    }
+    .m-hero__brand-main {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 10vw, 3.2rem);
+      letter-spacing: 0.04em;
+      color: var(--paper);
+      font-weight: 900;
+      line-height: 1;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+      margin-bottom: 6px;
+    }
+    .m-hero__brand-sub {
+      font-family: var(--font-display);
+      font-size: clamp(0.5rem, 2.5vw, 0.8rem);
+      letter-spacing: 0.3em;
+      color: var(--orange-light);
+      margin-bottom: 16px;
+    }
+    .m-hero__kicker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .m-kicker-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      color: rgba(242,237,230,0.85);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      border-radius: 100px;
+    }
+    .m-kicker-tag svg { width: 10px; height: 10px; color: var(--orange); flex-shrink: 0; }
+    .m-kicker-tag--date { background: rgba(232,90,24,0.25); border-color: rgba(232,90,24,0.4); }
+    .m-hero__title {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .m-hero__title-eyebrow {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 5vw, 1.4rem);
+      letter-spacing: 0.15em;
+      color: rgba(242,237,230,0.5);
+    }
+    .m-hero__title-main {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 14vw, 4.5rem);
+      letter-spacing: 0.02em;
+      color: var(--paper);
+      line-height: 1;
+    }
+    .m-hero__title-keyword {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 14vw, 4.5rem);
+      letter-spacing: 0.02em;
+      color: var(--orange);
+      line-height: 1;
+      position: relative;
+    }
+    .m-hero__title-keyword::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--orange);
+      opacity: 0.5;
+      border-radius: 2px;
+    }
+    .m-hero__lead {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: rgba(242,237,230,0.7);
+      margin-bottom: 18px;
+    }
+    .m-hero__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .m-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      border: 2.5px solid var(--ink);
+      box-shadow: var(--shadow-lift-sm);
+      padding: 14px 20px;
+      border-radius: var(--radius-sm);
+      transition: transform 0.15s;
+      text-align: center;
+    }
+    .m-btn:active { transform: scale(0.97); }
+    .m-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .m-btn--primary {
+      background: var(--orange);
+      color: var(--white);
+      border-color: var(--orange);
+      box-shadow: none;
+    }
+    .m-btn--outline {
+      background: transparent;
+      color: var(--paper);
+      border-color: rgba(255,255,255,0.4);
+      box-shadow: none;
+    }
+    .m-btn--outline:active { background: rgba(255,255,255,0.08); }
+    .m-hero__stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .m-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .m-stat-num {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--orange);
+      line-height: 1;
+    }
+    .m-stat-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: rgba(242,237,230,0.5);
+      text-transform: uppercase;
+    }
+    .m-stat-sep {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* ─── 联合发起 ─── */
+    .m-partners {
+      padding: 14px 20px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .m-partners__label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(242,237,230,0.5);
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .m-partners__logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .m-partner-logo img {
+      height: 22px;
+      width: auto;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      opacity: 0.8;
+    }
+
+    /* ─── Ticker ─── */
+    .m-ticker {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 10px 0;
+      overflow: hidden;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+    }
+    .m-ticker__track {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      white-space: nowrap;
+      animation: m-ticker 25s linear infinite;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+    }
+    .m-ticker__dot { width: 14px; height: 14px; color: var(--orange); flex-shrink: 0; }
+    @keyframes m-ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ─── Section 通用 ─── */
+    .m-section {
+      padding: 40px 16px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .m-section--dark {
+      background: var(--paper-dark);
+    }
+    .m-section__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+    .m-section__eyebrow svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .m-section__h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 8vw, 2.5rem);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin-bottom: 10px;
+    }
+    .m-section__sub {
+      font-size: 0.85rem;
+      color: var(--rock);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .m-section__header {
+      margin-bottom: 24px;
+    }
+
+    /* ─── Manifesto / WHY ─── */
+    .m-why-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .m-why-card {
+      padding: 20px 18px;
+      border: 2.5px solid var(--ink);
+      background: var(--paper);
+      box-shadow: var(--shadow-lift-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .m-why-card--accent {
+      background: var(--forest);
+      color: var(--paper);
+      border-color: var(--forest-mid);
+    }
+    .m-why-card__no {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--paper-dark);
+      mix-blend-mode: multiply;
+      margin-bottom: 4px;
+    }
+    .m-why-card--accent .m-why-card__no {
+      color: rgba(255,255,255,0.12);
+      mix-blend-mode: screen;
+    }
+    .m-why-card__h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .m-why-card__p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--rock);
+    }
+    .m-why-card--accent .m-why-card__p { color: rgba(242,237,230,0.7); }
+    .m-why-card__scribble {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 80px;
+      height: 8px;
+      color: var(--orange);
+      opacity: 0.4;
+    }
+
+    /* ─── Weekend / 时间线 ─── */
+    .m-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .m-tl-card {
+      padding: 20px 18px;
+      border: 2.5px solid var(--ink);
+      background: var(--paper);
+      box-shadow: var(--shadow-lift-sm);
+      position: relative;
+    }
+    .m-tl-card--accent {
+      background: var(--forest);
+      color: var(--paper);
+      border-color: var(--forest-mid);
+    }
+    .m-tl-card__head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .m-tl-badge {
+      padding: 3px 10px;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      font-family: var(--font-display);
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+    .m-tl-badge--rock { background: var(--rock); }
+    .m-tl-badge--night { background: var(--ink); color: var(--orange); }
+    .m-tl-card__h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .m-tl-card__lead {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .m-tl-card--accent .m-tl-card__lead { color: rgba(242,237,230,0.75); }
+    .m-tl-card__list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .m-tl-card__list li {
+      font-size: 0.78rem;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.6;
+      color: var(--rock);
+    }
+    .m-tl-card--accent .m-tl-card__list li { color: rgba(242,237,230,0.7); }
+    .m-tl-card__list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    /* ─── Sessions ─── */
+    .m-s-intro {
+      padding: 16px;
+      border: 2px solid var(--ink);
+      background: var(--paper-dark);
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .m-s-intro__label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 3px 10px;
+      border-radius: 100px;
+      display: inline-block;
+      width: fit-content;
+    }
+    .m-s-intro__text {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--rock);
+    }
+    .m-s-intro__text strong { color: var(--ink); font-weight: 700; }
+    .m-s-intro__text em {
+      display: block;
+      margin-top: 4px;
+      font-style: normal;
+      font-weight: 700;
+      color: var(--orange);
+    }
+    .m-s-block { margin-bottom: 20px; }
+    .m-s-block__header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+    .m-s-badge {
+      padding: 3px 10px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      font-family: var(--font-display);
+      border-radius: 100px;
+    }
+    .m-s-badge--guest { background: var(--forest); }
+    .m-s-badge--night { background: var(--orange); color: var(--white); }
+    .m-s-block__h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+    }
+    .m-s-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .m-s-panel {
+      padding: 18px 16px;
+      border: 2.5px solid var(--ink);
+      background: var(--paper);
+      box-shadow: var(--shadow-lift-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .m-s-panel--dark {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .m-s-panel--forest {
+      background: var(--forest);
+      color: var(--paper);
+      border-color: var(--forest-mid);
+    }
+    .m-s-panel--orange {
+      background: var(--orange);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+    .m-s-panel__tag {
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--orange);
+      font-weight: 700;
+    }
+    .m-s-panel--dark .m-s-panel__tag,
+    .m-s-panel--forest .m-s-panel__tag { color: var(--orange-light); }
+    .m-s-panel__meta {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--rock);
+      font-weight: 500;
+    }
+    .m-s-panel--dark .m-s-panel__meta,
+    .m-s-panel--forest .m-s-panel__meta { color: var(--orange-light); }
+    .m-s-panel--orange .m-s-panel__meta { color: rgba(255,255,255,0.7); }
+    .m-s-panel__title {
+      font-size: 1rem;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+    .m-s-panel__desc {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--rock);
+    }
+    .m-s-panel--dark .m-s-panel__desc,
+    .m-s-panel--forest .m-s-panel__desc { color: rgba(242,237,230,0.7); }
+    .m-s-panel--orange .m-s-panel__desc { color: rgba(255,255,255,0.8); }
+    .m-s-panel__bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .m-s-panel__bullets li {
+      font-size: 0.75rem;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+      color: var(--rock);
+    }
+    .m-s-panel--dark .m-s-panel__bullets li,
+    .m-s-panel--forest .m-s-panel__bullets li { color: rgba(242,237,230,0.7); }
+    .m-s-panel--orange .m-s-panel__bullets li { color: rgba(255,255,255,0.8); }
+    .m-s-panel__bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 2px;
+      color: var(--orange);
+      font-weight: 700;
+    }
+    .m-s-panel--dark .m-s-panel__bullets li::before,
+    .m-s-panel--forest .m-s-panel__bullets li::before { color: var(--orange-light); }
+    .m-s-panel__bullets--guest { gap: 10px; }
+    .m-s-panel__bullets--guest li {
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .m-s-panel__bullets--guest li::before { display: none; }
+    .m-s-panel__bullets--guest strong { font-size: 0.82rem; font-weight: 700; }
+    .m-s-panel__bullets--guest span { font-size: 0.7rem; color: rgba(242,237,230,0.55); }
+    .m-s-panel__link {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--orange);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      margin-top: 4px;
+    }
+    .m-s-panel__link::before { content: '→ '; }
+    .m-s-panel--dark .m-s-panel__link,
+    .m-s-panel--forest .m-s-panel__link { color: var(--orange-light); }
+    .m-s-panel--mini { background: transparent; border: none; box-shadow: none; padding: 12px 0 0; }
+    .m-s-panel--mini:first-of-type { padding-top: 0; }
+    .m-s-panel--mini + .m-s-panel--mini { border-top: 1px solid rgba(255,255,255,0.15); }
+    .m-s-panel--mini .m-s-panel__meta { color: rgba(242,237,230,0.55); font-size: 0.6rem; }
+    .m-s-panel--mini .m-s-panel__title { font-size: 0.9rem; font-weight: 700; color: var(--paper); }
+    .m-s-panel--mini .m-s-panel__desc { font-size: 0.75rem; color: rgba(242,237,230,0.6); }
+    .m-s-panel--mini .m-s-panel__link { color: var(--orange-light); font-size: 0.68rem; }
+    .m-s-multi {
+      background: var(--forest);
+      border: 2.5px solid var(--forest-mid);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .m-s-multi__label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .m-s-multi__sub {
+      font-size: 0.6rem;
+      color: rgba(242,237,230,0.55);
+      font-weight: 500;
+    }
+    .m-s-evening {
+      padding: 16px;
+      border: 2.5px solid var(--ink);
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .m-s-evening__title { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+    .m-s-evening__desc { font-size: 0.78rem; color: var(--rock); line-height: 1.65; }
+
+    /* ─── Venue ─── */
+    .m-venue__gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .m-g-main {
+      border: 2px solid var(--ink);
+      overflow: hidden;
+      position: relative;
+      border-radius: var(--radius-md);
+    }
+    .m-g-main img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .m-g-main figcaption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      color: var(--paper);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 20px 12px 8px;
+      letter-spacing: 0.05em;
+    }
+    .m-g-tiles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .m-g-tile {
+      border: 2px solid var(--ink);
+      overflow: hidden;
+      position: relative;
+      border-radius: var(--radius-sm);
+    }
+    .m-g-tile img {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+    }
+    .m-g-tile figcaption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.5);
+      color: var(--paper);
+      font-size: 0.6rem;
+      padding: 3px 5px;
+      letter-spacing: 0.05em;
+    }
+    .m-v-points {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .m-v-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .m-v-point__icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-sm);
+    }
+    .m-v-point__icon svg { width: 16px; height: 16px; color: var(--white); }
+    .m-v-point__text h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+    .m-v-point__text p { font-size: 0.78rem; color: var(--rock); line-height: 1.6; }
+    .m-venue__quote {
+      border-left: 3px solid var(--orange);
+      padding: 10px 16px;
+      background: var(--paper-dark);
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--rock);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-top: 16px;
+    }
+
+    /* ─── Extras ─── */
+    .m-extras-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .m-e-card {
+      padding: 18px 16px;
+      border: 2.5px solid var(--ink);
+      background: var(--paper);
+      box-shadow: var(--shadow-lift-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .m-e-card--dark {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .m-e-card__icon {
+      width: 36px;
+      height: 36px;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-sm);
+    }
+    .m-e-card--dark .m-e-card__icon { border-color: rgba(255,255,255,0.2); }
+    .m-e-card__icon svg { width: 18px; height: 18px; color: var(--white); }
+    .m-e-card h3 { font-size: 0.92rem; font-weight: 700; }
+    .m-e-card p { font-size: 0.78rem; color: var(--rock); line-height: 1.65; }
+    .m-e-card--dark p { color: rgba(242,237,230,0.65); }
+    .m-e-card--dark strong { color: var(--orange-light); }
+
+    /* ─── Join ─── */
+    .m-join {
+      background: var(--paper);
+      padding: 40px 16px;
+      border-bottom: 2.5px solid var(--ink);
+    }
+    .m-join__panel {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .m-join__facts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .m-join__fact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--paper-dark);
+      border: 2px solid var(--ink);
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+    }
+    .m-join__fact svg { width: 12px; height: 12px; color: var(--orange); flex-shrink: 0; }
+    .m-join__qr {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .m-join__qr-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--rock);
+    }
+    .m-join__qr-box {
+      padding: 24px;
+      border: 2.5px solid var(--ink);
+      background: var(--paper-dark);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lift);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+    .m-join__qr-frame {
+      padding: 10px;
+      background: #fff;
+      border-radius: 14px;
+      line-height: 0;
+    }
+    .m-join__qr-frame img {
+      width: 160px;
+      height: 160px;
+      border-radius: 7px;
+    }
+    .m-join__qr-hint {
+      font-size: 0.75rem;
+      color: var(--rock);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ─── Footer ─── */
+    .m-footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 20px 16px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+    }
+    .m-footer__name {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+    }
+    .m-footer__sep { color: var(--orange); }
+
+    /* ─── 悬浮底部 CTA ─── */
+    .m-sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: rgba(10,20,10,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 16px calc(10px + var(--safe-bottom));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .m-sticky-cta__date {
+      font-size: 0.68rem;
+      color: rgba(242,237,230,0.6);
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+      flex: 1;
+      min-width: 0;
+    }
+    .m-sticky-cta__btn {
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: 2px solid rgba(255,255,255,0.3);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .m-sticky-cta__btn:active { background: var(--orange-light); }
+
+    /* ─── 入场动画 ─── */
+    .m-reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .m-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── iPad 横屏适配 ─── */
+    @media (min-width: 768px) and (orientation: landscape) {
+      .m-hero { min-height: 60vh; }
+      .m-hero__content { padding: 24px 32px 32px; }
+      .m-hero__actions { flex-direction: row; }
+      .m-section { padding: 56px 32px; }
+      .m-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .m-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .m-tl-card { display: flex; flex-direction: column; height: 100%; }
+      .m-s-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .m-extras-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .m-join { padding: 56px 32px; }
+      .m-join__panel { flex-direction: row; align-items: flex-start; }
+      .m-join__qr-box { width: auto; }
+      .m-venue__gallery { flex-direction: row; }
+      .m-g-main { flex: 1; }
+      .m-g-tiles { flex: 1; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .m-g-tile img { height: 100%; min-height: 120px; }
+    }
+
+    /* ─── iPad 竖屏 ─── */
+    @media (min-width: 768px) and (orientation: portrait) {
+      .m-hero__content { padding: 24px 32px 32px; }
+      .m-hero__actions { flex-direction: row; }
+      .m-section { padding: 48px 24px; }
+      .m-why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .m-s-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .m-extras-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .m-join { padding: 48px 24px; }
+      .m-join__panel { flex-direction: row; align-items: flex-start; }
+    }
+
+    /* ─── 小号 iPad ─── */
+    @media (min-width: 600px) and (max-width: 767px) {
+      .m-section { padding: 40px 24px; }
+      .m-why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .m-timeline { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .m-s-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .m-extras-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    }
+
+    /* ─── iPhone Plus / Max 横向 ─── */
+    @media (min-width: 700px) {
+      .m-section { padding: 48px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── 顶部告警条 ─── -->
+<div class="alert-strip">
+  <span class="alert-strip__icon">!</span> 2026.04.18（周六）晚 — 04.19（周日） · 秦托邦数字游民社区 · 建议带上你的电脑
+</div>
+
+<!-- ─── Header ─── -->
+<header class="m-hdr">
+  <a class="m-hdr__brand" href="#top">
+    <svg class="m-hdr__logo" viewBox="0 0 60 60" aria-hidden="true">
+      <polygon points="5,55 20,25 32,38 45,15 55,55" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="45" cy="15" r="3" fill="currentColor"/>
+      <line x1="12" y1="42" x2="22" y2="42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="28" y1="32" x2="38" y2="32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <polyline points="18,52 24,46 30,52" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="m-hdr__name">秦岭AI白客松</span>
+  </a>
+  <a class="m-hdr__cta" href="#join">报名 / 咨询</a>
+</header>
+
+<main>
+
+<!-- ─── Hero ─── -->
+<section class="m-hero" id="top">
+  <div class="m-hero__bg">
+    <div class="m-hero__overlay"></div>
+  </div>
+  <svg class="m-hero__mountain" viewBox="0 0 375 120" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;bottom:0;left:0;right:0;width:100%;height:auto;">
+    <polygon points="0,120 80,40 150,70 200,20 280,60 375,120" fill="rgba(10,20,10,0.5)"/>
+  </svg>
+  <div class="m-hero__content">
+    <div class="m-hero__badge">
+      <svg class="m-hero__badge-icon" viewBox="0 0 60 60" aria-hidden="true">
+        <polygon points="5,55 20,25 32,38 45,15 55,55" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="45" cy="15" r="3" fill="currentColor"/>
+      </svg>
+      <span class="m-hero__badge-text">秦岭AI白客松 · QINLING AI HACKATHON</span>
+    </div>
+    <div class="m-hero__brand-main">秦岭AI白客松</div>
+    <div class="m-hero__brand-sub">QINLING AI HACKATHON</div>
+    <div class="m-hero__kicker">
+      <span class="m-kicker-tag m-kicker-tag--date">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+        2026.04.18 周六晚 — 04.19 周日
+      </span>
+      <span class="m-kicker-tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+        秦托邦 · 西安鄠邑
+      </span>
+    </div>
+    <div class="m-hero__title">
+      <span class="m-hero__title-eyebrow">不聊大词</span>
+      <span class="m-hero__title-main">带上电脑</span>
+      <span class="m-hero__title-keyword">一起手搓</span>
+    </div>
+    <p class="m-hero__lead">
+      不是来听概念，是带着真实问题来拆。<br />
+      先把槽点摆出来，再看别人怎么跑通，最后打开电脑真正把事情做一遍。
+    </p>
+    <div class="m-hero__actions">
+      <a class="m-btn m-btn--primary" href="#join">
+        <svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 25 C10 5 20 28 30 15 S50 2 58 18" stroke-linecap="round"/><polygon points="55,12 62,18 52,22" fill="currentColor"/></svg>
+        报名 / 咨询
+      </a>
+      <a class="m-btn m-btn--outline" href="#sessions">看看切磋场 →</a>
+    </div>
+    <div class="m-hero__stats">
+      <div class="m-stat-item">
+        <span class="m-stat-num">4</span>
+        <span class="m-stat-label">个切磋场</span>
+      </div>
+      <div class="m-stat-sep"></div>
+      <div class="m-stat-item">
+        <span class="m-stat-num">2</span>
+        <span class="m-stat-label">天1夜</span>
+      </div>
+      <div class="m-stat-sep"></div>
+      <div class="m-stat-item">
+        <span class="m-stat-num">6折</span>
+        <span class="m-stat-label">住宿优惠</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 联合发起 ─── -->
+<div class="m-partners">
+  <span class="m-partners__label">联合发起</span>
+  <div class="m-partners__logos">
+    <div class="m-partner-logo"><img src="./assets/qintuobang.png" alt="秦托邦" /></div>
+    <div class="m-partner-logo"><img src="./assets/chaozhao.png" alt="西安AI实战营" /></div>
+    <div class="m-partner-logo"><img src="./assets/codex.png" alt="CD SEE AI" /></div>
+    <div class="m-partner-logo"><img src="./assets/feishu.png" alt="AI先锋社" /></div>
+  </div>
+</div>
+
+<!-- ─── Ticker ─── -->
+<div class="m-ticker" aria-label="关键词滚动">
+  <div class="m-ticker__track">
+    <span>秦岭AI白客松</span>
+    <svg class="m-ticker__dot" viewBox="0 0 60 60" aria-hidden="true"><polygon points="5,55 20,25 32,38 45,15 55,55" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>
+    <span>不聊大词</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>带上电脑</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>一起手搓</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>真实问题</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>秦岭AI白客松</span>
+    <svg class="m-ticker__dot" viewBox="0 0 60 60" aria-hidden="true"><polygon points="5,55 20,25 32,38 45,15 55,55" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>
+    <span>不聊大词</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>带上电脑</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>一起手搓</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    <span>真实问题</span>
+    <svg class="m-ticker__dot" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+  </div>
+</div>
+
+<!-- ─── WHY / Manifesto ─── -->
+<section class="m-section m-section--dark" id="why">
+  <div class="m-section__header">
+    <div class="m-section__eyebrow">
+      <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 5 L25 25 M25 5 L5 25"/></svg>
+      WHY COME
+    </div>
+    <h2 class="m-section__h2">这场和普通 AI 分享会<br />不一样的地方</h2>
+    <p class="m-section__sub">如果你想要的不是再多听几个热词，而是把 AI 真正接进自己的工作和生活，这个周末的结构就是为这件事设计的。</p>
+  </div>
+  <div class="m-why-grid">
+    <article class="m-why-card m-reveal">
+      <div class="m-why-card__no">01</div>
+      <h3 class="m-why-card__h3">不是来听概念，是带着真实问题来拆</h3>
+      <p class="m-why-card__p">周六晚上先把最上头、最崩溃、最想骂人的问题讲出来。先别装懂，先说真话。</p>
+      <svg class="m-why-card__scribble" viewBox="0 0 120 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6 Q15 1 30 6 T60 6 T90 6 T120 6" stroke-linecap="round"/></svg>
+    </article>
+    <article class="m-why-card m-why-card--accent m-reveal">
+      <div class="m-why-card__no">02</div>
+      <h3 class="m-why-card__h3">不是讲完就散，是案例、演示、互动一起上</h3>
+      <p class="m-why-card__p">白天不是坐着被灌信息流，而是看别人怎么把 AI 跑进业务、内容、流程和团队协作。</p>
+      <svg class="m-why-card__scribble" viewBox="0 0 120 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6 Q15 1 30 6 T60 6 T90 6 T120 6" stroke-linecap="round"/></svg>
+    </article>
+    <article class="m-why-card m-reveal">
+      <div class="m-why-card__no">03</div>
+      <h3 class="m-why-card__h3">不是空谈 AI，是把 AI 真正接进工作和生活</h3>
+      <p class="m-why-card__p">到了周日晚，不继续听。围绕共性问题深度答疑和实操拆解，把"知道"推成"能做"。</p>
+      <svg class="m-why-card__scribble" viewBox="0 0 120 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6 Q15 1 30 6 T60 6 T90 6 T120 6" stroke-linecap="round"/></svg>
+    </article>
+  </div>
+</section>
+
+<!-- ─── Weekend 时间线 ─── -->
+<section class="m-section" id="weekend">
+  <div class="m-section__header">
+    <div class="m-section__eyebrow">
+      <svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 25 C10 5 20 28 30 15 S50 2 58 18" stroke-linecap="round"/><polygon points="55,12 62,18 52,22" fill="currentColor"/></svg>
+      WEEKEND MAP
+    </div>
+    <h2 class="m-section__h2">这个周末，你会这样一步步进场</h2>
+    <p class="m-section__sub">先把问题讲出来，再把路径看明白，最后把方法真正上手。三段节奏非常明确，不绕弯。</p>
+  </div>
+  <div class="m-timeline">
+    <article class="m-tl-card m-reveal">
+      <div class="m-tl-card__head">
+        <span class="m-tl-badge m-tl-badge--rock">SAT NIGHT</span>
+        <h3 class="m-tl-card__h3">周六晚上｜AI 吐槽大会</h3>
+      </div>
+      <p class="m-tl-card__lead">先别讲方法，先把问题摆上来。学 AI、用 AI 过程中最让你上头、最让你崩溃、最想骂人的事，都可以先说出来。</p>
+      <ul class="m-tl-card__list">
+        <li>围绕"学习 AI 过程中，你碰到最恶心的事是什么？"展开</li>
+        <li>高频槽点现场归类，形成第二天要拆的问题池</li>
+        <li>这不是抱怨局，槽点背后都是第二天的爆点</li>
+      </ul>
+    </article>
+    <article class="m-tl-card m-tl-card--accent m-reveal">
+      <div class="m-tl-card__head">
+        <span class="m-tl-badge">SUN DAY</span>
+        <h3 class="m-tl-card__h3">周日白天｜AI 切磋场</h3>
+      </div>
+      <p class="m-tl-card__lead">白天不是"听课"，是切磋。不是来记几个术语，而是看别人怎么真把 AI 跑进工作、业务和团队。</p>
+      <ul class="m-tl-card__list">
+        <li>上午：小报开场、槽点大爆炸、OPC 切磋场、AI 搞钱切磋场</li>
+        <li>下午：Agent &amp; Vibe Coding 切磋场、团队合作 AI 工作流切磋场</li>
+        <li>白天的目标，是看明白自己晚上最该进哪个工作坊</li>
+      </ul>
+    </article>
+    <article class="m-tl-card m-reveal">
+      <div class="m-tl-card__head">
+        <span class="m-tl-badge m-tl-badge--night">SUN NIGHT</span>
+        <h3 class="m-tl-card__h3">周日晚上｜AI 工作坊</h3>
+      </div>
+      <p class="m-tl-card__lead">到了晚上，就不继续听了。打开电脑直接干，围绕共性问题做深度答疑和实操拆解。</p>
+      <ul class="m-tl-card__list">
+        <li>按不同基础和目标进入对应工作坊</li>
+        <li>核心形式：深度实操 + 问题答疑 + 共性问题集中解决</li>
+        <li>谁带着问题来，谁晚上收获最大</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<!-- ─── Sessions ─── -->
+<section class="m-section m-section--dark" id="sessions">
+  <div class="m-section__header">
+    <div class="m-section__eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+      SESSION BOARD
+    </div>
+    <h2 class="m-section__h2">白天你会碰到这些切磋场</h2>
+    <p class="m-section__sub">不是"未来会怎样"，而是"别人现在怎么干"。上午看槽点找方向，下午进具体场景，晚上直接开干。</p>
+  </div>
+
+  <!-- 周六晚开场说明 -->
+  <div class="m-s-intro m-reveal">
+    <div class="m-s-intro__label">周六晚 · AI 吐槽大会</div>
+    <p class="m-s-intro__text">
+      先别讲方法，先把问题摆上来。现场围绕<strong>"学习 AI 过程中，你碰到最恶心的事是什么？"</strong>展开，槽点收上来、归好类，变成第二天真正要拆的手搓池。
+      <em>这不是抱怨局，槽点背后都是爆点。</em>
+    </p>
+  </div>
+
+  <!-- 上午 -->
+  <div class="m-s-block m-reveal">
+    <div class="m-s-block__header">
+      <span class="m-s-badge">上午</span>
+      <h3 class="m-s-block__h3">切磋场 1 · 切磋场 2</h3>
+    </div>
+    <div class="m-s-grid">
+      <article class="m-s-panel m-s-panel--dark">
+        <div class="m-s-panel__tag">切磋场 01</div>
+        <div class="m-s-panel__meta">主持 · 朝朝 · 西安 AI 实战营</div>
+        <h3 class="m-s-panel__title">OPC 切磋场</h3>
+        <p class="m-s-panel__desc">一个人就是一支爆款团队——怎么借助 AI 把产品、销售、交付这条线跑顺，活成一支队伍。</p>
+        <ul class="m-s-panel__bullets">
+          <li>AI 选品与流量策略</li>
+          <li>自动化交付流程</li>
+          <li>一人多角色的实战心得</li>
+        </ul>
+      </article>
+      <article class="m-s-panel m-s-panel--forest">
+        <div class="m-s-panel__tag">切磋场 02</div>
+        <div class="m-s-panel__meta">主持 · 朝朝 · 西安 AI 实战营 &amp; 嘉宾 · 大嘴</div>
+        <h3 class="m-s-panel__title">AI 搞钱切磋场</h3>
+        <p class="m-s-panel__desc">直接讲结果和血泪史，不来虚的。</p>
+        <ul class="m-s-panel__bullets">
+          <li>AI 驱动 Polymarket 天气预测套利程序</li>
+          <li>如何用自媒体实现财富自由</li>
+          <li>百万粉博主的 AI 内容方法论</li>
+        </ul>
+      </article>
+
+      <!-- 搞钱场 · 小瑾 -->
+      <article class="m-s-panel m-s-panel--dark">
+        <div class="m-s-panel__tag">搞钱场 · 工具实操</div>
+        <div class="m-s-panel__meta">分享人 · 小瑾 · 教育公司品牌主管</div>
+        <h3 class="m-s-panel__title">AI工具应用功能及场景</h3>
+        <p class="m-s-panel__desc">非技术团队的AI工具实操经验，六大工具现场演示。</p>
+        <ul class="m-s-panel__bullets">
+          <li>小红书运营、舆情监测、热点查找工具</li>
+          <li>RPA 在精准获客中的应用</li>
+          <li>品牌设计的 AI 协作技巧</li>
+        </ul>
+        <a class="m-s-panel__link" href="hackathon-money-xiaojin-mobile.html">查看实录 →</a>
+      </article>
+    </div>
+  </div>
+
+  <!-- 下午 -->
+  <div class="m-s-block m-reveal">
+    <div class="m-s-block__header">
+      <span class="m-s-badge">下午</span>
+      <h3 class="m-s-block__h3">切磋场 3 · 切磋场 4</h3>
+    </div>
+    <div class="m-s-grid">
+      <article class="m-s-panel">
+        <div class="m-s-panel__tag">切磋场 03</div>
+        <div class="m-s-panel__meta">主持 · Tony · 20年+ 骨灰级全栈开发架构师</div>
+        <h3 class="m-s-panel__title">Agent &amp; Vibe Coding 切磋场</h3>
+        <p class="m-s-panel__desc">从 Chatbot 到 Agent，从 0-1 搭建 Agent。重点是怎么从对话走到流程，让 AI 真开始干活。</p>
+        <ul class="m-s-panel__bullets">
+          <li>Agent 架构设计核心逻辑</li>
+          <li>从 Prompt 到工作流</li>
+          <li>AI 真正开始干活的路径</li>
+        </ul>
+      </article>
+
+      <!-- 切磋场04 · 多人 -->
+      <div class="m-s-multi">
+        <div class="m-s-multi__label">
+          <span class="m-s-panel__tag">切磋场 04</span>
+          <span class="m-s-multi__sub">团队工作流 · 两位分享人</span>
+        </div>
+        <article class="m-s-panel m-s-panel--mini">
+          <div class="m-s-panel__meta">主持 · 野渡（鹏哥） · 资深 ICT 企业高管</div>
+          <h3 class="m-s-panel__title">AI招聘与职业能力分析</h3>
+          <p class="m-s-panel__desc">用 AI 思维重塑工作方式，从招聘到职业规划的实际应用。</p>
+          <a class="m-s-panel__link" href="hackathon-workflow-pengge-mobile.html">鹏哥实录 →</a>
+        </article>
+        <article class="m-s-panel m-s-panel--mini">
+          <div class="m-s-panel__meta">分享人 · 大羽 · 剪鸭村/秦托邦创始人</div>
+          <h3 class="m-s-panel__title">AI活动策划与数据治理</h3>
+          <p class="m-s-panel__desc">巧妇难为无米之炊——数据才是 AI 协作的核心资产。</p>
+          <a class="m-s-panel__link" href="hackathon-workflow-dayu-mobile.html">大羽实录 →</a>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <!-- 嘉宾 -->
+  <div class="m-s-block m-reveal">
+    <div class="m-s-block__header">
+      <span class="m-s-badge m-s-badge--guest">嘉宾</span>
+      <h3 class="m-s-block__h3">品牌 · 内容 · 真实经营 · 穿插白天</h3>
+    </div>
+    <div class="m-s-grid">
+      <article class="m-s-panel m-s-panel--dark">
+        <div class="m-s-panel__meta">三位嘉宾 · 三场真实到骨子里的分享</div>
+        <h3 class="m-s-panel__title">品牌、内容与真实经营</h3>
+        <p class="m-s-panel__desc">全是拿结果说话的故事，不是来听"未来会怎样"，而是看"别人现在怎么干"。</p>
+        <ul class="m-s-panel__bullets m-s-panel__bullets--guest">
+          <li>
+            <strong>用 AI 把品牌声量做到行业第一</strong>
+            <span>操盘手的真实路径与关键决策</span>
+          </li>
+          <li>
+            <strong>百万美食博主的活人感秘诀</strong>
+            <span>AI 时代如何拍出有温度的内容</span>
+          </li>
+          <li>
+            <strong>AI 拯救亏损面馆</strong>
+            <span>一家亏损面馆的 AI 自救完整复盘</span>
+          </li>
+        </ul>
+      </article>
+      <article class="m-s-panel m-s-panel--orange">
+        <div class="m-s-panel__meta">自由社交 · 资源对接 · 一起手搓</div>
+        <h3 class="m-s-panel__title">不只是听，更是连接</h3>
+        <p class="m-s-panel__desc">自由社交时间、资源与需求对接，把问题带到现场找同伴一起拆。</p>
+        <ul class="m-s-panel__bullets">
+          <li>自由社交时间</li>
+          <li>资源与需求对接</li>
+          <li>找同伴组队开搓</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+
+  <!-- 晚间 -->
+  <div class="m-s-evening m-reveal">
+    <span class="m-s-badge m-s-badge--night">晚间</span>
+    <div>
+      <h3 class="m-s-evening__title">周日晚上 · AI 工作坊</h3>
+      <p class="m-s-evening__desc">到了晚上就不继续听了，打开电脑直接干。深度实操 + 问题答疑 + 共性问题集中解决。谁带着问题来，谁晚上收获最大。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Venue ─── -->
+<section class="m-section" id="venue">
+  <div class="m-section__header">
+    <div class="m-section__eyebrow">
+      <svg viewBox="0 0 120 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6 Q15 1 30 6 T60 6 T90 6 T120 6" stroke-linecap="round"/></svg>
+      QinTopia · 秦托邦
+    </div>
+    <h2 class="m-section__h2">进有秦岭山<br />退有长安城</h2>
+    <p class="m-section__sub">秦托邦是秦岭脚下栗峪口村里的青年社区，更适合把一场 AI 活动做成真正有人味、有参与感、有后劲的线下体验。</p>
+    <blockquote class="m-venue__quote">"在当下日渐原子化的社会里，回归人本身，探索一种新型的群居生活方式。"</blockquote>
+  </div>
+  <div class="m-v-points">
+    <div class="m-v-point m-reveal">
+      <div class="m-v-point__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+      </div>
+      <div class="m-v-point__text">
+        <h3>一边工作，一边生活</h3>
+        <p>办公、住宿、厨房、公共活动区和松弛交流空间放在一起，适合把一次活动做成连续体验。</p>
+      </div>
+    </div>
+    <div class="m-v-point m-reveal">
+      <div class="m-v-point__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+      </div>
+      <div class="m-v-point__text">
+        <h3>不只是到场，更是一起共处</h3>
+        <p>比"讲完即散场"更适合大家坐下来继续聊、继续拆问题、继续把方法手搓出来。</p>
+      </div>
+    </div>
+    <div class="m-v-point m-reveal">
+      <div class="m-v-point__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+      </div>
+      <div class="m-v-point__text">
+        <h3>空间条件已经就绪</h3>
+        <p>共享办公区、会议空间、住宿房间、共享厨房、洗烘设施、健身区和公共交流区都已齐备。</p>
+      </div>
+    </div>
+  </div>
+  <div class="m-venue__gallery">
+    <figure class="m-g-main m-reveal">
+      <img src="./assets/venue-community.jpg" alt="秦托邦公共活动空间" />
+      <figcaption>公共活动空间</figcaption>
+    </figure>
+    <div class="m-g-tiles">
+      <figure class="m-g-tile m-reveal">
+        <img src="./assets/venue-workspace.jpg" alt="秦托邦共享办公区" />
+        <figcaption>共享办公</figcaption>
+      </figure>
+      <figure class="m-g-tile m-reveal">
+        <img src="./assets/venue-room.jpg" alt="秦托邦住宿空间" />
+        <figcaption>住宿空间</figcaption>
+      </figure>
+      <figure class="m-g-tile m-reveal">
+        <img src="./assets/venue-community.jpg" alt="秦托邦社区氛围" />
+        <figcaption>社区氛围</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Extras ─── -->
+<section class="m-section m-section--dark">
+  <div class="m-section__header">
+    <div class="m-section__eyebrow">
+      <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 5 L25 25 M25 5 L5 25"/></svg>
+      WHAT ELSE
+    </div>
+    <h2 class="m-section__h2">来之前，你大概还会关心这些</h2>
+  </div>
+  <div class="m-extras-grid">
+    <article class="m-e-card m-reveal">
+      <div class="m-e-card__icon">
+        <svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 25 C10 5 20 28 30 15 S50 2 58 18" stroke-linecap="round"/><polygon points="55,12 62,18 52,22" fill="currentColor"/></svg>
+      </div>
+      <h3>怎么来</h3>
+      <p>自驾可达，距京昆高速涝峪收费站约 3.4 公里；从鄠邑站打车约 20 分钟，从西安咸阳国际机场打车约 70 分钟。</p>
+    </article>
+    <article class="m-e-card m-reveal">
+      <div class="m-e-card__icon">
+        <svg viewBox="0 0 120 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 6 Q15 1 30 6 T60 6 T90 6 T120 6" stroke-linecap="round"/></svg>
+      </div>
+      <h3>建议带什么</h3>
+      <p>电脑、充电器、耳机、常用药和一件保暖外套。山区昼夜温差较大，公共空间插座也建议自己准备得更从容。</p>
+    </article>
+    <article class="m-e-card m-e-card--dark m-reveal">
+      <div class="m-e-card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+      </div>
+      <h3>住宿福利</h3>
+      <p>活动参与者可享住宿 <strong>6 折</strong>，床位低至 <strong>35 元</strong>。现场过夜更适合把周日白天和晚上的衔接跑完整。</p>
+    </article>
+  </div>
+</section>
+
+<!-- ─── Join ─── -->
+<section class="m-join" id="join">
+  <div class="m-join__panel">
+    <div class="m-join__copy">
+      <div class="m-section__header" style="margin-bottom:0;">
+        <div class="m-section__eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+          JOIN THE WEEKEND
+        </div>
+        <h2 class="m-section__h2">如果你不想再听概念<br />这个周末就来现场！</h2>
+      </div>
+      <p class="m-section__sub" style="margin-top:12px;">
+        4 月 18 日（周六）晚开放麦，4 月 19 日（周日）正式场。地点在秦托邦数字游民社区，陕西省西安市鄠邑区栗峪口村。
+      </p>
+      <div class="m-join__facts">
+        <div class="m-join__fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+          活动参与者住宿 6 折
+        </div>
+        <div class="m-join__fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+          床位低至 35 元
+        </div>
+        <div class="m-join__fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+          现场有 AI 大礼包
+        </div>
+        <div class="m-join__fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke-linecap="round"/></svg>
+          配套活动手册和实操文档
+        </div>
+      </div>
+    </div>
+    <div class="m-join__qr">
+      <div class="m-join__qr-label">Register / Ask</div>
+      <div class="m-join__qr-box">
+        <div class="m-join__qr-frame">
+          <img src="./assets/qr-code.png" alt="秦岭AI白客松报名咨询二维码" />
+        </div>
+        <p class="m-join__qr-hint">长按扫码报名 / 咨询<br />了解住宿、路线与到场安排</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ─── Footer ─── -->
+<footer class="m-footer">
+  <span class="m-footer__name">秦岭AI白客松</span>
+  <span class="m-footer__sep">·</span>
+  <span>2026.04.18 — 04.19</span>
+  <span class="m-footer__sep">·</span>
+  <span>秦托邦</span>
+</footer>
+
+<!-- ─── 悬浮底部 CTA ─── -->
+<div class="m-sticky-cta">
+  <span class="m-sticky-cta__date">4月18日（周六）晚 — 4月19日（周日）<br />秦托邦 · 西安鄠邑</span>
+  <a class="m-sticky-cta__btn" href="#join">报名 / 咨询</a>
+</div>
+
+<script>
+// 滚动入场动画
+(function() {
+  var els = document.querySelectorAll('.m-reveal');
+  if (!els.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+</body>
+</html>

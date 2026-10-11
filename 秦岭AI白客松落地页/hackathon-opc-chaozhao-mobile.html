@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPC切磋场 · 秦岭AI白客松</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f6;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-tertiary: #8a8a8a;
+      --border: #e8e5e0;
+      --accent: #ea580c;
+      --accent-light: #ffedd5;
+      --accent-bg: #fff7ed;
+      --success: #059669;
+      --success-light: #d1fae5;
+      --tag-1: #fef3c7;
+      --tag-2: #dbeafe;
+      --tag-3: #fce7f3;
+      --tag-4: #e0e7ff;
+      --tag-5: #ccfbf1;
+      --tag-6: #f3e8ff;
+      --radius: 18px;
+      --radius-sm: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(150deg, #1a1a1a 0%, #374151 100%);
+      color: white;
+      padding: 44px 20px 48px;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .header-inner { max-width: 640px; margin: 0 auto; position: relative; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(1.4rem, 6.5vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #d1d5db;
+      background: rgba(255,255,255,0.08);
+      padding: 4px 11px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .meta-chip svg { opacity: 0.7; }
+
+    /* ── Sticky Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250, 249, 246, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav a {
+      flex-shrink: 0;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 100px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav a:hover {
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+    .nav a.active {
+      color: var(--accent);
+      background: var(--accent-light);
+      border-color: #fed7aa;
+    }
+
+    /* ── Main ── */
+    .main { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Section ── */
+    section { padding: 36px 0 0; }
+    section + section { padding-top: 0; }
+
+    /* ── Section label ── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    h2 {
+      font-size: clamp(1.1rem, 5vw, 1.4rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .lead {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .card-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon.orange { background: #ffedd5; }
+    .card-icon.blue { background: #dbeafe; }
+    .card-icon.slate { background: #f1f5f9; }
+    .card-icon.green { background: #d1fae5; }
+    .card-icon.purple { background: #f3e8ff; }
+
+    .card-meta { flex: 1; }
+    .card-speaker {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .card-body {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    .card-body strong { color: var(--text); font-weight: 600; }
+
+    /* ── Quote cards ── */
+    .quote-card {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .quote-card::before {
+      content: '"';
+      position: absolute;
+      top: 8px;
+      left: 14px;
+      font-size: 36px;
+      color: #f59e0b;
+      line-height: 1;
+      font-weight: 700;
+      opacity: 0.4;
+    }
+    .quote-text {
+      font-size: 13.5px;
+      color: #78350f;
+      line-height: 1.8;
+      padding-left: 6px;
+    }
+    .quote-text strong { color: #92400e; font-weight: 700; }
+
+    /* ── Highlight card ── */
+    .highlight-card {
+      background: var(--accent-bg);
+      border: 1px solid #ffedd5;
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 16px;
+    }
+    .highlight-card p {
+      font-size: 13.5px;
+      color: #9a3412;
+      line-height: 1.8;
+    }
+    .highlight-card strong { color: #7c2d12; font-weight: 700; }
+
+    /* ── Flow grid ── */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    @media (max-width: 480px) {
+      .flow-grid { grid-template-columns: 1fr; }
+    }
+    .flow-step {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .flow-num {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 22px;
+      margin-bottom: 6px;
+    }
+    .flow-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .flow-desc {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+    }
+
+    /* ── Biz card ── */
+    .biz-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .biz-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .biz-card:nth-child(1)::before { background: #f59e0b; }
+    .biz-card:nth-child(2)::before { background: #3b82f6; }
+    .biz-card:nth-child(3)::before { background: #ef4444; }
+    .biz-card:nth-child(4)::before { background: #8b5cf6; }
+    .biz-card:nth-child(5)::before { background: #10b981; }
+
+    .biz-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    .biz-card:nth-child(1) .biz-tag { background: var(--tag-1); color: #92400e; }
+    .biz-card:nth-child(2) .biz-tag { background: var(--tag-2); color: #1e40af; }
+    .biz-card:nth-child(3) .biz-tag { background: var(--tag-3); color: #9d174d; }
+    .biz-card:nth-child(4) .biz-tag { background: var(--tag-4); color: #3730a3; }
+    .biz-card:nth-child(5) .biz-tag { background: var(--tag-5); color: #065f46; }
+
+    .biz-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .biz-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .biz-desc strong { color: var(--text); font-weight: 600; }
+
+    .biz-highlight {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .biz-highlight strong { color: var(--accent); }
+
+    /* ── Line card ── */
+    .line-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 12px;
+    }
+    .line-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .line-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .line-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .line-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .line-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+
+    /* ── Case card ── */
+    .case-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 12px;
+    }
+    .case-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+      margin-bottom: 8px;
+    }
+    .case-tag.orange { background: var(--tag-1); color: #92400e; }
+    .case-tag.blue { background: var(--tag-2); color: #1e40af; }
+
+    .case-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .case-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .case-body strong { color: var(--text); font-weight: 600; }
+
+    /* ── Method box ── */
+    .method-box {
+      background: linear-gradient(135deg, #0c4a6e, #0369a1);
+      border-radius: var(--radius);
+      padding: 24px 18px;
+      color: white;
+      margin-top: 16px;
+    }
+    .method-box h3 {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bae6fd;
+      margin-bottom: 14px;
+    }
+    .method-list { list-style: none; }
+    .method-list li {
+      font-size: 13px;
+      color: #e0f2fe;
+      line-height: 1.8;
+      margin-bottom: 8px;
+      padding-left: 12px;
+      position: relative;
+    }
+    .method-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 5px;
+      height: 5px;
+      background: #38bdf8;
+      border-radius: 50%;
+    }
+    .method-list li:last-child { margin-bottom: 0; }
+    .method-list li strong { color: #7dd3fc; }
+
+    /* ── Action card ── */
+    .action-card {
+      background: var(--accent-bg);
+      border: 1px solid #ffedd5;
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      margin-top: 16px;
+    }
+    .action-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .action-list { list-style: none; }
+    .action-list li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .action-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .action-list li:last-child { margin-bottom: 0; }
+
+    /* ── Quote box ── */
+    .quote-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      margin-top: 32px;
+      text-align: center;
+    }
+    .quote-box p {
+      font-size: 13.5px;
+      color: #78350f;
+      line-height: 1.8;
+    }
+    .quote-box strong { color: #92400e; font-weight: 700; }
+
+    /* ── Source links ── */
+    .source-links {
+      background: #f3f4f6;
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-top: 32px;
+    }
+    .source-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .source-links ul { list-style: none; }
+    .source-links li { margin-bottom: 7px; }
+    .source-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 36px 20px 48px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.7;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--text-tertiary); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Scroll reveal ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .card, .quote-card, .highlight-card, .biz-card, .line-card, .case-card,
+      .flow-step, .method-box, .action-card, .quote-box, .source-links {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+      .card.visible, .quote-card.visible, .highlight-card.visible, .biz-card.visible,
+      .line-card.visible, .case-card.visible, .flow-step.visible, .method-box.visible,
+      .action-card.visible, .quote-box.visible, .source-links.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <span class="tag">秦岭AI白客松 · 第一届</span>
+    <h1>OPC切磋场 · 秦岭AI白客松</h1>
+    <p class="subtitle">朝朝 · AI选品·流量·自动化·一人多角色 · 2026年4月19日</p>
+    <div class="header-meta">
+      <span class="meta-chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        选品与流量
+      </span>
+      <span class="meta-chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M2 12h2M20 12h2"></path></svg>
+        自动化交付
+      </span>
+      <span class="meta-chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        一人多角色
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- Sticky Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#intro">前言</a>
+    <a href="#quotes">金句</a>
+    <a href="#biz-models">小生意</a>
+    <a href="#big-money">挣大钱</a>
+    <a href="#biz-lines">业务线</a>
+    <a href="#method">方法论</a>
+    <a href="#cases">案例</a>
+    <a href="#action">行动</a>
+  </div>
+</nav>
+
+<!-- Content -->
+<main class="main">
+
+  <!-- ── Intro ── -->
+  <section id="intro">
+    <div class="section-label">前言</div>
+    <h2>不是用 AI 就能赚钱，而是先找到商业模式</h2>
+    <p class="lead">朝朝分享了从信息差小生意到个人IP打造的完整路径，涵盖5种小生意模型、5条业务线，以及可复制的实战方法论。</p>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon orange">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">分享人</div>
+          <div class="card-title">朝朝 · OPC切磋场</div>
+        </div>
+      </div>
+      <div class="card-body">
+        朝朝是一位持续实践 AI 变现的创业者，专注于自媒体内容创作与 AI 工具应用。她通过多年实战，总结出了一套从"小生意"到"大钱"的完整路径，强调<strong>先找到商业模式，再用 AI 赋能</strong>的核心思路。
+      </div>
+    </div>
+
+    <div class="highlight-card">
+      <p><strong>核心观点：</strong>要关注过程，而不是结果。拆解 SOP 后，每一块都踏踏实实落地，结果自然会产生。</p>
+    </div>
+  </section>
+
+  <!-- ── Quotes ── -->
+  <section id="quotes">
+    <div class="section-label">金句</div>
+    <h2>三句话点透赚钱本质</h2>
+    <p class="lead">朝朝分享了三条最核心的观点，涵盖商业本质、个人发展和 AI 应用。</p>
+
+    <div class="quote-card">
+      <p class="quote-text">
+        <strong>「不是说用 AI 就能赚钱，而是要先找到商业模式，再用 AI 进行赋能。」</strong><br>
+        AI 是工具，商业模式是核心。没有清晰的变现路径，再好的工具也只是空中楼阁。
+      </p>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">
+        <strong>「要关注过程，而不是结果。拆解 SOP 后，每一块都踏踏实实落地，结果自然会产生。」</strong><br>
+        太多人盯着结果焦虑，却忽略了把每个环节做到位。SOP 拆解才是关键。
+      </p>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">
+        <strong>「要做感兴趣的事、擅长的事和持续可复制的事，可让 AI 帮你分析适合做什么。」</strong><br>
+        结合兴趣、擅长和可复制性三个维度，用 AI 做自我分析和定位，避免盲目跟风。
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Business Models ── -->
+  <section id="biz-models">
+    <div class="section-label">小生意案例</div>
+    <h2>五种低门槛变现路径</h2>
+    <p class="lead">朝朝列举了当前最易上手的五种小生意模型，利用信息差和 AI 工具实现快速变现。</p>
+
+    <div class="biz-card">
+      <span class="biz-tag">信息差</span>
+      <div class="biz-title">信息差生意</div>
+      <div class="biz-desc">
+        利用信息不对称获利，在春节期间卖九宫格模板、AI 写真婚纱照、播客计划表等。<strong>核心优势：成本低、有盈利、可批量。</strong>
+      </div>
+      <div class="biz-highlight">
+        <strong>关键点：</strong>选品要围绕"节假日""特定场景"等关键词，提前布局热点内容，获取平台流量扶持。
+      </div>
+    </div>
+
+    <div class="biz-card">
+      <span class="biz-tag">情绪价值</span>
+      <div class="biz-title">情绪价值服务</div>
+      <div class="biz-desc">
+        城市 CP 测试小程序，销量 <strong>9000+</strong>，单价 <strong>2 元</strong>；闲鱼上架选品中心做一件代发。
+      </div>
+      <div class="biz-highlight">
+        <strong>关键点：</strong>情绪价值产品天然具有传播属性，用户愿意为"有趣""共鸣"付费，AI 可辅助生成内容。
+      </div>
+    </div>
+
+    <div class="biz-card">
+      <span class="biz-tag">技能代工</span>
+      <div class="biz-title">技能代工与陪伴服务</div>
+      <div class="biz-desc">
+        提供代充、思维导图代做、PPT 代做、个人简历代做、减肥监督服务等。<strong>减肥监督服务单价 29.9 元</strong>。
+      </div>
+      <div class="biz-highlight">
+        <strong>关键点：</strong>把碎片化技能产品化，用 AI 提升交付效率，陪伴服务则强调"真人温度"。
+      </div>
+    </div>
+
+    <div class="biz-card">
+      <span class="biz-tag">虚拟资料</span>
+      <div class="biz-title">虚拟资料项目</div>
+      <div class="biz-desc">
+        小红书一键代发功能利好虚拟资料赛道。<strong>单价 9.9 元的虚拟资料一个月可卖出 300 多份</strong>，纯利润、无库存、自动发货。
+      </div>
+      <div class="biz-highlight">
+        <strong>关键点：</strong>虚拟资料具有"一次制作、无限售卖"的特性，是 AI 时代最适合普通人起步的轻资产项目。
+      </div>
+    </div>
+
+    <div class="biz-card">
+      <span class="biz-tag">内容自动</span>
+      <div class="biz-title">公众号自动写爆款</div>
+      <div class="biz-desc">
+        开发应用自动写爆款内容并自动上传到公众号，通过<strong>公众号广告</strong>获取收益。AI 负责内容生产，人负责审核发布。
+      </div>
+      <div class="biz-highlight">
+        <strong>关键点：</strong>把内容生产流程自动化，结合广告分成实现被动收入，需要一定技术能力但天花板很高。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Big Money ── -->
+  <section id="big-money">
+    <div class="section-label">挣大钱的方向</div>
+    <h2>三条高价值赛道</h2>
+    <p class="lead">朝朝分享了三种挣大钱的方向，从产品销售到个人 IP 打造。</p>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon orange">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">方向一</div>
+          <div class="card-title">大量售卖高性价比产品</div>
+        </div>
+      </div>
+      <div class="card-body">
+        把性价比高的东西大量售卖，通过规模效应实现盈利。<br>
+        <strong>核心逻辑：薄利多销 × 低边际成本 = 可观利润</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">方向二</div>
+          <div class="card-title">服务小众群体提供高价产品</div>
+        </div>
+      </div>
+      <div class="card-body">
+        找到细分市场的高需求人群，提供稀缺性高价值产品或服务。<br>
+        <strong>核心逻辑：小众市场 × 高客单价 = 精准利润</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon green">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">方向三</div>
+          <div class="card-title">个人 IP 路线</div>
+        </div>
+      </div>
+      <div class="card-body">
+        在 AI 时代和自媒体发展趋势下，通过自媒体打造个人 IP，建立信任，实现产品销售交付闭环。<br><br>
+        <strong>核心逻辑：内容沉淀信任 → 信任带来购买 → 购买形成收入</strong><br><br>
+        建议：注重长期坚持和迭代优化，不要期望一夜爆红，持续输出才是王道。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Business Lines ── -->
+  <section id="biz-lines">
+    <div class="section-label">五条业务线</div>
+    <h2>朝朝目前的盈利矩阵</h2>
+    <p class="lead">朝朝用实战验证了五条可复制的业务线，每条都有明确的变现路径。</p>
+
+    <div class="line-card">
+      <div class="line-header">
+        <div class="line-icon" style="background: #ffedd5;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        </div>
+        <div class="line-title">① 开发项目</div>
+      </div>
+      <div class="line-body">
+        <strong>模式：</strong>利用 Web Coding 工具（如 Cursor、Windsurf）接小程序单子和网站项目，通过<strong>流量主</strong>或<strong>售卖小程序模板</strong>盈利。<br><br>
+        <strong>优势：</strong>AI 编程工具大幅降低开发成本，接单效率提升 3-5 倍。
+      </div>
+    </div>
+
+    <div class="line-card">
+      <div class="line-header">
+        <div class="line-icon" style="background: #dbeafe;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="line-title">② 陪跑项目</div>
+      </div>
+      <div class="line-body">
+        <strong>模式：</strong>一对一帮助他人落地自媒体项目，提供<strong>定位分析、找对标账号、内容策划</strong>等辅助服务。<br><br>
+        <strong>优势：</strong>高客单价交付，人效比高，口碑传播快。
+      </div>
+    </div>
+
+    <div class="line-card">
+      <div class="line-header">
+        <div class="line-icon" style="background: #d1fae5;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <div class="line-title">③ 企业内训</div>
+      </div>
+      <div class="line-body">
+        <strong>模式：</strong>为企业培训 AI 相关知识，如龙虾工具培训，还曾为<strong>政府</strong>做过 AI 应用培训。<br><br>
+        <strong>优势：</strong>客单价高、需求稳定，适合有丰富实战经验的从业者。
+      </div>
+    </div>
+
+    <div class="line-card">
+      <div class="line-header">
+        <div class="line-icon" style="background: #f3e8ff;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </div>
+        <div class="line-title">④ 自媒体广告</div>
+      </div>
+      <div class="line-body">
+        <strong>模式：</strong>通过分享产品吸引客户购买，赚取广告费和销售佣金。<br><br>
+        <strong>优势：</strong>内容一旦发布，长期持续带来流量，被动收入潜力大。
+      </div>
+    </div>
+
+    <div class="line-card">
+      <div class="line-header">
+        <div class="line-icon" style="background: #fef3c7;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        </div>
+        <div class="line-title">⑤ 知识付费</div>
+      </div>
+      <div class="line-body">
+        <strong>模式：</strong>通过内容积累实现变现，推出付费课程、训练营、社群等产品。<br><br>
+        <strong>优势：</strong>边际成本接近零，内容越丰富产品越完善，复购率高。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Method ── -->
+  <section id="method">
+    <div class="section-label">实战方法论</div>
+    <h2>从 0 到 1 的变现路径</h2>
+    <p class="lead">朝朝总结了可复制的实战方法论，帮助普通人快速起步。</p>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <span class="flow-num">1</span>
+        <div class="flow-name">案例换信任</div>
+        <div class="flow-desc">用真实案例展示能力，建立专业形象</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">2</span>
+        <div class="flow-name">内容矩阵</div>
+        <div class="flow-desc">多平台分发，扩大影响力</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">3</span>
+        <div class="flow-name">设计产品</div>
+        <div class="flow-desc">根据用户需求设计阶梯定价产品</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">4</span>
+        <div class="flow-name">低转高</div>
+        <div class="flow-desc">低客单入口，高客单转化</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">5</span>
+        <div class="flow-name">圈子沉淀</div>
+        <div class="flow-desc">客户放入私域圈子</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">6</span>
+        <div class="flow-name">圈层教学</div>
+        <div class="flow-desc">高价值用户在圈子中持续付费</div>
+      </div>
+    </div>
+
+    <div class="method-box">
+      <h3>实战要点</h3>
+      <ul class="method-list">
+        <li>注重<strong>产品交付</strong>，交付质量决定口碑</li>
+        <li>加强<strong>知识沉淀</strong>，形成可复用的内容资产</li>
+        <li>做好<strong>客户服务</strong>，老客户转介绍是高价值获客渠道</li>
+        <li>沉淀 <strong>SOP</strong>，实现自动售票，降低人工依赖</li>
+        <li>找到<strong>信息差</strong>，不要想太多，开始去做</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Cases ── -->
+  <section id="cases">
+    <div class="section-label">产品案例</div>
+    <h2>两个可复制的实战案例</h2>
+    <p class="lead">朝朝用真实数据验证了她的方法论，以下是两个代表性案例。</p>
+
+    <div class="case-card">
+      <span class="case-tag orange">案例一</span>
+      <div class="case-title">外贸系列 Skill</div>
+      <div class="case-body">
+        开发的<strong>外贸 Skill</strong>解决前期获客问题，覆盖：<strong>客户开发、背调分析、个性化邮件编写、自动发布和更新</strong>。<br><br>
+        <strong>效果：</strong>发两三条视频就获得上百咨询，<strong>成交几十单</strong>，定价 <strong>600 元</strong>。<br><br>
+        这个案例说明：垂直行业的 AI 工具包有很高的付费意愿，关键是解决真实的业务痛点。
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag blue">案例二</span>
+      <div class="case-title">内容工程 · 一稿多发</div>
+      <div class="case-body">
+        利用 AI 实现<strong>一稿多发</strong>，将同一选题做成：图文、公众号文章、小红书图文和视频脚本。<br><br>
+        <strong>效果：</strong>选题获得 <strong>700+ 点赞</strong>，公众号达到 <strong>几千阅读量</strong>。<br><br>
+        内容的价值在于复用，同一个核心观点通过不同形式分发到不同平台，可以最大化内容价值。
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon purple">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">自律监督</div>
+          <div class="card-title">自媒体监督群</div>
+        </div>
+      </div>
+      <div class="card-body">
+        朝朝还建立了<strong>自媒体监督群</strong>，帮助参与者：<br>
+        <strong>1. 开通自媒体账号</strong>（迈出第一步最重要）<br>
+        <strong>2. 完成账号装修、定位和对标账号选择</strong><br>
+        <strong>3. 进行爆款内容二创</strong><br><br>
+        核心强调：找到信息差，别想太多，开始去做。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Action ── -->
+  <section id="action">
+    <div class="section-label">后续行动</div>
+    <h2>朝朝给普通人的建议</h2>
+    <p class="lead">结合本次分享内容，整理出以下可执行的行动清单。</p>
+
+    <div class="action-card">
+      <h3>立刻可以做的 5 件事</h3>
+      <ul class="action-list">
+        <li><strong>用 AI 做自我定位分析：</strong>围绕"感兴趣""擅长""可复制"三个维度，让 AI 帮你梳理适合自己的赛道</li>
+        <li><strong>选择一个信息差项目起步：</strong>九宫格模板、虚拟资料、AI 写真等，选一个立刻开始</li>
+        <li><strong>开通自媒体账号：</strong>不要等到"准备好了"再开始，先开通、先发布、先迭代</li>
+        <li><strong>找对标账号拆解 SOP：</strong>找到 3-5 个同领域优秀账号，拆解他们的内容框架和变现路径</li>
+        <li><strong>加入监督群持续行动：</strong>一个人走得快，一群人走得远，找同伴互相监督</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Quote ── -->
+  <section id="quote">
+    <div class="quote-box">
+      <p>
+        <strong>做感兴趣的事、擅长的事和持续可复制的事。</strong><br><br>
+        用 AI 帮你分析适合做什么，找到信息差，立刻开始去做。<br>
+        不是用 AI 就能赚钱，而是先找到商业模式，再用 AI 进行赋能。<br><br>
+        <strong>要关注过程，而不是结果。拆解 SOP 后，每一块都踏踏实实落地，结果自然会产生。</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Source Links ── -->
+  <div class="source-links">
+    <p class="source-label">📄 原文出处</p>
+    <ul>
+      <li><a href="https://ranuox3qst4.feishu.cn/minutes/obcn4zd59x88l1fz34sybm4v" target="_blank">妙记（可回看完整视频）</a></li>
+      <li><a href="https://ranuox3qst4.feishu.cn/docx/Cg7Gdb5mboNFEaxoZE9c8mRVnul" target="_blank">文字记录（完整逐字稿）</a></li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <p>秦岭AI白客松 · 第一届</p>
+  <p style="margin-top: 4px;">OPC切磋场 · 2026年4月19日</p>
+  <p style="margin-top: 12px;"><a href="hackathon-landing-mobile.html">← 返回活动主页</a></p>
+</footer>
+
+<script>
+  // Scroll reveal
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.card, .quote-card, .highlight-card, .biz-card, .line-card, .case-card, .flow-step, .method-box, .action-card, .quote-box, .source-links').forEach(el => io.observe(el));
+  }
+
+  // Active nav
+  const links = document.querySelectorAll('.nav a');
+  const sections = document.querySelectorAll('section[id]');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => navObs.observe(s));
+</script>
+
+</body>
+</html>

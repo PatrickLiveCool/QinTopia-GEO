@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>问题地图 · 秦岭AI白客松</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f7f4;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-tertiary: #8a8a8a;
+      --border: #e8e5e0;
+      --track-1: #0f766e;
+      --track-1-bg: #f0fdfa;
+      --track-1-border: #99f6e4;
+      --track-2: #7c3aed;
+      --track-2-bg: #f5f3ff;
+      --track-2-border: #ddd6fe;
+      --track-3: #0369a1;
+      --track-3-bg: #f0f9ff;
+      --track-3-border: #bae6fd;
+      --track-4: #c2410c;
+      --track-4-bg: #fff7ed;
+      --track-4-border: #fed7aa;
+      --cross: #374151;
+      --cross-bg: #f3f4f6;
+      --cross-border: #d1d5db;
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(150deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 44px 20px 48px;
+    }
+    .header-inner { max-width: 640px; margin: 0 auto; }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(1.4rem, 6.5vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      font-size: 13.5px;
+      color: #94a3b8;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    .stats {
+      display: flex;
+      gap: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .stat-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 247, 244, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav a {
+      flex-shrink: 0;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 100px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav a:hover { color: var(--text); background: #fff; }
+    .nav a.active { background: #1e293b; color: white; border-color: #1e293b; }
+
+    /* ── Main ── */
+    .main { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Section ── */
+    section { padding: 36px 0 0; }
+    section + section { padding-top: 0; }
+
+    /* ── Intro ── */
+    .intro-card {
+      background: #1e293b;
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      margin-bottom: 32px;
+    }
+    .intro-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 10px;
+    }
+    .intro-card p {
+      font-size: 13.5px;
+      color: #94a3b8;
+      line-height: 1.75;
+    }
+    .intro-card strong { color: #f1f5f9; font-weight: 600; }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    h2 {
+      font-size: clamp(1.1rem, 5vw, 1.4rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .section-lead {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    /* ── Track card ── */
+    .track-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .track-header {
+      padding: 20px 18px 16px;
+    }
+    .track-card[data-track="opc"] .track-header { background: var(--track-1-bg); border-bottom: 1px solid var(--track-1-border); }
+    .track-card[data-track="money"] .track-header { background: var(--track-2-bg); border-bottom: 1px solid var(--track-2-border); }
+    .track-card[data-track="agent"] .track-header { background: var(--track-3-bg); border-bottom: 1px solid var(--track-3-border); }
+    .track-card[data-track="workflow"] .track-header { background: var(--track-4-bg); border-bottom: 1px solid var(--track-4-border); }
+
+    .track-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+      margin-bottom: 8px;
+      color: white;
+    }
+    .track-card[data-track="opc"] .track-badge { background: var(--track-1); }
+    .track-card[data-track="money"] .track-badge { background: var(--track-2); }
+    .track-card[data-track="agent"] .track-badge { background: var(--track-3); }
+    .track-card[data-track="workflow"] .track-badge { background: var(--track-4); }
+
+    .track-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+    .track-tags {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .track-body { padding: 18px; }
+
+    /* ── Problem tags ── */
+    .track-problems-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+    }
+    .track-problems {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .problem-tag {
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 11px;
+      line-height: 1.5;
+    }
+
+    /* ── Prompt ── */
+    .track-prompt-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .track-prompt {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      border-left: 3px solid;
+    }
+    .track-card[data-track="opc"] .track-prompt { border-color: var(--track-1); background: var(--track-1-bg); }
+    .track-card[data-track="money"] .track-prompt { border-color: var(--track-2); background: var(--track-2-bg); }
+    .track-card[data-track="agent"] .track-prompt { border-color: var(--track-3); background: var(--track-3-bg); }
+    .track-card[data-track="workflow"] .track-prompt { border-color: var(--track-4); background: var(--track-4-bg); }
+    .track-prompt p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .track-prompt strong { color: var(--text); font-weight: 600; }
+
+    /* ── Cross ── */
+    .cross-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 12px;
+    }
+    .cross-num {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .cross-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+    .cross-suggest {
+      background: var(--cross-bg);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+    .cross-suggest p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      background: linear-gradient(135deg, #0f766e, #0369a1);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      color: white;
+      margin: 36px 0 40px;
+    }
+    .cta h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: white;
+    }
+    .cta p {
+      font-size: 13px;
+      color: #bae6fd;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #0f766e;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 11px 24px;
+      border-radius: 100px;
+      text-decoration: none;
+    }
+    .cta-desktop {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #7dd3fc;
+    }
+    .cta-desktop a {
+      color: #7dd3fc;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 20px 48px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--text-tertiary); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Scroll reveal ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .intro-card, .track-card, .cross-card, .cta { opacity: 0; transform: translateY(12px); transition: opacity 0.4s ease, transform 0.4s ease; }
+      .intro-card.visible, .track-card.visible, .cross-card.visible, .cta.visible { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="eyebrow">秦岭AI白客松 · 2026</div>
+    <h1>你的问题，属于哪一场？</h1>
+    <p class="subtitle">30 条真实问题，映射到 4 个切磋场，让你一眼找到答案归属。</p>
+    <div class="stats">
+      <div>
+        <div class="stat-num">30</div>
+        <div class="stat-label">条真实问题</div>
+      </div>
+      <div>
+        <div class="stat-num">4</div>
+        <div class="stat-label">个切磋场</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">个横向议题</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#overview">概览</a>
+    <a href="#opc">OPC 一人公司</a>
+    <a href="#money">AI 搞钱</a>
+    <a href="#agent">Agent</a>
+    <a href="#workflow">AI 工作流</a>
+    <a href="#cross">横向议题</a>
+  </div>
+</nav>
+
+<!-- Content -->
+<main class="main">
+
+  <!-- ── Intro ── -->
+  <section id="overview">
+    <div class="intro-card">
+      <h3>最强的两个信号</h3>
+      <p>
+        <strong>1. 大家已经不是"要不要用 AI"，而是"怎么让 AI 真正进场"。</strong>
+        <br><br>
+        <strong>2. 大家最缺的不是再听一个新概念，而是：怎么跑顺、怎么变现、怎么搭起来、怎么别白折腾。</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Tracks ── -->
+  <section id="tracks">
+    <div class="section-label">4 个切磋场 · 找到你的归属</div>
+
+    <!-- Track 1: OPC -->
+    <div class="track-card" data-track="opc" id="opc">
+      <div class="track-header">
+        <span class="track-badge">OPC · 一人公司</span>
+        <div class="track-title">一个人怎么借助 AI，把内容、产品、获客、交付跑顺</div>
+        <div class="track-tags">一人公司 · 个体经营 · 内容运营 · 个人 IP · 创作表达</div>
+      </div>
+      <div class="track-body">
+        <div class="track-problems-label">这类问题在这场</div>
+        <div class="track-problems">
+          <span class="problem-tag">帮我精准选品获客并推广</span>
+          <span class="problem-tag">替我选品、运行店铺、对接客户，让 AI 能执行指令</span>
+          <span class="problem-tag">让 AI 定时采集爆款笔记并整理为可用素材</span>
+          <span class="problem-tag">自动剪视频、整理活动素材、生成宣传物料</span>
+          <span class="problem-tag">了解我自己，给我精准的 IP / 自媒体定位</span>
+          <span class="problem-tag">让 AI 写长文时不再角色串乱、设定崩塌</span>
+          <span class="problem-tag">龙虾应用和辅助 OPC，安装就卡住了</span>
+          <span class="problem-tag">怎么用 AI 提升表达质量，又不把自己的声音和风格弄丢</span>
+        </div>
+        <div class="track-prompt-label">主持人追问方向</div>
+        <div class="track-prompt">
+          <p>你现在是卡在"不会做"，还是卡在"做出来不稳定"？<br>
+          你真正希望 AI 替你接住的是哪一段：选题、写稿、分发、还是交付？</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track 2: Money -->
+    <div class="track-card" data-track="money" id="money">
+      <div class="track-header">
+        <span class="track-badge">AI 搞钱 · 变现</span>
+        <div class="track-title">别聊鸡汤，直接聊怎么把 AI 变成收入</div>
+        <div class="track-tags">变现 · 拓客 · 成交 · 交易策略 · 流量变收入</div>
+      </div>
+      <div class="track-body">
+        <div class="track-problems-label">这类问题在这场</div>
+        <div class="track-problems">
+          <span class="problem-tag">交易 / 策略搭建，不知道怎么建立体系</span>
+          <span class="problem-tag">怎么通过 AI 变现，做了内容但流量不好</span>
+          <span class="problem-tag">拓客，让 AI 做成交</span>
+          <span class="problem-tag">AI 变现 / 经济收入</span>
+          <span class="problem-tag">了解 AI 变现，提升效率并真正有用</span>
+          <span class="problem-tag">没有现成产品和个人 IP，怎么靠 AI 赚到第一笔钱</span>
+          <span class="problem-tag">能够挣钱的业务场景</span>
+        </div>
+        <div class="track-prompt-label">主持人追问方向</div>
+        <div class="track-prompt">
+          <p>你说的"变现"，是流量变现、产品变现，还是服务变现？<br>
+          你想通过 AI 赚钱，是先拿结果，还是先搭长期业务能力？</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track 3: Agent -->
+    <div class="track-card" data-track="agent" id="agent">
+      <div class="track-header">
+        <span class="track-badge">Agent & Vibe Coding</span>
+        <div class="track-title">从"会聊"到"会干"，重点是怎么把任务拆成流程</div>
+        <div class="track-tags">Agent 搭建 · 自动化 · 部署 · API 接入 · 从对话到流程</div>
+      </div>
+      <div class="track-body">
+        <div class="track-problems-label">这类问题在这场</div>
+        <div class="track-problems">
+          <span class="problem-tag">想实现自动化，卡在 Agent 部署</span>
+          <span class="problem-tag">抖音电商售后自动化，实现公司简单化</span>
+          <span class="problem-tag">做符合自己需求的、有记忆的 Agent</span>
+          <span class="problem-tag">如何让 Agent 成为我的生产力工具</span>
+          <span class="problem-tag">如何把 AI 和 Agent 的使用成本压到可长期承担</span>
+          <span class="problem-tag">新手第一次部署 Agent，卡在权限、环境和 API 接入</span>
+        </div>
+        <div class="track-prompt-label">主持人追问方向</div>
+        <div class="track-prompt">
+          <p>你现在要的是真 Agent，还是一个稳定自动化流程？<br>
+          你想让 Agent 替你做的是单个动作，还是多步任务？</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track 4: Workflow -->
+    <div class="track-card" data-track="workflow" id="workflow">
+      <div class="track-header">
+        <span class="track-badge">团队 AI 工作流</span>
+        <div class="track-title">AI 不是工具列表，而是要进入真实工作流</div>
+        <div class="track-tags">工作流 · 连续性 · 知识沉淀 · 协作提效 · 进入业务流</div>
+      </div>
+      <div class="track-body">
+        <div class="track-problems-label">这类问题在这场</div>
+        <div class="track-problems">
+          <span class="problem-tag">为什么问答式 AI 一到复杂任务就失忆</span>
+          <span class="problem-tag">如何让 AI 不是聊完就散，而是真正帮我沉淀下来</span>
+          <span class="problem-tag">如何降低 AI 在识图、释文和专业问答里的幻觉</span>
+          <span class="problem-tag">在 AI 迭代这么快的情况下，普通人到底该追什么、不该追什么</span>
+          <span class="problem-tag">为什么 AI 经常不是帮我省事，而是让我更忙、返工更多</span>
+          <span class="problem-tag">如何避免在选择题和消费决策上被 AI 误导、越问越纠结</span>
+        </div>
+        <div class="track-prompt-label">主持人追问方向</div>
+        <div class="track-prompt">
+          <p>这件事到底适不适合交给 AI？<br>
+          为什么它看起来省事，最后却没有真的进入工作流？</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Cross ── -->
+  <section id="cross" style="padding-top: 36px;">
+    <div class="section-label">横向议题 · 贯穿全场</div>
+
+    <div class="cross-card">
+      <div class="cross-num">问题 21</div>
+      <div class="cross-title">如何让 AI 少一点讨好型人格，多一点客观判断</div>
+      <div class="cross-suggest">
+        <p>建议放在团队工作流场或综合 Q&A 中讨论"AI 的判断边界"</p>
+      </div>
+    </div>
+
+    <div class="cross-card">
+      <div class="cross-num">问题 29</div>
+      <div class="cross-title">陪伴型 AI 怎样才能不只是会安慰，而是真能承接情绪</div>
+      <div class="cross-suggest">
+        <p>建议放在自由交流 / 收尾圆桌，不建议作为单场主轴</p>
+      </div>
+    </div>
+
+    <div class="cross-card">
+      <div class="cross-num">问题 30</div>
+      <div class="cross-title">当 AI 已经能做出比我更好的结果时，我该怎么学习、署名和建立成就感</div>
+      <div class="cross-suggest">
+        <p>建议放在收尾讨论，连接"AI 时代人的价值和学习方式"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <div class="cta">
+    <h2>找到你的场了吗？</h2>
+    <p>30 条问题不平均分散，而是集中在 4 个方向。现场切磋一定要少讲抽象趋势，多回应真实问题。</p>
+    <a href="hackathon-schedule-mobile.html" class="cta-btn">查看完整活动信息 →</a>
+    <div class="cta-desktop"><a href="hackathon-problem-map-mobile.html">桌面版 →</a></div>
+  </div>
+
+</main>
+
+<footer>
+  <p>秦岭AI白客松 · 问题归类与切磋场映射</p>
+  <p style="margin-top: 4px;">2026年4月19日 · 30条问题</p>
+  <p style="margin-top: 12px;"><a href="hackathon-pain-points-whitepaper-mobile.html">槽点白皮书</a> · <a href="hackathon-landing-mobile.html">活动主页</a></p>
+</footer>
+
+<script>
+  // Scroll reveal
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.intro-card, .track-card, .cross-card, .cta').forEach(el => io.observe(el));
+  }
+
+  // Active nav
+  const links = document.querySelectorAll('.nav a');
+  const targets = ['overview', 'opc', 'money', 'agent', 'workflow', 'cross'];
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  targets.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+</script>
+
+</body>
+</html>

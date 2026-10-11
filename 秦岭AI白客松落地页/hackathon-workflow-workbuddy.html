@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workbuddy功能使用及开发分享 · 秦岭AI白客松</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f6;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-tertiary: #8a8a8a;
+      --border: #e8e5e0;
+      --accent: #ea580c;
+      --accent-light: #ffedd5;
+      --accent-bg: #fff7ed;
+      --success: #059669;
+      --success-light: #d1fae5;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --blue: #2563eb;
+      --blue-light: #dbeafe;
+      --tag-1: #fef3c7;
+      --tag-2: #dbeafe;
+      --tag-3: #fce7f3;
+      --tag-4: #e0e7ff;
+      --tag-5: #ccfbf1;
+      --tag-6: #fee2e2;
+      --radius: 18px;
+      --radius-sm: 10px;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(150deg, #1a1a1a 0%, #374151 100%);
+      color: white;
+      padding: 48px 24px 52px;
+      position: relative;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .header-inner { position: relative; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--purple);
+      background: var(--purple-light);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 6.5vw, 2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #d1d5db;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .speaker-info {
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px 18px;
+    }
+    .speaker-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+    .speaker-text { text-align: left; }
+    .speaker-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+    }
+    .speaker-role {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    /* ── Sticky Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250,249,246,0.94);
+      backdrop-filter: blur(16px);
+      -webkit-overflow-scrolling: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav a {
+      flex-shrink: 0;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 100px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav a:hover {
+      color: var(--purple);
+      background: var(--purple-light);
+    }
+    .nav a.active {
+      color: var(--purple);
+      background: var(--purple-light);
+      border-color: #c4b5fd;
+    }
+
+    /* ── Main ── */
+    .main { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Section ── */
+    section { padding: 40px 0 0; }
+    section + section { padding-top: 0; }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 10px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 2px;
+      background: var(--purple);
+      border-radius: 2px;
+    }
+    h2 {
+      font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .lead {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .card-icon {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon.orange { background: #ffedd5; }
+    .card-icon.blue { background: #dbeafe; }
+    .card-icon.slate { background: #f1f5f9; }
+    .card-icon.green { background: #d1fae5; }
+    .card-icon.purple { background: #ede9fe; }
+    .card-icon.red { background: #fee2e2; }
+
+    .card-meta { flex: 1; }
+    .card-speaker {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .card-body strong { color: var(--text); font-weight: 600; }
+
+    /* ── Quote Cards ── */
+    .quote-card {
+      background: linear-gradient(135deg, #faf5ff, #ede9fe);
+      border: 1px solid #ddd6fe;
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      margin-bottom: 16px;
+    }
+    .quote-card .quote-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: #6d28d9;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .quote-card .quote-text {
+      font-size: 14.5px;
+      color: #5b21b6;
+      line-height: 1.8;
+      font-weight: 500;
+    }
+
+    /* ── Step Cards ── */
+    .step-section { margin-top: 16px; }
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+    }
+    .step-card:nth-child(1)::before { background: #f59e0b; }
+    .step-card:nth-child(2)::before { background: #3b82f6; }
+    .step-card:nth-child(3)::before { background: #ef4444; }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+    .step-card:nth-child(1) .step-num { background: #f59e0b; }
+    .step-card:nth-child(2) .step-num { background: #3b82f6; }
+    .step-card:nth-child(3) .step-num { background: #ef4444; }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+    }
+    .step-body {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .step-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 6px; }
+
+    /* ── Feature Cards ── */
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 12px;
+    }
+    .feature-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .feature-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .feature-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── Comparison Table ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead {
+      background: #f8f7f4;
+    }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 16px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #fdfcfb; }
+
+    /* ── Pricing Cards ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .pricing-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .pricing-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .pricing-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+    .pricing-desc {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+    }
+
+    /* ── Insight Box ── */
+    .insight-box {
+      background: linear-gradient(135deg, #4c1d95, #6d28d9);
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      color: white;
+      margin-top: 16px;
+    }
+    .insight-box h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e9d5ff;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+    }
+    .insight-list {
+      list-style: none;
+    }
+    .insight-list li {
+      font-size: 14px;
+      color: #f3e8ff;
+      line-height: 1.8;
+      margin-bottom: 10px;
+      padding-left: 14px;
+      position: relative;
+    }
+    .insight-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 5px;
+      height: 5px;
+      background: #c4b5fd;
+      border-radius: 50%;
+    }
+    .insight-list li:last-child { margin-bottom: 0; }
+
+    /* ── Tip Box ── */
+    .tip-box {
+      background: var(--success-light);
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-top: 16px;
+    }
+    .tip-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 10px;
+    }
+    .tip-box ul {
+      list-style: none;
+    }
+    .tip-box li {
+      font-size: 13px;
+      color: #047857;
+      line-height: 1.7;
+      margin-bottom: 8px;
+      padding-left: 14px;
+      position: relative;
+    }
+    .tip-box li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .tip-box li:last-child { margin-bottom: 0; }
+
+    /* ── Source Links ── */
+    .source-links {
+      background: #f3f4f6;
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      margin-top: 40px;
+    }
+    .source-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+    .source-links ul {
+      list-style: none;
+    }
+    .source-links li {
+      margin-bottom: 8px;
+    }
+    .source-links a {
+      color: var(--purple);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .source-links a:hover { opacity: 0.75; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 44px 24px 56px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    footer a {
+      color: #94a3b8;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    footer a:hover { color: var(--purple); }
+
+    /* ── Animations ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .card, .quote-card, .step-card, .feature-card, .pricing-card, .insight-box, .tip-box, .table-wrap, .source-links {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+      .card.visible, .quote-card.visible, .step-card.visible, .feature-card.visible, .pricing-card.visible, .insight-box.visible, .tip-box.visible, .table-wrap.visible, .source-links.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <span class="tag">秦岭AI白客松 · 第一届</span>
+    <h1>Workbuddy功能使用及开发分享</h1>
+    <p class="subtitle">豆包+Workbuddy双剑合璧，高效AI开发实战</p>
+    <div class="speaker-info">
+      <div class="speaker-avatar">WB</div>
+      <div class="speaker-text">
+        <div class="speaker-name">Workbuddy 深度用户</div>
+        <div class="speaker-role">AI开发实践者</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Sticky Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#quotes">金句</a>
+    <a href="#workflow">开发流程</a>
+    <a href="#features">功能特点</a>
+    <a href="#pricing">积分体系</a>
+    <a href="#compare">豆包对比</a>
+    <a href="#tips">使用技巧</a>
+  </div>
+</nav>
+
+<!-- Content -->
+<main class="main">
+
+  <!-- ── Quotes ── -->
+  <section id="quotes">
+    <div class="section-label">金句摘录</div>
+    <h2>Workbuddy开发的核心心法</h2>
+    <p class="lead">来自2026年4月19日的切磋场分享，以下三句话是本次分享的核心观点：</p>
+
+    <div class="quote-card">
+      <div class="quote-num">金句 01</div>
+      <div class="quote-text">
+        对场景最熟悉的一定是你本人。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-num">金句 02</div>
+      <div class="quote-text">
+        用豆包生成一个东西以后，让 Workbuddy 第二次给你验证这个逻辑是否 OK，再结合自身记忆判断是否吻合，二次校正完后再去开发。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-num">金句 03</div>
+      <div class="quote-text">
+        明确自己的目标、需求痛点和最终想实现的目标，基于此让 AI 给出方案，再确认方案是否合理、效果是否符合预期。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Workflow ── -->
+  <section id="workflow">
+    <div class="section-label">项目开发流程</div>
+    <h2>豆包 + Workbuddy 三步走</h2>
+    <p class="lead">分享者总结的高效AI开发工作流：</p>
+
+    <div class="step-section">
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div class="step-title">豆包辅助生成文档</div>
+        </div>
+        <div class="step-body">
+          <strong>操作步骤：</strong>
+          <ul style="margin-left: 16px; margin-top: 8px;">
+            <li>将自身需求告知豆包</li>
+            <li>豆包生成程序员能理解的专业语言</li>
+            <li>给出功能补充建议和与Workbuddy沟通的建议</li>
+            <li>形成Markdown文档</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div class="step-title">Workbuddy开发</div>
+        </div>
+        <div class="step-body">
+          <strong>操作步骤：</strong>
+          <ul style="margin-left: 16px; margin-top: 8px;">
+            <li>将豆包生成的Markdown文档喂给Workbuddy</li>
+            <li>Workbuddy基于此进行开发</li>
+            <li>过程中出现问题（网络中断、数据缺失等）可补充信息后继续完成</li>
+            <li>最终Workbuddy生成可用网页</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <div class="step-title">开发者验证校正</div>
+        </div>
+        <div class="step-body">
+          <strong>操作步骤：</strong>
+          <ul style="margin-left: 16px; margin-top: 8px;">
+            <li>开发者作为检查人和决策人</li>
+            <li>不断与AI沟通，检查生成的结果是否符合预期</li>
+            <li>若不符合，及时反馈并让其调整</li>
+            <li>经过多次沟通和调整，最终得到功能完善的网页</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon purple">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">真实案例</div>
+          <div class="card-title">订单统计网页开发</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <strong>功能亮点：</strong>
+        <ul style="margin-left: 16px; margin-top: 8px;">
+          <li>上传入口、总订单数、利润计算公式、退货率</li>
+          <li>爆品分析、店铺优化建议</li>
+          <li>可根据不同用户需求进行个性化设置</li>
+          <li>用户可在已有功能基础上进行叠加或删减</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section id="features">
+    <div class="section-label">Workbuddy功能特点</div>
+    <h2>三大核心优势</h2>
+    <p class="lead">Workbuddy相比其他AI开发工具的独特之处：</p>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon" style="background: #dbeafe;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </div>
+        <div class="feature-name">本地化部署</div>
+      </div>
+      <div class="feature-desc">
+        数据和开发成果都在本地，适合有隐私数据需求的用户。对于有保密要求的企业数据，可确保数据安全。
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon" style="background: #fef3c7;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </div>
+        <div class="feature-name">功能场景丰富</div>
+      </div>
+      <div class="feature-desc">
+        原先是代码开发环境，现已新增日常办公场景，提供更友好的交互体验。可用于日常问答和文档梳理。
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon" style="background: #d1fae5;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="feature-name">TOKEN机制</div>
+      </div>
+      <div class="feature-desc">
+        消耗TOKEN，无其他费用。签到每天送100积分，签到满7天一次性送1000积分，邀请一人得100积分。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pricing ── -->
+  <section id="pricing">
+    <div class="section-label">积分使用与会员</div>
+    <h2>灵活的使用成本</h2>
+    <p class="lead">Workbuddy提供多种使用方式，满足不同用户需求：</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-title">每日签到</div>
+        <div class="pricing-value">100</div>
+        <div class="pricing-desc">每天签到获取</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-title">连续7天</div>
+        <div class="pricing-value">+1000</div>
+        <div class="pricing-desc">一次性赠送积分</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-title">邀请好友</div>
+        <div class="pricing-value">+100</div>
+        <div class="pricing-desc">每邀请一人</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-title">高级会员</div>
+        <div class="pricing-value">¥58</div>
+        <div class="pricing-desc">购买后送TOKEN</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-body">
+        <strong>使用建议：</strong><br><br>
+        <div style="margin-bottom: 12px;">
+          <span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; margin-right: 8px;">简单使用</span>
+          日常签到获取的积分通常足够
+        </div>
+        <div style="margin-bottom: 12px;">
+          <span style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; margin-right: 8px;">深度使用</span>
+          积分消耗较快，可考虑购买高级会员
+        </div>
+        <div>
+          <span style="background: #ede9fe; color: #5b21b6; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; margin-right: 8px;">重度使用</span>
+          深度使用者可能需额外购买加油包
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Compare ── -->
+  <section id="compare">
+    <div class="section-label">工具对比</div>
+    <h2>豆包 vs Workbuddy</h2>
+    <p class="lead">两款工具各有优势，配合使用效果最佳：</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>对比项</th>
+            <th>豆包</th>
+            <th>Workbuddy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>交互便利度</strong></td>
+            <td>有APP和网页模式，交互丝滑且免费</td>
+            <td>无手机端，对话需打字</td>
+          </tr>
+          <tr>
+            <td><strong>费用</strong></td>
+            <td>免费</td>
+            <td>消耗TOKEN</td>
+          </tr>
+          <tr>
+            <td><strong>逻辑精准度</strong></td>
+            <td>能达到八九十分，但不一定最精准</td>
+            <td>可对豆包生成内容二次验证和校正</td>
+          </tr>
+          <tr>
+            <td><strong>适用场景</strong></td>
+            <td>需求理解、思路梳理、方案生成</td>
+            <td>实际开发、代码执行、结果验证</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight-box">
+      <h3>推荐用法</h3>
+      <ul class="insight-list">
+        <li><strong>第一步：</strong>先用豆包生成初步内容和功能建议</li>
+        <li><strong>第二步：</strong>再用Workbuddy验证逻辑是否OK，二次校正</li>
+        <li><strong>第三步：</strong>最后开发，结合自身判断完成项目</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Tips ── -->
+  <section id="tips">
+    <div class="section-label">使用技巧</div>
+    <h2>高效使用Workbuddy</h2>
+    <p class="lead">分享者总结的实战经验：</p>
+
+    <div class="tip-box">
+      <h4>📱 软件使用指南</h4>
+      <ul>
+        <li>通过官网下载APP，使用邀请码登录</li>
+        <li>苹果电脑使用友好，关机后也可通过微信对话</li>
+        <li>Windows系统需保持开机状态</li>
+        <li>登录后记得每天打卡签到获取积分</li>
+      </ul>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-header">
+        <div class="card-icon purple">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">进阶功能</div>
+          <div class="card-title">Skills功能</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <strong>功能说明：</strong>Skills功能可作为全职助手，让AI学习各种功能并安装<br><br>
+        <strong>使用建议：</strong>
+        <ul style="margin-left: 16px; margin-top: 8px;">
+          <li>功能完成后记得沉淀Skills</li>
+          <li>将使用的工具和技能汇总生成Skills</li>
+          <li>方便下次直接调用，扩充Workbuddy的能力</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-header">
+        <div class="card-icon blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">开发心法</div>
+          <div class="card-title">核心原则</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <strong>第一原则：</strong>对场景最熟悉的一定是你本人<br><br>
+        <strong>第二原则：</strong>用豆包生成后，让Workbuddy二次验证逻辑是否OK<br><br>
+        <strong>第三原则：</strong>明确目标、需求痛点和最终目标，基于此让AI给出方案<br><br>
+        <strong>第四原则：</strong>确认方案是否合理、效果是否符合预期
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Source Links ── -->
+  <section id="source">
+    <div class="source-links">
+      <p class="source-label">📄 原文出处</p>
+      <ul>
+        <li><a href="https://ranuox3qst4.feishu.cn/minutes/obcn48i26sdnv3p1nzhn42kj" target="_blank">妙记（可回看完整视频）</a></li>
+        <li><a href="https://ranuox3qst4.feishu.cn/docx/P47rdf6ixoMIC4xcMj5cUj95nEg" target="_blank">文字记录（完整逐字稿）</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>秦岭AI白客松 · 第一届 · 团队工作流&AI协作切磋场</p>
+  <p style="margin-top: 4px;">2026年4月19日 16:40-17:11 · Workbuddy功能分享</p>
+  <p style="margin-top: 12px;"><a href="hackathon-landing.html">← 返回活动主页</a></p>
+</footer>
+
+<script>
+  // Scroll reveal
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.card, .quote-card, .step-card, .feature-card, .pricing-card, .insight-box, .tip-box, .table-wrap, .source-links').forEach(el => io.observe(el));
+  }
+
+  // Active nav
+  const links = document.querySelectorAll('.nav a');
+  const sections = document.querySelectorAll('section[id]');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  sections.forEach(s => navObs.observe(s));
+</script>
+
+<script>
+(function() {
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && window.innerWidth < 1200);
+  var url = window.location.href;
+  if (isMobile && !url.includes('-mobile.html') && !url.includes('localhost') && !url.includes('file://')) {
+    var mUrl = url.replace('hackathon-workflow-workbuddy.html', 'hackathon-workflow-workbuddy-mobile.html');
+    window.location.replace(mUrl);
+  }
+})();
+</script>
+
+</body>
+</html>

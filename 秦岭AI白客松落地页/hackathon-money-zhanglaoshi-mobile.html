@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI搞钱切磋场 · 秦岭AI白客松</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f6;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-tertiary: #8a8a8a;
+      --border: #e8e5e0;
+      --accent: #ea580c;
+      --accent-light: #ffedd5;
+      --accent-bg: #fff7ed;
+      --success: #059669;
+      --success-light: #d1fae5;
+      --tag-1: #fef3c7;
+      --tag-2: #dbeafe;
+      --tag-3: #fce7f3;
+      --tag-4: #e0e7ff;
+      --tag-5: #ccfbf1;
+      --tag-6: #f3e8ff;
+      --radius: 18px;
+      --radius-sm: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(150deg, #1a1a1a 0%, #374151 100%);
+      color: white;
+      padding: 44px 20px 48px;
+      position: relative;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .header-inner { max-width: 640px; margin: 0 auto; position: relative; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(1.3rem, 6.5vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #d1d5db;
+      background: rgba(255,255,255,0.08);
+      padding: 5px 12px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .meta-chip svg { opacity: 0.7; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250, 249, 246, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav a {
+      flex-shrink: 0;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 100px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav a:hover { color: var(--accent); background: var(--accent-light); }
+    .nav a.active { color: var(--accent); background: var(--accent-light); border-color: #fed7aa; }
+
+    /* ── Main ── */
+    .main { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Section ── */
+    section { padding: 36px 0 0; }
+    section + section { padding-top: 0; }
+
+    /* ── Section label ── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    h2 {
+      font-size: clamp(1.1rem, 5vw, 1.4rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .section-lead {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .card-icon {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon.orange { background: var(--accent-light); }
+    .card-icon.blue { background: #dbeafe; }
+    .card-icon.green { background: #d1fae5; }
+    .card-icon.purple { background: #f3e8ff; }
+    .card-icon.slate { background: #f1f5f9; }
+
+    .card-meta { flex: 1; }
+    .card-speaker {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .card-body {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .card-body strong { color: var(--text); font-weight: 600; }
+
+    /* ── Core quote card ── */
+    .core-card {
+      background: linear-gradient(135deg, #1a1a1a, #374151);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      margin-bottom: 16px;
+      color: white;
+    }
+    .core-card p {
+      font-size: 14px;
+      color: #e5e7eb;
+      line-height: 1.8;
+    }
+    .core-card strong { color: white; font-weight: 700; }
+    .core-card .highlight {
+      display: block;
+      margin-top: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ── Quote cards ── */
+    .quote-card {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .quote-card::before {
+      content: '"';
+      position: absolute;
+      top: 8px;
+      left: 14px;
+      font-size: 36px;
+      color: #f59e0b;
+      line-height: 1;
+      font-weight: 700;
+      opacity: 0.4;
+    }
+    .quote-text {
+      font-size: 13.5px;
+      color: #78350f;
+      line-height: 1.8;
+      padding-left: 6px;
+    }
+    .quote-text strong { color: #92400e; font-weight: 700; display: block; margin-bottom: 8px; }
+    .quote-text span { display: block; color: #92400e; font-size: 12.5px; margin-top: 8px; }
+
+    /* ── Platform grid ── */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    @media (max-width: 480px) {
+      .platform-grid { grid-template-columns: 1fr; }
+    }
+    .platform-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .platform-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .platform-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .platform-desc {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+    }
+
+    /* ── Pain cards ── */
+    .pain-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pain-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .pain-card:nth-child(1)::before { background: #f59e0b; }
+    .pain-card:nth-child(2)::before { background: #3b82f6; }
+
+    .pain-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .pain-card:nth-child(1) .pain-tag { background: var(--tag-1); color: #92400e; }
+    .pain-card:nth-child(2) .pain-tag { background: var(--tag-2); color: #1e40af; }
+
+    .pain-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+    .pain-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .pain-desc strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; margin-top: 10px; }
+    .pain-desc strong:first-child { margin-top: 0; }
+
+    /* ── AI Flow section ── */
+    .flow-section {
+      background: linear-gradient(135deg, #0c4a6e, #0369a1);
+      border-radius: var(--radius);
+      padding: 26px 20px;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .flow-section h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #bae6fd;
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+    .flow-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .flow-step {
+      background: rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 8px 14px;
+      font-size: 12.5px;
+      color: #e0f2fe;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .flow-step-num {
+      width: 18px;
+      height: 18px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flow-arrow {
+      color: #38bdf8;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+    }
+    .flow-note {
+      font-size: 12.5px;
+      color: #7dd3fc;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ── AI cards ── */
+    .ai-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 12px;
+    }
+    .ai-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .ai-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .ai-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .ai-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .ai-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; }
+
+    .ai-highlight {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #f0fdf4;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      color: #166534;
+      line-height: 1.7;
+    }
+    .ai-highlight strong { color: #166534; }
+
+    /* ── Knowledge base grid ── */
+    .kb-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    @media (max-width: 480px) {
+      .kb-grid { grid-template-columns: 1fr; }
+    }
+    .kb-step {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .kb-num {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 22px;
+      margin-bottom: 8px;
+    }
+    .kb-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .kb-desc {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+    }
+
+    /* ── Tool cards ── */
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      margin-bottom: 12px;
+    }
+    .tool-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+    .tool-tag.green { background: var(--tag-5); color: #065f46; }
+    .tool-tag.purple { background: var(--tag-6); color: #6b21a8; }
+
+    .tool-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+    .tool-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .tool-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; }
+
+    /* ── Action items ── */
+    .action-card {
+      background: var(--accent-bg);
+      border: 1px solid #ffedd5;
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .action-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .action-list {
+      list-style: none;
+    }
+    .action-list li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .action-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .action-list li:last-child { margin-bottom: 0; }
+    .action-list li strong { color: var(--text); font-weight: 600; }
+
+    /* ── Final quote box ── */
+    .quote-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      margin: 36px 0;
+      text-align: center;
+    }
+    .quote-box p {
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.8;
+    }
+    .quote-box strong {
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    /* ── Source links ── */
+    .source-links {
+      background: #f3f4f6;
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      margin-bottom: 32px;
+    }
+    .source-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .source-links ul {
+      list-style: none;
+    }
+    .source-links li {
+      margin-bottom: 8px;
+    }
+    .source-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      transition: opacity 0.2s;
+    }
+    .source-links a:hover { opacity: 0.75; text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 20px 48px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.7;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--text-tertiary); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Scroll reveal ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .card, .quote-card, .pain-card, .ai-card, .tool-card, .platform-card,
+      .kb-step, .flow-section, .action-card, .quote-box, .source-links, .core-card {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+      .card.visible, .quote-card.visible, .pain-card.visible, .ai-card.visible,
+      .tool-card.visible, .platform-card.visible, .kb-step.visible,
+      .flow-section.visible, .action-card.visible, .quote-box.visible,
+      .source-links.visible, .core-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <span class="tag">秦岭AI白客松 · 第一届</span>
+    <h1>AI搞钱切磋场</h1>
+    <p class="subtitle">大嘴 · 张老师 · 自媒体创作及AI工具使用分享</p>
+    <div class="header-meta">
+      <span class="meta-chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+        自媒体
+      </span>
+      <span class="meta-chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        AI工具
+      </span>
+      <span class="meta-chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        搞钱
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#intro">前言</a>
+    <a href="#quotes">金句</a>
+    <a href="#value">价值</a>
+    <a href="#pain">卡点</a>
+    <a href="#ai-app">AI应用</a>
+    <a href="#tools">工具</a>
+    <a href="#action">行动</a>
+  </div>
+</nav>
+
+<!-- Content -->
+<main class="main">
+
+  <!-- ── Intro ── -->
+  <section id="intro">
+    <div class="section-label">前言</div>
+    <h2>自媒体是普通人搞钱的最佳路径</h2>
+    <p class="section-lead">张老师分享自媒体创作核心心法、AI工具全流程应用，以及知识库建设实操方法。</p>
+
+    <div class="core-card">
+      <p>
+        输出的质量永远不如输出的数量，一定要让那些人经常能看到你。
+        <span class="highlight">数量永远大过于质量。</span>
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon orange">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">分享人</div>
+          <div class="card-title">张老师 · AI搞钱切磋场</div>
+        </div>
+      </div>
+      <div class="card-body">
+        曾担任 <strong>1000+ 人团队的品牌主管</strong>，拥有丰富自媒体运营和内容创作经验。主张<strong>让 AI 为我们服务</strong>，而不是被 AI 替代，强调输出的数量永远大过于质量。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Quotes ── -->
+  <section id="quotes">
+    <div class="section-label">金句</div>
+    <h2>三句话道破自媒体与AI本质</h2>
+
+    <div class="quote-card">
+      <p class="quote-text">
+        <strong>「输出的质量永远不如输出的数量，一定要让那些人经常能看到你，数量永远大过于质量。」</strong>
+        <span>很多人追求完美内容，却忽略了持续曝光的重要性。在算法时代，频繁出现本身就是竞争力。</span>
+      </p>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">
+        <strong>「未来领导的资产不是房产，而是记录、思考、观点、经验、故事——这是真正可替代的数字资产。」</strong>
+        <span>数字资产是最容易被忽视却最有价值的财富，它会随时间积累、放大，而不是折旧。</span>
+      </p>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">
+        <strong>「现在一定要骑到 AI 头上，让它为我们服务，仔细让它干活，不断更新它。」</strong>
+        <span>把 AI 当作高效助理，明确给它规定动作，而不是被 AI 牵着走。AI 是工具，我们是主人。</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Value ── -->
+  <section id="value">
+    <div class="section-label">自媒体价值</div>
+    <h2>为什么自媒体是搞钱与放大IP的有效方式</h2>
+    <p class="section-lead">张老师详细阐述自媒体的核心价值和底层逻辑。</p>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">市场洞察</div>
+          <div class="card-title">14亿人中的机会</div>
+        </div>
+      </div>
+      <div class="card-body">
+        全中国 <strong>14 亿人</strong>，只有不到 <strong>1 亿人</strong>出过国。当你有想法做产品、表达观点或塑造人设时，在庞大人群中会有很多相似的人。
+        <br><br>
+        <strong>自媒体能通过大数据将这些人推送给创作者</strong>，让你找到同频的受众。
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon green">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">案例借鉴</div>
+          <div class="card-title">记忆锚点的力量</div>
+        </div>
+      </div>
+      <div class="card-body">
+        卖男装主播话术简单重复，但通过<strong>长期输出</strong>从简陋直播间发展到拥有豪车、女朋友，让观众形成记忆锚点，实现产品种草和销售。
+        <br><br>
+        <strong>核心逻辑：重复的力量 → 记忆锚点 → 信任 → 购买</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon purple">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        <div class="card-meta">
+          <div class="card-speaker">数字资产</div>
+          <div class="card-title">未来最值钱的资产</div>
+        </div>
+      </div>
+      <div class="card-body">
+        未来领导的资产不是房产，而是<strong>记录、思考、观点、经验、故事</strong>，这是真正可替代的数字资产。
+        <br><br>
+        内容创作就是在构建你的数字资产帝国，每一次发布都是在积累。
+      </div>
+    </div>
+
+    <div class="platform-grid">
+      <div class="platform-card">
+        <span class="platform-icon">🎵</span>
+        <div class="platform-name">抖音</div>
+        <div class="platform-desc">短视频主战场，流量大</div>
+      </div>
+      <div class="platform-card">
+        <span class="platform-icon">📕</span>
+        <div class="platform-name">小红书</div>
+        <div class="platform-desc">种草属性强，女性用户多</div>
+      </div>
+      <div class="platform-card">
+        <span class="platform-icon">🎬</span>
+        <div class="platform-name">视频号</div>
+        <div class="platform-desc">微信生态，私域转化强</div>
+      </div>
+      <div class="platform-card">
+        <span class="platform-icon">📺</span>
+        <div class="platform-name">B站</div>
+        <div class="platform-desc">长视频深度内容，用户粘性高</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pain Points ── -->
+  <section id="pain">
+    <div class="section-label">创作者卡点</div>
+    <h2>自媒体人面临的两大困境</h2>
+    <p class="section-lead">张老师总结自媒体人最常见的创作障碍，帮助对症下药。</p>
+
+    <div class="pain-card">
+      <span class="pain-tag">卡点一</span>
+      <div class="pain-title">内容创作难题</div>
+      <div class="pain-desc">
+        <strong>有想法但无法梳理</strong>
+        脑子里有很多想法，但无法系统化表达，写出来总是乱糟糟的。
+        <strong>碎片化语言难以组织</strong>
+        平时说话很溜，但一到写稿就卡壳，不知道如何组织语言。
+        <strong>不知道如何拍摄</strong>
+        想做视频但不知道怎么拍，设备、场地、脚本都是问题。
+        <strong>面对镜头不自然</strong>
+        一对着镜头就紧张，表情僵硬，说话忘词。
+        <strong>人设定位不清晰</strong>
+        不知道该打造什么人设，摇摆不定，难以形成风格。
+      </div>
+    </div>
+
+    <div class="pain-card">
+      <span class="pain-tag">卡点二</span>
+      <div class="pain-title">平台选择困惑</div>
+      <div class="pain-desc">
+        <strong>在多个平台之间迷茫</strong>
+        抖音、小红书、视频号、B站等平台各有特点，不知道该选哪个。
+        <strong>内容分散难以聚焦</strong>
+        在多个平台都发一点，但没有重点，难以形成垂直领域影响力。
+        <strong>算法规则不清楚</strong>
+        每个平台的推荐机制不同，不知道如何针对优化。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI Application ── -->
+  <section id="ai-app">
+    <div class="section-label">AI应用</div>
+    <h2>AI如何打通自媒体创作全流程</h2>
+    <p class="section-lead">AI 可完成自媒体创作全流程 80%-90% 的工作。</p>
+
+    <div class="flow-section">
+      <h3>自媒体创作五步流程</h3>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <span class="flow-step-num">1</span>
+          文案
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="flow-step-num">2</span>
+          拍摄
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="flow-step-num">3</span>
+          剪辑
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="flow-step-num">4</span>
+          包装
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="flow-step-num">5</span>
+          发布
+        </div>
+      </div>
+      <p class="flow-note">AI 可完成 80%-90% 的工作，创作者只需「挑、看、改」即可发布</p>
+    </div>
+
+    <div class="ai-card">
+      <div class="ai-header">
+        <div class="ai-icon" style="background: #dbeafe;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        </div>
+        <div class="ai-title">AI 辅助文案创作</div>
+      </div>
+      <div class="ai-body">
+        <strong>语音输入 + 聊天模式</strong>
+        AI 能理解创作者背后的情绪和思想，帮助修改稿子、做课、表达想法。
+        <strong>框架生成</strong>
+        AI 可根据知识库内容生成口播视频标题和框架，如 SABC 框架、五步法等。
+        <strong>案例分析</strong>
+        还能分析小红书、公众号、抖音、B站等平台的爆款案例，提取共性规律。
+      </div>
+      <div class="ai-highlight">
+        <strong>实操技巧：</strong>用语音输入想法，让 AI 帮你整理成结构化内容，效率提升 3 倍。
+      </div>
+    </div>
+
+    <div class="ai-card">
+      <div class="ai-header">
+        <div class="ai-icon" style="background: #f3e8ff;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+        </div>
+        <div class="ai-title">知识库建设</div>
+      </div>
+      <div class="ai-body">
+        <strong>建立知识库是做自媒体的第一步</strong>
+        用录音卡记录想法，AI 能将记录分门别类打标签、加注并存储到知识库。
+        <strong>最佳记录时机</strong>
+        睡觉前、上厕所、洗澡时想法最多，可使用录音设备随时记录。
+      </div>
+      <div class="ai-highlight">
+        <strong>实操技巧：</strong>养成"随时录音"的习惯，这些碎片灵感往往是最真实、最有价值的素材。
+      </div>
+    </div>
+
+    <div class="kb-grid">
+      <div class="kb-step">
+        <span class="kb-num">1</span>
+        <div class="kb-name">录音记录</div>
+        <div class="kb-desc">用录音设备记录碎片想法</div>
+      </div>
+      <div class="kb-step">
+        <span class="kb-num">2</span>
+        <div class="kb-name">AI分类</div>
+        <div class="kb-desc">AI自动打标签、加注</div>
+      </div>
+      <div class="kb-step">
+        <span class="kb-num">3</span>
+        <div class="kb-name">存储入库</div>
+        <div class="kb-desc">建立可检索的知识库</div>
+      </div>
+      <div class="kb-step">
+        <span class="kb-num">4</span>
+        <div class="kb-name">内容生成</div>
+        <div class="kb-desc">从知识库提取素材创作</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Tools ── -->
+  <section id="tools">
+    <div class="section-label">AI工具</div>
+    <h2>飞书妙搭与高效AI工作技巧</h2>
+    <p class="section-lead">低成本、高效率的 AI 工具部署方案，以及节省积分的实用技巧。</p>
+
+    <div class="tool-card">
+      <span class="tool-tag green">云端部署首选</span>
+      <div class="tool-title">飞书妙搭 · 云端养虾</div>
+      <div class="tool-body">
+        <strong>为什么选择飞书云端？</strong>
+        飞书是实践效果好、成本低的云端部署工具，可通过飞书妙搭养虾。
+        <strong>云端虾的特点：</strong>
+        虽不能访问本地文件，但能满足自媒体需求，国产厂商对 API 端口限制较宽松，可使用多种大模型。
+        <strong>如何开始：</strong>
+        下载飞书后搜索「妙搭」即可开启养虾功能，无需复杂配置。
+      </div>
+      <div class="ai-highlight" style="margin-top: 12px;">
+        <strong>推荐理由：</strong>零门槛、高效率、低成本，适合自媒体人快速上手 AI 工具。
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-tag purple">节省积分技巧</span>
+      <div class="tool-title">让 AI 高效工作的秘诀</div>
+      <div class="tool-body">
+        <strong>给 AI 规定动作</strong>
+        对于重复规律的流程化工作，可给 AI 规定动作，避免其因不确定因素消耗资源。
+        <strong>使用 AIDP 工具</strong>
+        将标准工作编程成程序，让 AI 按程序执行任务，避免重复操作。
+        <strong>核心心法</strong>
+        「现在一定要骑到 AI 头上，让它为我们服务，仔细让它干活，不断更新它。」
+      </div>
+      <div class="ai-highlight" style="background: #fdf4ff; color: #6b21a8; margin-top: 12px;">
+        <strong>关键思维：</strong>把 AI 当作高效助理，明确边界和规则，而不是需要你伺候的"老板"。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Action ── -->
+  <section id="action">
+    <div class="section-label">立刻行动</div>
+    <h2>立刻可以做的 5 件事</h2>
+
+    <div class="action-card">
+      <h3>从今天开始执行</h3>
+      <ul class="action-list">
+        <li><strong>开通自媒体账号：</strong>不要等准备好，先开通、先发布、先迭代，数量永远大过于质量</li>
+        <li><strong>建立你的知识库：</strong>用录音设备记录碎片想法，让 AI 帮你整理归档</li>
+        <li><strong>尝试 AI 辅助写作：</strong>用语音输入你的想法，让 AI 帮你整理成结构化内容</li>
+        <li><strong>学习飞书妙搭：</strong>低成本、高效率的云端 AI 工具，适合自媒体人快速上手</li>
+        <li><strong>确定你的定位：</strong>找到自己的细分领域，持续输出，建立记忆锚点</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Quote ── -->
+  <div class="quote-box">
+    <p>
+      <strong>输出的质量永远不如输出的数量。</strong><br>
+      一定要让那些人经常能看到你，数量永远大过于质量。<br><br>
+      现在一定要骑到 AI 头上，让它为我们服务，仔细让它干活，不断更新它。<br><br>
+      <strong>未来领导的资产不是房产，而是记录、思考、观点、经验、故事——这是真正可替代的数字资产。</strong>
+    </p>
+  </div>
+
+  <!-- ── Source Links ── -->
+  <div class="source-links">
+    <p class="source-label">原文出处</p>
+    <ul>
+      <li><a href="https://ranuox3qst4.feishu.cn/minutes/obcn4z867lrl4qz9d231ffjf" target="_blank">妙记（可回看完整视频）</a></li>
+      <li><a href="https://ranuox3qst4.feishu.cn/docx/XfqJdrxLkotKKCx0e6wcfsmOnCh" target="_blank">文字记录（完整逐字稿）</a></li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <p>秦岭AI白客松 · 第一届</p>
+  <p style="margin-top: 4px;">AI搞钱切磋场 · 2026年4月19日</p>
+  <p style="margin-top: 12px;"><a href="hackathon-landing-mobile.html">← 返回活动主页</a></p>
+</footer>
+
+<script>
+  // Scroll reveal
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.card, .quote-card, .pain-card, .ai-card, .tool-card, .platform-card, .kb-step, .flow-section, .action-card, .quote-box, .source-links, .core-card').forEach(el => io.observe(el));
+  }
+
+  // Active nav
+  const links = document.querySelectorAll('.nav a');
+  const sections = document.querySelectorAll('section[id]');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  sections.forEach(s => navObs.observe(s));
+</script>
+
+</body>
+</html>
