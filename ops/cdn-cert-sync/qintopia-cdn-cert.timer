@@ -1,0 +1,11 @@
+[Unit]
+Description=Hourly QinTopia CDN certificate deployment check
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=60
+Persistent=true
+Unit=qintopia-cdn-cert.service
+
+[Install]
+WantedBy=timers.target

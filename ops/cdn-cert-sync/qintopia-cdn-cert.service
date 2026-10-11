@@ -1,0 +1,24 @@
+[Unit]
+Description=Deploy renewed Tencent SSL certificate to www.qintopia.cn CDN
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=qintopia-cdn-cert
+Group=qintopia-cdn-cert
+ExecStart=/usr/bin/python3 /opt/qintopia-cdn-cert/sync.py --apply
+StateDirectory=qintopia-cdn-cert
+StateDirectoryMode=0700
+UMask=0077
+TimeoutStartSec=15min
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadOnlyPaths=/etc/qintopia-cdn-cert
