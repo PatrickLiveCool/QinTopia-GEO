@@ -17,17 +17,35 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check for an existing pending draft
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/site/release_gate.py
       - id: release
+        if: steps.gate.outputs.pending == 'false'
         uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4
         with:
           token: ${{ github.token }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
+          skip-github-pull-request: true
+      - id: proposal
+        if: steps.gate.outputs.pending == 'false' && steps.release.outputs.releases_created != 'true'
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4
+        with:
+          token: ${{ github.token }}
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+          skip-github-release: true
       - name: Explicitly run CI for bot-created release PRs
-        if: steps.release.outputs.prs_created == 'true'
+        if: steps.proposal.outputs.prs_created == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_PRS: ${{ steps.release.outputs.prs }}
+          RELEASE_PRS: ${{ steps.proposal.outputs.prs }}
         run: |
           python3 - <<'PYCODE'
           import json, os, subprocess
