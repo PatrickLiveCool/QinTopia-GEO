@@ -8,3 +8,12 @@ coscli_output/
 # 编辑器
 *.swp
 *.swo
+
+# Local checks and release bundles
+__pycache__/
+*.pyc
+.venv/
+dist/
+.env
+.env.*
+!.env.example

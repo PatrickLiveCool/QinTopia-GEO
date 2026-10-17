@@ -1,0 +1,40 @@
+name: Prepare release
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+concurrency:
+  group: qintopia-release-please
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4
+        with:
+          token: ${{ github.token }}
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - name: Explicitly run CI for bot-created release PRs
+        if: steps.release.outputs.prs_created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PRS: ${{ steps.release.outputs.prs }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, subprocess
+          for pr in json.loads(os.environ['RELEASE_PRS']):
+              number = str(int(pr['number']))
+              data = json.loads(subprocess.check_output(['gh', 'api', f"repos/{os.environ['GITHUB_REPOSITORY']}/pulls/{number}"]))
+              if data['base']['ref'] != 'main' or data['head']['repo']['full_name'] != os.environ['GITHUB_REPOSITORY']:
+                  raise SystemExit('Unexpected release PR destination')
+              subprocess.run(['gh', 'workflow', 'run', 'ci.yml', '--repo', os.environ['GITHUB_REPOSITORY'], '--ref', data['head']['ref']], check=True)
+          PYCODE
