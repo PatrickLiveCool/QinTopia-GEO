@@ -2,6 +2,8 @@
 
 只维护 `www.qintopia.cn` 的 CDN 证书绑定。该程序运行在 `122.51.77.220` 的 systemd 服务中，不依赖个人电脑或 Codex 保持运行。Python 3 标准库实现，无第三方运行依赖。
 
+`opc.qintopia.cn` 的免费证书申请、续期和部署由独立的 [OPC 证书服务](../opc-cert-sync/README.md) 负责，不复用本服务的账号或定时任务。
+
 ## 分工
 
 - Nginx：使用服务器本地证书，为 `qintopia.cn` 提供 HTTPS，并将官网访问跳转到 `www.qintopia.cn`。其既有 webhook 等配置不受本程序影响。

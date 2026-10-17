@@ -1,0 +1,24 @@
+[Unit]
+Description=Renew and verify free SSL certificate for opc.qintopia.cn CDN
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=qintopia-opc-cert
+Group=qintopia-opc-cert
+ExecStart=/usr/bin/python3 /opt/qintopia-opc-cert/renew.py --apply
+StateDirectory=qintopia-opc-cert
+StateDirectoryMode=0700
+UMask=0077
+TimeoutStartSec=15min
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadOnlyPaths=/etc/qintopia-opc-cert

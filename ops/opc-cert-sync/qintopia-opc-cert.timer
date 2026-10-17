@@ -1,0 +1,11 @@
+[Unit]
+Description=Hourly OPC SSL renewal and CDN certificate verification
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=60
+Persistent=true
+Unit=qintopia-opc-cert.service
+
+[Install]
+WantedBy=timers.target

@@ -37,6 +37,8 @@ jobs:
         run: python3 -m unittest discover -s scripts/site/tests -v
       - name: Test existing certificate synchronization
         run: python3 -m unittest discover -s ops/cdn-cert-sync -p 'test_*.py' -v
+      - name: Test OPC certificate renewal and isolated deployment
+        run: python3 -m unittest discover -s ops/opc-cert-sync -p 'test_*.py' -v
       - name: Build preview bundle
         run: |
           python3 scripts/site/package.py build --version v0.0.0 --revision "$(git rev-parse HEAD)"

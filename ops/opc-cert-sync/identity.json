@@ -1,0 +1,8 @@
+{
+  "date": "2026-10-17",
+  "name": "qintopia-opc-cert",
+  "uin": 100053853635,
+  "policy_id": 290174796,
+  "server": "122.51.77.220",
+  "credentials_path": "/etc/qintopia-opc-cert/credentials.json"
+}
