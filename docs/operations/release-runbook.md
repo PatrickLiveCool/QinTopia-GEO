@@ -10,6 +10,8 @@
 4. 确认版本后点击 **Publish Release**。这是正常发布的上线确认；`production` 没有额外人工审批或等待定时器。
 5. `Website production` 只接受已发布、非预发布的 `vMAJOR.MINOR.PATCH`，检查 tag 对应的提交在 `main` 历史中，并与 `version.txt` 一致。
 
+同一时间只准备一个待发布版本：已有 Draft Release 时暂停新版本 PR；本次刚生成草稿时也不会继续递增版本。发布草稿后，下次 main 提交或手动运行 Prepare release 才准备下一版。
+
 Release Please 使用 GitHub 自带短期 `GITHUB_TOKEN`。由于机器人创建的 PR 不会自动触发普通 PR 事件，工作流显式 dispatch `ci.yml` 到版本 PR 分支。仓库已启用 Actions 创建 PR 权限；脚本不自动批准或合并 PR。
 
 本地检查：
