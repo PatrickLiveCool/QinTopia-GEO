@@ -8,6 +8,8 @@
 
 通过 GitHub PR、版本 PR、Draft Release 和 Publish Release 管理网站发布。合并代码不会直接上线；本地 `deploy.sh` 只检查发布清单。
 
+本仓库同时为 OPC 招募站预留 `sites/opc/`，目标域名为 `opc.qintopia.cn`。两个站点共享素材、独立组织内容与发布；当前发布工具仅支持主站，OPC 尚未发布。基础设施准备和首次发布条件见 [OPC 准备记录](docs/operations/opc-site-preparation.md)。
+
 - [发布与回滚操作手册](docs/operations/release-runbook.md)
 - [发布范围与目录盘点](docs/operations/publication-inventory.md)
 - [逐文件发布白名单](config/site-manifest.json)
