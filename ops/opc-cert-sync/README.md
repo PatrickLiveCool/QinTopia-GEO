@@ -71,4 +71,13 @@ python3 -m unittest discover -s ops/opc-cert-sync -p 'test_*.py' -v
 
 ## 部署验证
 
-部署后在此记录 systemd 状态、首次运行结果和代码哈希。
+2026-10-17 已按用户授权部署到上述服务器：
+
+- `qintopia-opc-cert.timer` 为 `enabled` / `active`，已设置开机启动；读回的首次计划触发时间为北京时间 2026-10-17 15:00:21。
+- 首次 systemd 服务执行时间为北京时间 2026-10-17 14:41:01–14:41:02，`Result=success`、`ExecMainStatus=0`。
+- 状态文件记录 `healthy_no_change`、`renewal=not_due`、`certificate_id=bdirFvdi`；验证模式为 `cdn_edge_tls_unpublished`，实际证书有效至北京时间 2027-01-15 12:59:59。
+- 已核对本地与服务器 `renew.py` SHA-256 均为 `0bac886f922f7ea4703bb4b2db3c2f79adb295f4d927efb4b9f23f0d5cffb7ed`。
+- 专用凭据权限为 `0600`，程序由 root 所有且运行账号不可写；CAM 读回只挂载专用策略 `290174796`，与仓库策略一致。
+- 主站证书程序 SHA-256 与本次工作前相同，主站 timer 仍为 active；OPC 的 CNAME 仍禁用，HTTPS 内容服务仍关闭，回源路径仍为 `/opc`。
+
+当前生产证书尚有约 90 天有效期，所以这次没有强制签发新证书或替换绑定。实际首次续期将在上述续期窗口触发；申请、等待签发、绑定及失败恢复路径由隔离测试覆盖，不能把这些测试说成已经发生了一次生产续期。

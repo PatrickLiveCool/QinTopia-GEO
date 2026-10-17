@@ -28,7 +28,7 @@ class FakeAPI:
     def call(self, service, action, payload):
         if action == 'DescribeDomainsConfig':
             self.reads += 1
-            cert = NEW if self.binding == 'new' else OLD
+            cert = next(c for c in self.rows if c['CertificateId'] == self.binding)
             return {'Domains': [{'Domain': renew.DOMAIN, 'Cname': renew.EDGE,
                     'Status': 'processing' if self.reads <= self.processing_reads else 'online',
                     'HttpsBilling': {'Switch': 'off'}, 'Origin': {'BasePath': '/opc'},
@@ -94,6 +94,16 @@ class RenewalTests(unittest.TestCase):
         api.rows.append(NEW)
         self.assertEqual(self.run_service(api, False)['result'], 'would_deploy')
         self.assertEqual(api.writes, [])
+
+    def test_complete_renewal_lifecycle_reuses_order_and_deploys_after_issuance(self):
+        api = FakeAPI()
+        self.assertEqual(self.run_service(api)['renewal'], 'requested')
+        self.assertEqual(self.run_service(api)['renewal'], 'pending')
+        api.rows[-1] = dict(NEW, CertificateId='pending')
+        self.assertEqual(self.run_service(api)['result'], 'deployed_and_verified')
+        self.assertEqual(api.binding, 'pending')
+        self.assertEqual(self.run_service(api)['result'], 'healthy_no_change')
+        self.assertEqual([action for action, _ in api.writes], ['ApplyCertificate', 'ModifyDomainConfig'])
 
     def test_lost_application_response_reconciles_pending_order(self):
         api = FakeAPI(apply_error=True)
