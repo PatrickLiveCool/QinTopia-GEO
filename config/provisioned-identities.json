@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-17",
+  "identities": [
+    {
+      "name": "qintopia-site-cos-release",
+      "uin": 100053848208,
+      "policy_id": 290157331,
+      "github_environment": "production",
+      "secret_names": [
+        "COS_SECRET_ID",
+        "COS_SECRET_KEY"
+      ]
+    },
+    {
+      "name": "qintopia-site-cdn-release",
+      "uin": 100053848214,
+      "policy_id": 290157337,
+      "github_environment": "production",
+      "secret_names": [
+        "CDN_SECRET_ID",
+        "CDN_SECRET_KEY"
+      ]
+    }
+  ]
+}

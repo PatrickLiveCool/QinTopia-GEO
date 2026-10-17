@@ -4,6 +4,14 @@
 
 ---
 
+## 开发与发布
+
+通过 GitHub PR、版本 PR、Draft Release 和 Publish Release 管理网站发布。合并代码不会直接上线；本地 `deploy.sh` 只检查发布清单。
+
+- [发布与回滚操作手册](docs/operations/release-runbook.md)
+- [发布范围与目录盘点](docs/operations/publication-inventory.md)
+- [逐文件发布白名单](config/site-manifest.json)
+
 ## 项目结构
 
 ```

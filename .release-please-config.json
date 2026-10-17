@@ -1,0 +1,13 @@
+{
+  "bootstrap-sha": "96e253668d7422fef9b481c690e86d58ac3eb210",
+  "draft": true,
+  "include-component-in-tag": false,
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "initial-version": "0.1.0",
+      "version-file": "version.txt",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}

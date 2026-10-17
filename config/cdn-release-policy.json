@@ -1,0 +1,24 @@
+{
+  "version": "2.0",
+  "statement": [
+    {
+      "effect": "allow",
+      "action": [
+        "name/cdn:DescribeDomainsConfig",
+        "name/cdn:DescribePurgeTasks"
+      ],
+      "resource": [
+        "*"
+      ]
+    },
+    {
+      "effect": "allow",
+      "action": [
+        "name/cdn:PurgeUrlsCache"
+      ],
+      "resource": [
+        "qcs::cdn::uin/100017996889:domain/www.qintopia.cn"
+      ]
+    }
+  ]
+}

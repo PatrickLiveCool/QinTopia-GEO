@@ -1,0 +1,22 @@
+{
+  "version": "2.0",
+  "statement": [
+    {
+      "effect": "allow",
+      "action": [
+        "name/cos:GetObject",
+        "name/cos:PutObject"
+      ],
+      "resource": [
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/.well-known/qintopia-release.json",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/_site/*",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/index.html",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/llms-full.txt",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/llms.txt",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/mobile.html",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/robots.txt",
+        "qcs::cos:ap-chengdu:uid/1305166808:qintopia-1305166808/sitemap.xml"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "index.html",
+      "target": "index.html",
+      "kind": "route"
+    },
+    {
+      "source": "mobile.html",
+      "target": "mobile.html",
+      "kind": "route"
+    },
+    {
+      "source": "robots.txt",
+      "target": "robots.txt",
+      "kind": "route"
+    },
+    {
+      "source": "sitemap.xml",
+      "target": "sitemap.xml",
+      "kind": "route"
+    },
+    {
+      "source": "llms.txt",
+      "target": "llms.txt",
+      "kind": "route"
+    },
+    {
+      "source": "llms-full.txt",
+      "target": "llms-full.txt",
+      "kind": "route"
+    },
+    {
+      "source": "images/activity_calligraphy.jpg",
+      "target": "images/activity_calligraphy.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/activity_cpr.jpg",
+      "target": "images/activity_cpr.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/activity_familyday.jpg",
+      "target": "images/activity_familyday.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/activity_familyday.png",
+      "target": "images/activity_familyday.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/activity_movie.jpg",
+      "target": "images/activity_movie.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/activity_wildherb.jpg",
+      "target": "images/activity_wildherb.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/consult_qrcode.png",
+      "target": "images/consult_qrcode.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/drone_flying_takeaway.png",
+      "target": "images/drone_flying_takeaway.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/eating_communal.png",
+      "target": "images/eating_communal.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img1.jpg",
+      "target": "images/img1.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img2.jpg",
+      "target": "images/img2.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img3.jpg",
+      "target": "images/img3.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img4.jpg",
+      "target": "images/img4.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img5.jpg",
+      "target": "images/img5.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img6.jpg",
+      "target": "images/img6.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/img7.jpg",
+      "target": "images/img7.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/laundry_selfservice.png",
+      "target": "images/laundry_selfservice.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/room_bunk.png",
+      "target": "images/room_bunk.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/room_minimal.png",
+      "target": "images/room_minimal.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/room_platform.png",
+      "target": "images/room_platform.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_3f.jpg",
+      "target": "images/space_3f.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_coworking.jpg",
+      "target": "images/space_coworking.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_gym.jpg",
+      "target": "images/space_gym.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_kitchen.jpg",
+      "target": "images/space_kitchen.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_kitchen2.jpg",
+      "target": "images/space_kitchen2.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_life_coffee.png",
+      "target": "images/space_life_coffee.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_life_pod.png",
+      "target": "images/space_life_pod.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_meeting.jpg",
+      "target": "images/space_meeting.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_meeting2.jpg",
+      "target": "images/space_meeting2.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_office_rooftop.png",
+      "target": "images/space_office_rooftop.png",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_room.jpg",
+      "target": "images/space_room.jpg",
+      "kind": "asset"
+    },
+    {
+      "source": "images/space_room2.jpg",
+      "target": "images/space_room2.jpg",
+      "kind": "asset"
+    }
+  ]
+}
