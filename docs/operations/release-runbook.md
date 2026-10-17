@@ -5,7 +5,7 @@
 ## 日常工作
 
 1. 在 `codex/...` 或其他功能分支修改，通过 PR 进入 `main`。PR 标题使用 `feat: ...`、`fix: ...` 等 Conventional Commits 格式，合并时使用 squash，并保留该格式。
-2. `Site checks` 检查发布清单、页面/资源引用、打包与部署失败路径、已有证书同步测试，生成可下载预览包。检查不带云端写凭据。
+2. `Site checks` 检查发布清单、页面/资源引用、打包与部署失败路径、已有证书同步测试，构建并校验预览包，在运行摘要保存提交与哈希。检查不带云端写凭据。
 3. 合并触发 Release Please，自动提出版本 PR（`version.txt`、版本清单、CHANGELOG）。版本 PR 合并后生成 **Draft Release**，不会部署网站。
 4. 确认版本后点击 **Publish Release**。这是正常发布的上线确认；`production` 没有额外人工审批或等待定时器。
 5. `Website production` 只接受已发布、非预发布的 `vMAJOR.MINOR.PATCH`，检查 tag 对应的提交在 `main` 历史中，并与 `version.txt` 一致。
@@ -61,7 +61,7 @@ python3 -m http.server --directory dist/preview/www 8000
 - 回滚上传旧版本的公开入口，复用其资源，再执行相同刷新和验证流程。
 - 自动化不删除对象。回滚后，新版本新增、旧版本未包含的 URL 仍可能存在；若要求撤下页面，必须单独设计 URL 删除/跳转方案。正常发布移除已管理入口会被阻止。
 - COS 多对象更新不是原子事务，中途故障可能造成不同页面暂处不同版本。版本资源路径避免一个页面混用新旧样式；失败不会自动宣称成功，需检查日志后重试或明确回滚。
-- 如果页面已成功验证、但 marker/成功凭据写入中断，Actions 仍报失败。先看线上 marker、任务日志和证据附件，再重试同一版本；不要误认为完全没有发生写入。
+- 如果页面已成功验证、但 marker/成功凭据写入中断，Actions 仍报失败。先看线上 marker、任务日志和验证摘要，再重试同一版本；不要误认为完全没有发生写入。
 
 本阶段不自动清理历史版本。旧资源路径供缓存页面和回滚使用，后续清理必须加入相同 concurrency group，保留当前/可回滚版本，并单独配置删除身份。
 
@@ -85,3 +85,7 @@ GitHub `production` 环境仅允许 `main` 分支及 `v*` tag；工作流额外�
 ## 与 Green PMS 的关系
 
 采用 PR→版本 PR→Draft Release→Publish Release、固定版本制品、哈希读回、验证后记录成功、显式回滚、最小权限和串行生产操作。静态站没有引入 Docker、数据库迁移或 SSH 执行应用容器；部署直接由 GitHub runner 调用 COS/CDN。证书服务器部署不混入网站工作流。
+
+## Actions 存储配额
+
+2026-10-17 实测 Actions artifact 上传因账户存储额度已满而失败。CI 仍完整构建、验证发布包，哈希保存在运行摘要，不为每个 PR 额外保存约 35 MB 预览文件。生产版本包及成功凭据使用 GitHub Release 附件；部署日志和校验摘要保留在 Actions。没有删除其他项目的 artifact 或增加费用。

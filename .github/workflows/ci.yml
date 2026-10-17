@@ -40,12 +40,16 @@ jobs:
       - name: Build preview bundle
         run: |
           python3 scripts/site/package.py build --version v0.0.0 --revision "$(git rev-parse HEAD)"
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: site-preview-${{ github.sha }}
-          path: dist/release/
-          retention-days: 14
-          if-no-files-found: error
+      - name: Record verified preview checksums
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          manifest = json.loads(Path('dist/release/manifest.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write(f"Verified preview: {len(manifest['files'])} files; commit `{manifest['revision']}`.\n\n")
+              out.write('```text\n' + Path('dist/release/SHA256SUMS').read_text() + '```\n')
+          PYCODE
       - name: Probe public COS origin from GitHub runner
         run: |
           curl --fail --silent --show-error --head --connect-timeout 15 --max-time 45 \

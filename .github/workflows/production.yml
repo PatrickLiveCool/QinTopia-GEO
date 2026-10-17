@@ -76,14 +76,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/site/github_release.py record --tag "$RELEASE_TAG"
-      - name: Preserve verification evidence
+      - name: Preserve verification evidence in run summary
         if: always() && env.OPERATION != 'probe'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: deployment-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            dist/release/manifest.json
-            dist/release/SHA256SUMS
-            dist/release/verified-deployment.json
-          if-no-files-found: ignore
-          retention-days: 90
+        run: |
+          python3 - <<'PYCODE'
+          import os
+          from pathlib import Path
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              for name in ('SHA256SUMS', 'verified-deployment.json'):
+                  path = Path('dist/release') / name
+                  if path.exists():
+                      out.write(f"\n{name}\n\n```text\n{path.read_text()}```\n")
+          PYCODE
