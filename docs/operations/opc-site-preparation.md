@@ -51,4 +51,4 @@ OPC 首次发布前需要完成：
 - HTTPS 内容服务关闭时，直连抽查返回 HTTP 514，符合当前准备状态，不能当成网站上线成功。配置 HTTPS 前的 HTTP 回源抽查为 404，响应带 `X-Robots-Tag: noindex, nofollow`；COS 的 `opc/` 与 `opc/index.html` 均为 404，未误用主站首页。
 - 主站抽查：正常 DNS 下 TLS 校验通过，首页返回 200，标题包含“秦托邦”，响应 93,628 字节；本次没有调用主站写接口。
 - 本地 `python3 scripts/site/package.py check` 通过，仍为 38 个文件；发布测试 23 项、既有证书同步测试 5 项全部通过；`git diff --check` 通过。没有更改 GitHub 工作流。
-- 2026-10-17 本次读回时，CDN 整体状态仍为 `processing`（证书子状态已为 `deployed`）；这是云端异步下发状态，尚不能记为全网准备就绪。首次启用前必须再次确认整体状态为 `online`，以及上述证书、回源路径、缓存与抓取控制均符合预期。
+- 2026-10-17 最终读回：CDN 整体状态为 `online`，证书子状态为 `deployed`；回源路径、绑定证书、缓存与抓取控制均符合上表。DNS CNAME 仍为 `DISABLE`，HTTPS 内容服务仍为 `off`。这表示基础设施配置准备完成，网站内容仍未上线。
