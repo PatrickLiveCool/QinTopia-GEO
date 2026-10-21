@@ -184,6 +184,18 @@
     .scenario-note p { max-width: 330px; margin: 0; font-size: .88rem; line-height: 1.75; }
     .scenario-photo { min-height: 255px; }
 
+    .entry-section { padding: 0 0 128px; }
+    .entry-panel { padding: 54px 46px 46px; color: var(--canvas); background: var(--deep); }
+    .entry-head { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: 42px; align-items: end; }
+    .entry-head h2 { max-width: 720px; margin: 0; font: 800 clamp(2.35rem, 4.6vw, 4.8rem)/.97 var(--serif); letter-spacing: -.065em; }
+    .entry-head p { max-width: 420px; margin: 0; color: rgba(243, 240, 232, .68); font-size: .94rem; line-height: 1.8; }
+    .entry-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 46px; border-top: 1px solid var(--line-dark); border-left: 1px solid var(--line-dark); }
+    .entry-card { min-height: 295px; padding: 23px 20px 24px; border-right: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); }
+    .entry-card .entry-number { color: var(--acid); font: 500 .68rem/1 var(--mono); letter-spacing: .12em; }
+    .entry-card h3 { margin: 28px 0 12px; color: var(--canvas); font: 700 1.25rem/1.18 var(--serif); letter-spacing: -.04em; }
+    .entry-card p { margin: 0; color: rgba(243, 240, 232, .66); font-size: .83rem; line-height: 1.72; }
+    .entry-start { display: block; margin-top: 22px; color: var(--acid); font: 500 .67rem/1.45 var(--mono); letter-spacing: .04em; }
+
     .cta-section { position: relative; overflow: hidden; padding: 145px 0 152px; color: var(--canvas); background: var(--coral); }
     .cta-section::before { content: 'OPC'; position: absolute; right: -26px; bottom: -122px; color: rgba(16, 42, 50, .12); font: 900 27rem/.8 var(--serif); letter-spacing: -.12em; }
     .cta-inner { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 50px; align-items: end; }
@@ -217,6 +229,8 @@
       .cta-inner { align-items: start; }
       .cta-copy { max-width: 520px; }
       .cta-section { padding: 108px 0 120px; }
+      .entry-head { grid-template-columns: 1fr; gap: 20px; }
+      .entry-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 600px) {
@@ -249,6 +263,10 @@
       .system-strip { grid-template-columns: 1fr; }
       .scenario-card, .scenario-card.tall { min-height: 420px; }
       .scenario-note { min-height: 220px; padding: 24px; }
+      .entry-section { padding-bottom: 82px; }
+      .entry-panel { padding: 30px 20px 20px; }
+      .entry-grid { grid-template-columns: 1fr; margin-top: 32px; }
+      .entry-card { min-height: 0; padding: 22px 0; border-right: 0; }
       .cta-section h2 { font-size: clamp(3.2rem, 16vw, 5rem); }
       .footer-inner { align-items: flex-start; flex-direction: column; }
       .footer-note { text-align: left; }
@@ -348,7 +366,7 @@
           <div class="capability-list" data-reveal>
             <article class="capability-item"><div class="num">01</div><div><h4>宜居空间</h4><p>住宿、办公、阅读、活动和日常相处，提供可以留下来的社区底盘。</p></div></article>
             <article class="capability-item"><div class="num">02</div><div><h4>OPC 人才</h4><p>持续识别开发者、设计者、运营者，建立能力画像、技能标签与协作记录。</p></div></article>
-            <article class="capability-item"><div class="num">03</div><div><h4>AI 基础设施</h4><p>连接模型、算力、AgentOS 与 PMS，让信息和流程进入一套可持续的系统。</p></div></article>
+            <article class="capability-item"><div class="num">03</div><div><h4>AI 基础设施</h4><p>依托新加坡算力中转平台与西安算力中转平台，连接模型、算力、AgentOS 与 PMS，提供接入、路由、调度和应用集成。</p></div></article>
             <article class="capability-item"><div class="num">04</div><div><h4>项目交付</h4><p>围绕具体需求组建能力组，承接外部项目，也孵化社区内部的新产品。</p></div></article>
           </div>
         </div>
@@ -373,7 +391,7 @@
           </div>
         </div>
         <div class="system-strip" data-reveal>
-          <figure><img src="assets/agentos-it-architecture.png" alt="AgentOS 技术架构示意" loading="lazy" /><figcaption>模型与算力接入、路由与调度，为不同场景保留可组合的技术路径。</figcaption></figure>
+          <figure><img src="assets/agentos-it-architecture.png" alt="AgentOS 技术架构示意" loading="lazy" /><figcaption>新加坡算力中转平台与西安算力中转平台，承接模型与算力服务接入、路由与调度，为不同场景保留可组合的技术路径。</figcaption></figure>
           <figure><img src="assets/pms-redacted.png" alt="社区运营 PMS 脱敏界面" loading="lazy" /><figcaption>业务记录沉淀下来，服务与项目才有连续性，团队也能在变化中交接。</figcaption></figure>
         </div>
       </div>
@@ -396,6 +414,23 @@
               <img src="assets/ai-event.jpg" alt="秦托邦 AI 活动与专业交流现场" loading="lazy" />
               <div class="scenario-content"><div class="eyebrow light">SCENE 03 / DELIVER</div><h3>把个体能力，连成项目团队。</h3></div>
             </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry-section" aria-labelledby="entry-title">
+      <div class="wrap">
+        <div class="entry-panel" data-reveal>
+          <div class="entry-head">
+            <div><div class="eyebrow light">COOPERATION ENTRY POINTS</div><h2 id="entry-title">合作不从“介绍能力”开始，从一个可验证的问题开始。</h2></div>
+            <p>你可以带来一个流程、一处空间、一类人才或一个明确的业务目标。秦托邦据此判断参与者、数据、系统和交付边界，再组织合适的技术与 OPC 团队。</p>
+          </div>
+          <div class="entry-grid">
+            <article class="entry-card"><span class="entry-number">01 / SCENE CO-CREATION</span><h3>行业场景共创</h3><p>适合景区、文旅内容、游客服务、地方品牌和乡村运营。先拿一个真实流程或服务断点，做出可以试运行的智能体与运营方案。</p><span class="entry-start">第一步：带来一个现场问题<br />交付：场景诊断 · 原型 · 试点计划</span></article>
+            <article class="entry-card"><span class="entry-number">02 / INFRASTRUCTURE</span><h3>模型与算力接入</h3><p>依托新加坡算力中转平台与西安算力中转平台，为高校、企业和项目团队提供模型与算力接入、路由、调度及应用集成。</p><span class="entry-start">第一步：确认模型、数据和权限边界<br />交付：接入方案 · 路由策略 · 权限边界</span></article>
+            <article class="entry-card"><span class="entry-number">03 / OPC COMMUNITY</span><h3>青年人才与 OPC 社区</h3><p>适合政府、园区和文旅项目。围绕人才画像、驻留空间、能力库和真实项目，建立可以持续发生的招募与组队机制。</p><span class="entry-start">第一步：确定人才画像和在地场景<br />交付：招募机制 · 能力库 · 项目组队</span></article>
+            <article class="entry-card"><span class="entry-number">04 / DELIVERY</span><h3>项目组织与交付</h3><p>适合已有明确目标的企业、集团、高校和地方团队。秦托邦负责需求拆解、能力组队、智能体开发、系统接入和持续运营。</p><span class="entry-start">第一步：提供业务目标与负责人<br />交付：项目拆解 · 团队 · 运营回执</span></article>
           </div>
         </div>
       </div>
