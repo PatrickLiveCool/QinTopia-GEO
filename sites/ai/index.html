@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f252a" />
+  <title>秦托邦 AI 探索｜AI OPC 社区</title>
+  <meta name="description" content="秦托邦 AI 探索：以宜居空间、OPC 人才、AI 基础设施和项目交付，把乡村现场接上更大的产业分工。面向政府与文旅伙伴的 AI OPC 社区合作入口。" />
+  <link rel="canonical" href="https://ai.qintopia.cn/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230f252a'/%3E%3Cpath d='M17 46V18h8l7 11 7-11h8v28h-8V31l-7 10-7-10v15z' fill='%23c6e66a'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* finesse · brand / field-tech-editorial / spectacle=6 / density=4 / engine=css-flow / axes=acid-ink+photo-scrim+asymmetric-grid */
+    :root {
+      --canvas: #f3f0e8;
+      --canvas-deep: #e7e7d9;
+      --ink: #102a32;
+      --ink-soft: #36535a;
+      --deep: #0f252a;
+      --deep-soft: #16343a;
+      --acid: #c6e66a;
+      --coral: #f16a4d;
+      --sky: #a9d7d6;
+      --line: rgba(16, 42, 50, .16);
+      --line-dark: rgba(243, 240, 232, .2);
+      --shadow: 0 24px 70px rgba(16, 42, 50, .14);
+      --serif: 'Noto Serif SC', 'Songti SC', serif;
+      --sans: 'Noto Sans SC', 'PingFang SC', sans-serif;
+      --mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body { margin: 0; color: var(--ink); background: var(--canvas); font-family: var(--sans); overflow-x: clip; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+
+    body::before {
+      content: '';
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    .wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .eyebrow { color: var(--coral); font: 600 .72rem/1.2 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow.light { color: var(--acid); }
+    .serif { font-family: var(--serif); }
+
+    .nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 30;
+      height: 78px;
+      border-bottom: 1px solid transparent;
+      transition: background .25s ease, border-color .25s ease, color .25s ease;
+    }
+    .nav.is-scrolled { background: rgba(243, 240, 232, .9); border-color: var(--line); backdrop-filter: blur(18px); }
+    .nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--canvas); font-weight: 700; letter-spacing: .04em; }
+    .nav.is-scrolled .brand { color: var(--ink); }
+    .brand-mark { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid currentColor; border-radius: 9px; font: 700 .78rem/1 var(--mono); }
+    .brand small { display: block; margin-top: 2px; color: var(--acid); font: 500 .58rem/1 var(--mono); letter-spacing: .12em; }
+    .nav.is-scrolled .brand small { color: var(--coral); }
+    .nav-links { display: flex; align-items: center; gap: 27px; color: rgba(243, 240, 232, .74); font-size: .82rem; }
+    .nav.is-scrolled .nav-links { color: var(--ink-soft); }
+    .nav-links a { transition: color .2s ease; }
+    .nav-links a:hover { color: var(--coral); }
+    .nav-cta { padding: 10px 15px; border: 1px solid currentColor; border-radius: 999px; font-weight: 600; }
+    .nav-cta:hover { color: var(--deep); background: var(--acid); border-color: var(--acid); }
+
+    .hero { position: relative; min-height: 790px; display: flex; align-items: center; overflow: hidden; color: var(--canvas); background: var(--deep); }
+    .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, rgba(15, 37, 42, .96) 0%, rgba(15, 37, 42, .79) 44%, rgba(15, 37, 42, .23) 100%); z-index: 1; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 76% 36%, rgba(198, 230, 106, .22), transparent 27%), linear-gradient(0deg, rgba(15, 37, 42, .88), transparent 38%); z-index: 1; }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .85; filter: saturate(.8) contrast(1.04); transform: scale(1.03); }
+    .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); align-items: center; gap: 72px; padding-top: 62px; }
+    .hero-copy { max-width: 650px; }
+    .hero-kicker { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px; color: var(--acid); font: 500 .72rem/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; }
+    .hero-kicker::before { content: ''; width: 42px; height: 1px; background: var(--acid); }
+    h1 { margin: 0; max-width: 650px; font: 900 clamp(3.3rem, 7.6vw, 7.2rem)/.92 var(--serif); letter-spacing: -.075em; }
+    .hero-title-accent { color: var(--acid); }
+    .hero-lede { max-width: 530px; margin: 32px 0 0; color: rgba(243, 240, 232, .78); font-size: clamp(1rem, 1.8vw, 1.22rem); line-height: 1.8; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 19px; border: 1px solid transparent; border-radius: 999px; font-weight: 700; font-size: .9rem; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: var(--deep); background: var(--acid); }
+    .button-primary:hover { background: #d5f17e; }
+    .button-quiet { color: var(--canvas); border-color: rgba(243, 240, 232, .34); }
+    .button-quiet:hover { background: rgba(243, 240, 232, .1); }
+
+    .hero-art { position: relative; min-height: 440px; transform: perspective(1200px) rotateY(-5deg) rotateX(1deg); transition: transform .45s ease; }
+    .hero-frame { position: absolute; inset: 12px 0 0 10%; overflow: hidden; border-radius: 2px; border: 1px solid rgba(243, 240, 232, .38); box-shadow: 26px 30px 0 rgba(198, 230, 106, .17), var(--shadow); }
+    .hero-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15, 37, 42, .2), transparent 55%); }
+    .hero-stamp { position: absolute; top: 0; left: 0; width: 136px; aspect-ratio: 1; display: grid; place-items: center; padding: 18px; color: var(--deep); background: var(--acid); border-radius: 50%; text-align: center; font: 600 .7rem/1.35 var(--mono); letter-spacing: .06em; transform: rotate(-9deg); box-shadow: 10px 10px 0 rgba(15, 37, 42, .28); }
+    .hero-caption { position: absolute; right: 0; bottom: -5px; padding: 11px 13px; color: var(--canvas); background: var(--deep-soft); font: 500 .66rem/1.4 var(--mono); letter-spacing: .06em; }
+    .flow-panel { position: absolute; left: 0; bottom: 38px; width: 82%; padding: 15px 16px 17px; background: rgba(15, 37, 42, .86); border: 1px solid rgba(243, 240, 232, .26); backdrop-filter: blur(12px); }
+    .flow-meta { display: flex; justify-content: space-between; gap: 12px; color: rgba(243, 240, 232, .68); font: 500 .62rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .flow-rail { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 19px; }
+    .flow-rail::before { content: ''; position: absolute; left: 6px; right: 6px; top: 7px; height: 1px; background: rgba(198, 230, 106, .54); }
+    .flow-node { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 8px; color: var(--canvas); font-size: .71rem; line-height: 1.35; }
+    .flow-node i { width: 15px; height: 15px; border: 3px solid var(--deep); border-radius: 50%; background: var(--acid); box-shadow: 0 0 0 1px var(--acid); animation: pulse 2.6s ease-in-out infinite; }
+    .flow-node:nth-child(2) i { animation-delay: .35s; }
+    .flow-node:nth-child(3) i { animation-delay: .7s; }
+    .flow-node:nth-child(4) i { animation-delay: 1.05s; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 1px var(--acid); } 50% { box-shadow: 0 0 0 6px rgba(198, 230, 106, .08); } }
+
+    .signal-band { position: relative; z-index: 3; margin-top: -1px; color: var(--deep); background: var(--acid); border-top: 1px solid rgba(15, 37, 42, .35); border-bottom: 1px solid rgba(15, 37, 42, .35); }
+    .signal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .signal { min-height: 142px; padding: 28px 26px 26px 0; border-right: 1px solid rgba(15, 37, 42, .28); }
+    .signal + .signal { padding-left: 26px; }
+    .signal:last-child { border-right: 0; }
+    .signal-number { display: block; margin-bottom: 13px; font: 500 .7rem/1 var(--mono); letter-spacing: .12em; }
+    .signal strong { display: block; font: 800 clamp(1.35rem, 2.5vw, 2rem)/1.1 var(--serif); letter-spacing: -.04em; }
+    .signal p { max-width: 245px; margin: 10px 0 0; color: rgba(15, 37, 42, .7); font-size: .85rem; line-height: 1.6; }
+
+    .section { padding: 144px 0; }
+    .section-head { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 50px; align-items: start; margin-bottom: 65px; }
+    .section-head h2 { margin: 0; max-width: 720px; font: 800 clamp(2.45rem, 5vw, 5.2rem)/.96 var(--serif); letter-spacing: -.065em; }
+    .section-head p { max-width: 410px; margin: 4px 0 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.85; }
+    .section-head p strong { color: var(--ink); font-weight: 800; }
+    .intro-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 60px; align-items: end; }
+    .intro-quote { max-width: 480px; margin: 0; font: 600 clamp(1.7rem, 3vw, 2.7rem)/1.22 var(--serif); letter-spacing: -.045em; }
+    .intro-quote em { color: var(--coral); font-style: normal; }
+    .intro-copy { max-width: 570px; padding-top: 15px; border-top: 1px solid var(--line); }
+    .intro-copy p { margin: 0 0 17px; color: var(--ink-soft); font-size: 1rem; line-height: 1.9; }
+    .intro-copy p:last-child { margin-bottom: 0; }
+
+    .capability-section { padding-top: 0; }
+    .capability-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); gap: 24px; align-items: stretch; }
+    .capability-lead { position: relative; min-height: 580px; overflow: hidden; padding: 38px; color: var(--canvas); background: var(--deep); }
+    .capability-lead img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .52; }
+    .capability-lead::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 37, 42, .1), rgba(15, 37, 42, .96)); }
+    .capability-lead > * { position: relative; z-index: 1; }
+    .capability-lead h3 { max-width: 480px; margin: 210px 0 20px; font: 800 clamp(2.4rem, 4.4vw, 4.5rem)/.98 var(--serif); letter-spacing: -.06em; }
+    .capability-lead p { max-width: 520px; margin: 0; color: rgba(243, 240, 232, .76); line-height: 1.8; }
+    .capability-list { display: grid; grid-template-rows: repeat(4, 1fr); border-top: 1px solid var(--line); }
+    .capability-item { display: grid; grid-template-columns: 44px 1fr; gap: 17px; align-content: center; padding: 27px 26px; border-bottom: 1px solid var(--line); transition: background .2s ease, padding-left .2s ease; }
+    .capability-item:hover { padding-left: 32px; background: var(--canvas-deep); }
+    .capability-item .num { color: var(--coral); font: 600 .72rem/1.2 var(--mono); }
+    .capability-item h4 { margin: 0 0 7px; font: 800 1.35rem/1.15 var(--serif); letter-spacing: -.04em; }
+    .capability-item p { margin: 0; color: var(--ink-soft); font-size: .86rem; line-height: 1.65; }
+
+    .system-section { padding: 120px 0 128px; color: var(--canvas); background: var(--deep); }
+    .system-head { display: flex; align-items: end; justify-content: space-between; gap: 45px; margin-bottom: 50px; }
+    .system-head h2 { max-width: 650px; margin: 0; font: 800 clamp(2.35rem, 5vw, 5rem)/.97 var(--serif); letter-spacing: -.065em; }
+    .system-head p { max-width: 315px; margin: 0; color: rgba(243, 240, 232, .68); font-size: .94rem; line-height: 1.8; }
+    .system-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 40px; align-items: center; }
+    .system-visual { padding: 20px; border: 1px solid var(--line-dark); background: rgba(22, 52, 58, .72); }
+    .system-visual img { width: 100%; height: auto; filter: saturate(.8); }
+    .system-caption { display: flex; justify-content: space-between; gap: 15px; margin-top: 15px; color: rgba(243, 240, 232, .58); font: 500 .65rem/1.3 var(--mono); letter-spacing: .08em; }
+    .system-layers { display: grid; gap: 0; }
+    .layer { padding: 24px 0; border-top: 1px solid var(--line-dark); }
+    .layer:last-child { border-bottom: 1px solid var(--line-dark); }
+    .layer-label { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 12px; }
+    .layer h3 { margin: 0; color: var(--canvas); font: 700 1.25rem/1.2 var(--serif); }
+    .layer span { color: var(--acid); font: 500 .68rem/1 var(--mono); letter-spacing: .12em; }
+    .layer p { max-width: 450px; margin: 0; color: rgba(243, 240, 232, .66); line-height: 1.75; font-size: .9rem; }
+    .system-strip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 40px; }
+    .system-strip figure { margin: 0; }
+    .system-strip img { width: 100%; height: 170px; object-fit: cover; opacity: .86; }
+    .system-strip figcaption { padding-top: 12px; color: rgba(243, 240, 232, .64); font-size: .8rem; line-height: 1.5; }
+
+    .scenario-section { padding-bottom: 128px; }
+    .scenario-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 24px; align-items: start; }
+    .scenario-card { position: relative; overflow: hidden; min-height: 390px; background: var(--canvas-deep); }
+    .scenario-card.tall { min-height: 530px; }
+    .scenario-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .scenario-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 37, 42, .04) 20%, rgba(15, 37, 42, .92) 100%); }
+    .scenario-content { position: absolute; right: 26px; bottom: 25px; left: 26px; z-index: 1; color: var(--canvas); }
+    .scenario-content h3 { margin: 12px 0 9px; font: 800 clamp(1.8rem, 3.2vw, 3rem)/1 var(--serif); letter-spacing: -.05em; }
+    .scenario-content p { max-width: 510px; margin: 0; color: rgba(243, 240, 232, .75); font-size: .9rem; line-height: 1.7; }
+    .scenario-side { display: grid; gap: 24px; }
+    .scenario-note { min-height: 250px; padding: 28px; color: var(--deep); background: var(--acid); }
+    .scenario-note h3 { max-width: 330px; margin: 34px 0 10px; font: 800 2.1rem/.98 var(--serif); letter-spacing: -.06em; }
+    .scenario-note p { max-width: 330px; margin: 0; font-size: .88rem; line-height: 1.75; }
+    .scenario-photo { min-height: 255px; }
+
+    .cta-section { position: relative; overflow: hidden; padding: 145px 0 152px; color: var(--canvas); background: var(--coral); }
+    .cta-section::before { content: 'OPC'; position: absolute; right: -26px; bottom: -122px; color: rgba(16, 42, 50, .12); font: 900 27rem/.8 var(--serif); letter-spacing: -.12em; }
+    .cta-inner { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 50px; align-items: end; }
+    .cta-section h2 { max-width: 750px; margin: 0; font: 900 clamp(2.8rem, 6.5vw, 7.4rem)/.9 var(--serif); letter-spacing: -.08em; }
+    .cta-copy { max-width: 360px; }
+    .cta-copy p { margin: 0 0 25px; color: rgba(243, 240, 232, .86); font-size: 1rem; line-height: 1.8; }
+    .button-dark { color: var(--canvas); background: var(--deep); }
+    .button-dark:hover { background: var(--deep-soft); }
+
+    footer { padding: 28px 0 35px; color: rgba(243, 240, 232, .68); background: var(--deep); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; font-size: .78rem; }
+    .footer-label { color: var(--acid); font: 500 .68rem/1.4 var(--mono); letter-spacing: .12em; }
+    .footer-note { max-width: 530px; line-height: 1.6; text-align: right; }
+
+    [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.16, 1, .3, 1); }
+    [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .wrap { width: min(100% - 36px, 680px); }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { min-height: 900px; }
+      .hero-inner, .intro-grid, .system-grid, .cta-inner { grid-template-columns: 1fr; }
+      .hero-inner { gap: 48px; padding-top: 92px; }
+      .hero-art { min-height: 360px; }
+      .section-head { grid-template-columns: 1fr; gap: 22px; }
+      .section { padding: 100px 0; }
+      .capability-layout, .scenario-grid { grid-template-columns: 1fr; }
+      .capability-lead { min-height: 510px; }
+      .capability-lead h3 { margin-top: 170px; }
+      .system-head { display: grid; grid-template-columns: 1fr; gap: 20px; }
+      .cta-inner { align-items: start; }
+      .cta-copy { max-width: 520px; }
+      .cta-section { padding: 108px 0 120px; }
+    }
+
+    @media (max-width: 600px) {
+      .wrap { width: min(100% - 28px, 500px); }
+      .nav { height: 66px; }
+      .brand { font-size: .86rem; }
+      .nav-cta { padding: 8px 11px; font-size: .72rem; }
+      .hero { min-height: 820px; }
+      .hero-inner { padding-top: 52px; }
+      h1 { font-size: clamp(3rem, 15vw, 5.2rem); }
+      .hero-lede { margin-top: 24px; font-size: .95rem; line-height: 1.75; }
+      .hero-art { min-height: 300px; }
+      .hero-frame { inset: 10px 0 0 7%; }
+      .hero-stamp { width: 98px; font-size: .58rem; }
+      .flow-panel { bottom: 20px; width: 91%; padding: 12px; }
+      .flow-node { font-size: .6rem; }
+      .signal-grid { grid-template-columns: 1fr; }
+      .signal, .signal + .signal { min-height: 0; padding: 21px 0; border-right: 0; border-bottom: 1px solid rgba(15, 37, 42, .25); }
+      .signal:last-child { border-bottom: 0; }
+      .section { padding: 82px 0; }
+      .section-head { margin-bottom: 44px; }
+      .section-head h2, .system-head h2 { font-size: clamp(2.5rem, 13vw, 4.3rem); }
+      .intro-quote { font-size: 1.8rem; }
+      .capability-lead { min-height: 430px; padding: 25px; }
+      .capability-lead h3 { margin-top: 145px; font-size: 2.65rem; }
+      .capability-item { grid-template-columns: 30px 1fr; padding: 22px 0; gap: 10px; }
+      .capability-item:hover { padding-left: 0; background: transparent; }
+      .system-section { padding: 82px 0; }
+      .system-visual { padding: 10px; }
+      .system-strip { grid-template-columns: 1fr; }
+      .scenario-card, .scenario-card.tall { min-height: 420px; }
+      .scenario-note { min-height: 220px; padding: 24px; }
+      .cta-section h2 { font-size: clamp(3.2rem, 16vw, 5rem); }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .footer-note { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      [data-reveal] { opacity: 1; transform: none; }
+      .hero-art { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" data-nav>
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="秦托邦 AI 探索首页">
+        <span class="brand-mark">秦</span>
+        <span>秦托邦 <small>AI EXPLORATION</small></span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#why">为什么现在</a>
+        <a href="#capabilities">四层能力</a>
+        <a href="#system">协同系统</a>
+        <a class="nav-cta" href="#contact">发起一次对话</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <img class="hero-bg" src="assets/rooftop-life.jpg" alt="秦托邦屋顶上的社区成员与秦岭景色" />
+      <div class="wrap hero-inner">
+        <div class="hero-copy" data-reveal>
+          <div class="hero-kicker">Qintopia AI exploration · AI OPC community</div>
+          <h1>让人先住下来，<br /><span class="hero-title-accent">再让项目</span><br />在乡村发生。</h1>
+          <p class="hero-lede">秦托邦 AI 探索，面向政府与文旅伙伴，把宜居空间、OPC 人才、AI 基础设施和项目交付接到同一条协作链上。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#contact">从一个具体场景开始</a>
+            <a class="button button-quiet" href="#capabilities">看四层能力</a>
+          </div>
+        </div>
+        <div class="hero-art" data-hero-art data-reveal>
+          <div class="hero-frame"><img src="assets/village-aerial.jpg" alt="剪鸭村与秦托邦社区的航拍场景" /></div>
+          <div class="hero-stamp">LIVING<br />→ WORKING<br />→ DELIVERING</div>
+          <div class="flow-panel" aria-label="从生活到项目交付的协作流">
+            <div class="flow-meta"><span>community operating loop</span><span>01 / 04</span></div>
+            <div class="flow-rail">
+              <div class="flow-node"><i></i><span>住得下来</span></div>
+              <div class="flow-node"><i></i><span>遇见伙伴</span></div>
+              <div class="flow-node"><i></i><span>AI 协同</span></div>
+              <div class="flow-node"><i></i><span>交付项目</span></div>
+            </div>
+          </div>
+          <div class="hero-caption">剪鸭村 · 秦托邦 / 现场实践</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="signal-band" aria-label="秦托邦 AI 探索的三个判断">
+      <div class="wrap signal-grid">
+        <div class="signal" data-reveal><span class="signal-number">01 / PRINCIPLE</span><strong>先宜居，后宜业</strong><p>让人拥有持续生活、相处和试错的现场，业务才有机会长出来。</p></div>
+        <div class="signal" data-reveal><span class="signal-number">02 / ORGANIZATION</span><strong>人在前台，智能体在后台</strong><p>人负责判断与关系维护，系统承接信息、流程、提醒和记录。</p></div>
+        <div class="signal" data-reveal><span class="signal-number">03 / OUTCOME</span><strong>从场景走向交付</strong><p>不做悬空的 AI 演示，围绕高校、企业和文旅现场形成真实方案。</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">WHY THIS COMMUNITY</div>
+          <div><h2>很多地方不缺空间，缺的是让人留下来、一起做事的条件。</h2><p><strong>文旅和乡村项目的难题，常常不是“有没有一个 AI 工具”。</strong>更难的是人才如何进入现场，关系如何持续，信息如何沉淀，项目如何从一次活动变成可交付的长期协作。</p></div>
+        </div>
+        <div class="intro-grid" data-reveal>
+          <blockquote class="intro-quote">把一个人的能力，放进一套可以持续运转的 <em>生活与工作系统</em>。</blockquote>
+          <div class="intro-copy">
+            <p>秦托邦从秦岭脚下剪鸭村的青年社区实践出发。公共空间、共同生活、在地项目和日常关系，让新来的人先理解这里，再找到适合自己的事情。</p>
+            <p>AI 探索是在这片土壤上继续向前：识别 OPC 人才，连接工具与算力，围绕真实需求组队，让个体和小团队能够在乡村参与更广阔的产业分工。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section capability-section" id="capabilities">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">THE FOUR LAYERS</div>
+          <div><h2>一条从空间到市场的能力链。</h2><p>四层能力彼此咬合，组成一个可以长期运行的 AI OPC 社区，而不是一组分散的服务菜单。</p></div>
+        </div>
+        <div class="capability-layout">
+          <article class="capability-lead" data-reveal>
+            <img src="assets/community-dinner.jpg" alt="秦托邦社区成员共同用餐" loading="lazy" />
+            <div class="eyebrow light">THE QINTOPIA LOOP</div>
+            <h3>生活不是项目的前置条件。<br />生活本身就是协作基础。</h3>
+            <p>当人住在同一个现场，能力才会被看见，伙伴才会真正相遇，项目才有机会从一次对接变成一起做事。</p>
+          </article>
+          <div class="capability-list" data-reveal>
+            <article class="capability-item"><div class="num">01</div><div><h4>宜居空间</h4><p>住宿、办公、阅读、活动和日常相处，提供可以留下来的社区底盘。</p></div></article>
+            <article class="capability-item"><div class="num">02</div><div><h4>OPC 人才</h4><p>持续识别开发者、设计者、运营者，建立能力画像、技能标签与协作记录。</p></div></article>
+            <article class="capability-item"><div class="num">03</div><div><h4>AI 基础设施</h4><p>连接模型、算力、AgentOS 与 PMS，让信息和流程进入一套可持续的系统。</p></div></article>
+            <article class="capability-item"><div class="num">04</div><div><h4>项目交付</h4><p>围绕具体需求组建能力组，承接外部项目，也孵化社区内部的新产品。</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system-section" id="system">
+      <div class="wrap">
+        <div class="system-head" data-reveal>
+          <div><div class="eyebrow light">HUMAN + AI OPERATING SYSTEM</div><h2>让协作从人的记忆里，进入组织的基础设施。</h2></div>
+          <p>真正的 AI 应用不是多一个聊天窗口，而是把人员、入口、权限、会话、业务记录与项目流程接在一起。</p>
+        </div>
+        <div class="system-grid">
+          <figure class="system-visual" data-reveal>
+            <img src="assets/human-ai-organization.png" alt="秦托邦人机协同组织结构图" loading="lazy" />
+            <figcaption class="system-caption"><span>HUMAN-AI ORGANIZATION</span><span>关系、判断、执行</span></figcaption>
+          </figure>
+          <div class="system-layers" data-reveal>
+            <article class="layer"><div class="layer-label"><h3>人机协同组织层</h3><span>01 / PEOPLE</span></div><p>人保留判断、关系与责任，智能体负责信息汇总、提醒、流转和可追踪的执行。</p></article>
+            <article class="layer"><div class="layer-label"><h3>AgentOS 系统层</h3><span>02 / SYSTEM</span></div><p>连接人员、入口、权限、智能体会话和业务系统，让协作不再从每次对话重新开始。</p></article>
+            <article class="layer"><div class="layer-label"><h3>社群运营 PMS 业务层</h3><span>03 / OPERATIONS</span></div><p>把房态、订单、会员、收款和日常服务纳入同一个运营节奏，支撑社区现场稳定运行。</p></article>
+          </div>
+        </div>
+        <div class="system-strip" data-reveal>
+          <figure><img src="assets/agentos-it-architecture.png" alt="AgentOS 技术架构示意" loading="lazy" /><figcaption>模型与算力接入、路由与调度，为不同场景保留可组合的技术路径。</figcaption></figure>
+          <figure><img src="assets/pms-redacted.png" alt="社区运营 PMS 脱敏界面" loading="lazy" /><figcaption>业务记录沉淀下来，服务与项目才有连续性，团队也能在变化中交接。</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section scenario-section">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <div class="eyebrow">WHERE TO START</div>
+          <div><h2>从一个具体场景，开始一次可验证的合作。</h2><p>对政府和文旅伙伴，我们更关心现场真正需要什么，再决定用什么技术与组织方式承接。</p></div>
+        </div>
+        <div class="scenario-grid">
+          <article class="scenario-card tall" data-reveal>
+            <img src="assets/ai-makers.jpg" alt="秦托邦成员在共享空间中协作开发" loading="lazy" />
+            <div class="scenario-content"><div class="eyebrow light">SCENE 01 / CO-CREATE</div><h3>把在地资源，变成可共创的 AI 场景。</h3><p>从景区运营、文旅内容、游客服务、活动组织到地方品牌，先选一个真实问题，再和现场的人一起把方案做出来。</p></div>
+          </article>
+          <div class="scenario-side">
+            <article class="scenario-note" data-reveal><div class="eyebrow">SCENE 02 / GROW</div><h3>让青年人才有机会留下来。</h3><p>通过空间、伙伴、工具和项目，把“招人”转成一套可以持续发生的社区机制。</p></article>
+            <article class="scenario-card scenario-photo" data-reveal>
+              <img src="assets/ai-event.jpg" alt="秦托邦 AI 活动与专业交流现场" loading="lazy" />
+              <div class="scenario-content"><div class="eyebrow light">SCENE 03 / DELIVER</div><h3>把个体能力，连成项目团队。</h3></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+      <div class="wrap cta-inner" data-reveal>
+        <h2>从一个场景，开始下一次连接。</h2>
+        <div class="cta-copy"><p>如果你正在做青年人才社区、乡村运营、文旅场景或 AI 应用转型，欢迎带着一个具体问题来聊。我们从现场出发，先把合作边界说清楚，再决定下一步。</p><a class="button button-dark" href="https://qintopia.cn" target="_blank" rel="noopener noreferrer">先看秦托邦实践 <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner"><div><div class="footer-label">QINTOPIA AI EXPLORATION</div><div>AI OPC 社区 · 剪鸭村 · 秦岭</div></div><div class="footer-note">本页面用于秦托邦 AI 探索与合作介绍。页面中的案例叙述以已确认材料为基础，具体合作范围与项目状态以实际沟通为准。</div></div>
+  </footer>
+
+  <script>
+    (() => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const nav = document.querySelector('[data-nav]');
+      const revealNodes = document.querySelectorAll('[data-reveal]');
+      const heroArt = document.querySelector('[data-hero-art]');
+
+      const syncNav = () => nav.classList.toggle('is-scrolled', window.scrollY > 18);
+      syncNav();
+      window.addEventListener('scroll', syncNav, { passive: true });
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        revealNodes.forEach((node) => node.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver((entries, activeObserver) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            activeObserver.unobserve(entry.target);
+          });
+        }, { threshold: .14, rootMargin: '0px 0px -8% 0px' });
+        revealNodes.forEach((node) => observer.observe(node));
+      }
+
+      if (!reduce && heroArt && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        heroArt.addEventListener('pointermove', (event) => {
+          const box = heroArt.getBoundingClientRect();
+          const x = (event.clientX - box.left) / box.width - .5;
+          const y = (event.clientY - box.top) / box.height - .5;
+          heroArt.style.transform = `perspective(1200px) rotateY(${x * -7 - 5}deg) rotateX(${y * 3 + 1}deg)`;
+        });
+        heroArt.addEventListener('pointerleave', () => { heroArt.style.transform = ''; });
+      }
+    })();
+  </script>
+</body>
+</html>
