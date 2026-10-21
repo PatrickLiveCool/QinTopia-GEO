@@ -6,4 +6,6 @@
 
 页面素材复制自 `Qintopia&Jianya Marketing/releases/qintopia-opc-outreach-v01/deck/assets/` 的已确认终稿资源，未直接依赖另一个项目的线上资源版本。文案沿用已确认的秦托邦 AI/OPC 对外口径，避免写入未经核实的客户名称、当前人数或交付承诺。
 
-当前目录仅是页面源文件，尚未加入中央 `config/site-manifest.json`，也没有接入 `ai.qintopia.cn` 的 DNS、CDN、证书、COS 发布权限或生产工作流。正式发布前需要按独立站点扩展发布清单、制品、版本 marker、回滚和线上验收流程；不能套用主站或已有 OPC 站点的发布配置。页面底部的“先看秦托邦实践”是一个外部了解入口，不代表两个站点共用发布包或运行配置。
+页面已通过一次独立的腾讯云 CLI 发布验证上线：版本 `v0.1.0-ai.1`，提交 `3848475ea54564ccdeb9e14428330f7a8ab079ad`，COS 对象使用 `ai/` 前缀，CDN 回源路径为 `/ai`，并写入独立版本 marker。DNS、TLS、CDN、COS 读回、缓存刷新、真实 HTML/资源字节和浏览器桌面/移动验收均已完成。
+
+当前 `config/site-manifest.json`、主站 `Website production` 和主站发布身份仍不包含 AI 站点；后续若要纳入自动发布，需要另建 AI 站点清单、制品、权限、marker、回滚和生产工作流，不能套用主站或已有 OPC 站点的发布配置。页面底部的“先看秦托邦实践”是一个外部了解入口，不代表两个站点共用发布包或运行配置。
