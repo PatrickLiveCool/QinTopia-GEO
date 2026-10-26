@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { home } from "@/content/site";
 import { Arrow } from "@/components/icons";
@@ -13,13 +10,22 @@ const flows = [
 ];
 
 export function BusinessScenarios() {
-  const [active, setActive] = useState(0);
-  const item = home.outcomes[active];
-  return <div className="scenarios">
-    <div className="scenario-selector" role="group" aria-label="选择业务场景">{home.outcomes.map((outcome, index) => <button key={outcome.id} type="button" aria-pressed={active === index} aria-controls="scenario-panel" onClick={() => setActive(index)}><span className="mono">{outcome.id}</span><span>{outcome.label}</span><Arrow /></button>)}</div>
-    <div className="scenario-panel" id="scenario-panel" aria-live="polite">
-      <div className="scenario-story"><p className="eyebrow">场景 {item.id}</p><h3>{item.title}</h3><div className="scenario-before"><span>原来的工作</span><p>{item.problem}</p></div><div className="scenario-after"><span>接入之后</span><p>{item.change}</p></div><Link className="text-link" href={`/cases/${item.caseSlug}/`}>阅读{item.caseLabel}<Arrow diagonal /></Link></div>
-      <div className="scenario-flow"><p className="eyebrow">业务链路示意</p><ol>{flows[active].map((step, index) => <li key={step}><span className="mono">0{index + 1}</span><span>{step}</span>{index === 3 && <span className="human-badge">人工</span>}</li>)}</ol><p className="scenario-note">以接口开放、数据授权与平台适配为前提。</p></div>
-    </div>
-  </div>;
+  return <div className="scenarios">{home.outcomes.map((item, scenarioIndex) => (
+    <article className="scenario-panel" key={item.id} aria-labelledby={`scenario-${item.id}`}>
+      <div className="scenario-story">
+        <p className="eyebrow"><span className="mono">{item.id}</span> / {item.label}</p>
+        <h3 id={`scenario-${item.id}`}>{item.title}</h3>
+        <div className="scenario-before"><span>原来的工作</span><p>{item.problem}</p></div>
+        <div className="scenario-after"><span>接入之后</span><p>{item.change}</p></div>
+        <Link className="text-link" href={`/cases/${item.caseSlug}/`}>阅读{item.caseLabel}<Arrow diagonal /></Link>
+      </div>
+      <div className="scenario-visual">
+        <div className="scenario-flow">
+          <p className="eyebrow">业务链路示意 / {item.id}</p>
+          <ol>{flows[scenarioIndex].map((step, index) => <li key={step}><span className="flow-number mono">0{index + 1}</span><span>{step}</span>{index === 3 && <span className="human-badge">人工</span>}</li>)}</ol>
+          <p className="scenario-note">以接口开放、数据授权与平台适配为前提。</p>
+        </div>
+      </div>
+    </article>
+  ))}</div>;
 }
