@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Page-level noindex is emitted in every HTML document.
+# Crawlers must be able to fetch pages to observe that instruction.

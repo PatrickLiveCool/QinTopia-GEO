@@ -17,3 +17,9 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Independent Node-based sites
+node_modules/
+.next/
+out/
+*.tsbuildinfo

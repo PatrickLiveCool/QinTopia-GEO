@@ -14,6 +14,17 @@
 - [发布范围与目录盘点](docs/operations/publication-inventory.md)
 - [逐文件发布白名单](config/site-manifest.json)
 
+## FDE 合作网站与 v0 设计接力
+
+`sites/fde/` 是面向通用生态伙伴的独立 Next.js / React 网站，拟用域名 `fde.qintopia.cn`。包含首页、服务能力、项目案例、合作方式与 11 个独立案例详情。内容和展示组件分开，便于在 v0 中套用模板。
+
+从仓库根目录运行 `npm ci`、`npm run dev`；`npm run check:fde` 验证构建、类型、页面、站内链接和不收录设置。默认 `npm run build` 使用完整 Next.js 运行模式；`npm run build:static` 可导出至 `sites/fde/out/`。最终前端由 v0 参考 Distyl 完成，允许按效果与功能需要选择应用服务器。
+
+- [给 v0 的导入与修改说明](V0.md)
+- [FDE 项目说明](sites/fde/README.md)
+
+FDE 源代码和本地导出未加入主站发布清单；本 PR 不配置域名、云资源或生产发布。上线前需按仓库约定准备独立站点发布。
+
 ## 项目结构
 
 ```
