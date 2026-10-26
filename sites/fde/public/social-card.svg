@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#6de0dd" stroke-opacity=".09"/></pattern></defs>
+  <rect width="1200" height="630" fill="#091729"/><rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="72" y="72" width="9" height="30" fill="#6de0dd"/>
+  <text x="102" y="95" fill="#6de0dd" font-family="sans-serif" font-size="24" letter-spacing="5">QINTOPIA</text>
+  <text x="72" y="240" fill="#ffffff" font-family="sans-serif" font-size="70" font-weight="600">AI ENGINEERING</text>
+  <text x="72" y="330" fill="#6de0dd" font-family="sans-serif" font-size="70" font-weight="600">FIELD DELIVERY</text>
+  <path d="M72 414H1128" stroke="#3a526b"/>
+  <g fill="#bdccdb" font-family="sans-serif" font-size="22" letter-spacing="2"><text x="72" y="477">WORKFLOWS</text><text x="385" y="477">DATA</text><text x="640" y="477">MODELS</text><text x="928" y="477">AGENTS</text></g>
+  <text x="72" y="570" fill="#93abc0" font-family="sans-serif" font-size="18" letter-spacing="3">fde.qintopia.cn</text>
+</svg>
