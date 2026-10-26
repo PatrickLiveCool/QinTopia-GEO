@@ -1,0 +1,13 @@
+{
+  "name": "qintopia-sites",
+  "private": true,
+  "workspaces": ["sites/fde"],
+  "scripts": {
+    "dev": "npm run dev --workspace @qintopia/fde",
+    "build": "npm run build --workspace @qintopia/fde",
+    "build:static": "npm run build:static --workspace @qintopia/fde",
+    "start": "npm run start --workspace @qintopia/fde",
+    "typecheck": "npm run typecheck --workspace @qintopia/fde",
+    "check:fde": "npm run check --workspace @qintopia/fde"
+  }
+}
