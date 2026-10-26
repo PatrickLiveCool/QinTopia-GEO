@@ -82,7 +82,7 @@ GitHub `production` 环境仅允许 `main` 分支及 `v*` tag；工作流额外�
 
 ## GitHub 套餐限制
 
-2026-10-17 实际请求 `main` 分支保护接口返回 403，提示私有仓库需要 GitHub Pro。本次没有升级套餐，也没有把仓库设为公开。`.github/main-protection.json` 保存了所需配置：必须经过 PR、至少 1 个批准、`Site checks` 成功、禁止强推/删除、解决 review 对话；升级后可通过 API应用。
+2026-10-17 实际请求 `main` 分支保护接口返回 403，提示私有仓库需要 GitHub Pro。本次没有升级套餐，也没有把仓库设为公开。仓库现已公开后，`.github/main-protection.json` 保存并应用了适合唯一维护者的配置：必须经过 PR、`Site checks` 成功、禁止强推/删除、解决 review 对话；批准数为 0，未来增加维护者后可提高到 1。
 
 在分支保护真正启用前，PR 是团队流程约定，管理员/有写权限者仍能绕过；不要把它描述为已经强制执行。当前 `production` 环境的分支/tag 限制已通过 API建立，但它不能替代源码分支保护。
 
