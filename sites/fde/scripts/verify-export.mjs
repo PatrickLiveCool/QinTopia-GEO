@@ -7,6 +7,16 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const output = resolve(root, "out");
 const cases = JSON.parse(readFileSync(resolve(root, "content/cases.json"), "utf8"));
 const routes = ["/", "/capabilities/", "/cases/", "/cooperation/", ...cases.map(({ slug }) => `/cases/${slug}/`)];
+assert.equal(cases.length, 11, "Keep all eleven cases");
+assert.equal(cases[0].slug, "university-model-services");
+assert.equal(cases.at(-1).slug, "hospitality-agent-collaboration");
+for (const item of cases) {
+  assert.deepEqual(item.sections.map(({ title }) => title), ["客户问题", "我们的解决方案", "客户收益", "技术分析"], `Section order changed: ${item.slug}`);
+}
+const capabilityHtml = readFileSync(resolve(output, "capabilities/index.html"), "utf8");
+for (const title of ["业务调研与需求梳理", "系统与数据对接", "场景设计与搭建", "Demo 搭建与验证", "培训与认知对齐", "交付陪跑与驻场", "交付复盘与标准化"]) {
+  assert(capabilityHtml.includes(title), `Missing capability: ${title}`);
+}
 
 function walk(folder) {
   return readdirSync(folder, { withFileTypes: true }).flatMap((entry) => entry.isDirectory() ? walk(resolve(folder, entry.name)) : [resolve(folder, entry.name)]);

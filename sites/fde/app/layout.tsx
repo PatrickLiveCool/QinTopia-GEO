@@ -1,4 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import "@fontsource-variable/noto-sans-sc";
+
+export const viewport: Viewport = { themeColor: "#f5f3ec" };
 import { site } from "@/content/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
