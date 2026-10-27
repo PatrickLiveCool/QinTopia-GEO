@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { SiteLink as Link } from "@/components/site-link";
 import { usePathname } from "next/navigation";
 import { site } from "@/content/site";
 import { Arrow } from "@/components/icons";
 
 export function SiteHeader() {
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/^\/compare/, "") || "/";
   return (
     <header className="site-header">
       <div className="container header-inner">
