@@ -12,6 +12,7 @@ import { MotionProvider } from "@/components/agentic/motion-context";
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  if (pathname.startsWith("/review")) return <MotionProvider><div className="review-shell"><AgenticNav /><main id="main-content">{children}</main><AgenticFooter /><Link className="version-switch" href="/">中文调整版 · 查看原版 ↗</Link></div></MotionProvider>;
   if (pathname.startsWith("/compare")) return <div className="comparison-shell"><SiteHeader /><main id="main-content">{children}</main><SiteFooter /><PageMotion /><Link className="version-switch" href={pathname.replace(/^\/compare/, "") || "/"}>旧版对比 · 查看新版 ↗</Link></div>;
-  return <MotionProvider><AgenticNav /><main id="main-content">{children}</main><AgenticFooter /><Link className="version-switch" href={`/compare${/^\/(?:capabilities|cases|cooperation)(?:\/|$)/.test(pathname) ? pathname : "/"}`}>模板新版 · 对比旧版 ↗</Link></MotionProvider>;
+  return <MotionProvider><AgenticNav /><main id="main-content">{children}</main><AgenticFooter /><div className="version-switch" style={{ display: "flex", gap: 16, alignItems: "center" }}><Link href="/review/">中文调整版 ↗</Link><Link href={`/compare${/^\/(?:capabilities|cases|cooperation)(?:\/|$)/.test(pathname) ? pathname : "/"}`}>对比旧版 ↗</Link></div></MotionProvider>;
 }
