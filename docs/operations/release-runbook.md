@@ -12,7 +12,7 @@
 
 同一时间只准备一个待发布版本：已有 Draft Release 时暂停新版本 PR；本次刚生成草稿时也不会继续递增版本。发布草稿后，下次 main 提交或手动运行 Prepare release 才准备下一版。
 
-Release Please 使用 GitHub 自带短期 `GITHUB_TOKEN`。由于机器人创建的 PR 不会自动触发普通 PR 事件，工作流显式 dispatch `ci.yml` 到版本 PR 分支。仓库已启用 Actions 创建 PR 权限；脚本不自动批准或合并 PR。
+Release Please 使用仓库级 `RELEASE_PLEASE_TOKEN`。该令牌只用于创建和更新版本 PR、Draft Release，让版本 PR 直接走普通 `pull_request` CI；工作流不再用 `actions: write` 手动 dispatch CI。令牌不用于 COS、CDN、生产部署或回退，脚本也不自动批准或合并 PR。没有该 Secret 时，Prepare release 会失败并保留现有版本和网站状态。
 
 本地检查：
 
@@ -74,13 +74,15 @@ GitHub `production` 环境仅允许 `main` 分支及 `v*` tag；工作流额外�
 - `COS_SECRET_ID` / `COS_SECRET_KEY`：专用 COS 发布身份；仅允许清单中的公开入口、`_site/*`、版本 marker 的 `GetObject` 和 `PutObject`。
 - `CDN_SECRET_ID` / `CDN_SECRET_KEY`：专用 CDN 发布身份；只允许查询域名/刷新任务及刷新 `www.qintopia.cn`。
 
+另需在 Repository secrets（不是 `production` Environment）配置 `RELEASE_PLEASE_TOKEN`。建议使用只授权本仓库的 Fine-grained PAT，权限为 Contents read/write 和 Pull requests read/write；它不应包含 COS、CDN、SSH、数据库或其他仓库权限。若改用 GitHub App 安装令牌，需要同步改造工作流中的令牌生成步骤，不能把 App 私钥直接放入该 Secret。
+
 策略见 `config/cos-release-policy.json`、`config/cdn-release-policy.json`；无密钥的实际身份记录见 `config/provisioned-identities.json`。新增公开入口还需同步更新 COS CAM 策略。身份不复用网站证书同步、Green PMS 或管理员密钥，不具备删除对象、改 DNS、改证书、改账单或启停 CDN 的权限。查询 API 的资源级限制按腾讯云接口能力使用 `*`，刷新写操作限制官网域名。
 
 依赖版本和包哈希固定在 `scripts/site/requirements.lock`；Actions 固定提交 SHA。升级时重新验证，不能仅改版本号而忽略哈希文件。
 
 ## GitHub 套餐限制
 
-2026-10-17 实际请求 `main` 分支保护接口返回 403，提示私有仓库需要 GitHub Pro。本次没有升级套餐，也没有把仓库设为公开。`.github/main-protection.json` 保存了所需配置：必须经过 PR、`Site checks` 成功、禁止强推/删除、解决 review 对话；升级后可通过 API应用。
+2026-10-17 实际请求 `main` 分支保护接口返回 403，提示私有仓库需要 GitHub Pro。本次没有升级套餐，也没有把仓库设为公开。仓库现已公开后，`.github/main-protection.json` 保存并应用了适合唯一维护者的配置：必须经过 PR、`Site checks` 成功、禁止强推/删除、解决 review 对话；批准数为 0，未来增加维护者后可提高到 1。
 
 在分支保护真正启用前，PR 是团队流程约定，管理员/有写权限者仍能绕过；不要把它描述为已经强制执行。当前 `production` 环境的分支/tag 限制已通过 API建立，但它不能替代源码分支保护。
 
